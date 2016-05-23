@@ -11,6 +11,7 @@
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		9C75CCA71CF34BC500114CA9 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCA61CF34BC500114CA9 /* libSDL2.a */; };
+		9C75CCAA1CF360A100114CA9 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C75CCA81CF360A100114CA9 /* EventManager.cpp */; };
 		9CF4C8A51CF22FBB000151ED /* CGraphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CF4C8A31CF22FBB000151ED /* CGraphics.cpp */; };
 		FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */; };
 		FAE0E96A1BAF96A00098DFA4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE0E9691BAF96A00098DFA4 /* GameController.framework */; };
@@ -31,6 +32,8 @@
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9C75CCA61CF34BC500114CA9 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL/libSDL2.a; sourceTree = "<group>"; };
+		9C75CCA81CF360A100114CA9 /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventManager.cpp; sourceTree = "<group>"; };
+		9C75CCA91CF360A100114CA9 /* EventManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventManager.hpp; sourceTree = "<group>"; };
 		9CF4C8A31CF22FBB000151ED /* CGraphics.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CGraphics.cpp; sourceTree = "<group>"; };
 		9CF4C8A41CF22FBB000151ED /* CGraphics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CGraphics.hpp; sourceTree = "<group>"; };
 		FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
@@ -135,6 +138,8 @@
 			children = (
 				9CF4C8A31CF22FBB000151ED /* CGraphics.cpp */,
 				9CF4C8A41CF22FBB000151ED /* CGraphics.hpp */,
+				9C75CCA81CF360A100114CA9 /* EventManager.cpp */,
+				9C75CCA91CF360A100114CA9 /* EventManager.hpp */,
 			);
 			path = AppLayer;
 			sourceTree = "<group>";
@@ -260,6 +265,7 @@
 			files = (
 				FD77A0130E26BC0500F39101 /* common.cpp in Sources */,
 				9CF4C8A51CF22FBB000151ED /* CGraphics.cpp in Sources */,
+				9C75CCAA1CF360A100114CA9 /* EventManager.cpp in Sources */,
 				FD77A0160E26BC0500F39101 /* main.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

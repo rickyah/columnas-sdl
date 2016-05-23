@@ -8,6 +8,23 @@
 #include <time.h>
 #include "common.h"
 #include "CGraphics.hpp"
+#include "EventManager.hpp"
+
+class MyEvent : public IEventData<MyEvent>
+{
+public:
+    MyEvent(): IEventData() {}
+};
+
+class MyEvent2 : public IEventData<MyEvent2>
+{
+public:
+    MyEvent2(): IEventData() {}
+};
+
+template<> const EventType IEventData<MyEvent>::eventType = 10;
+template<> const EventType IEventData<MyEvent2>::eventType = 20;
+
 
 void renderRandomColorRectangle(std::shared_ptr<CRenderer> renderer)
 {
@@ -34,6 +51,11 @@ int main(int argc, char *argv[])
 
     CGraphics g(SCREEN_WIDTH, SCREEN_HEIGHT);
 
+    MyEvent e1;
+    MyEvent2 e2;
+    
+    auto t1 = e1.type();
+    auto t2 = e2.type();
     
     g.renderer()->clear();
 

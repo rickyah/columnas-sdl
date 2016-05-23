@@ -6,7 +6,7 @@
 //
 //
 
-#include "CGraphics.h"
+#include "CGraphics.hpp"
 
 CGraphics::CGraphics(int w, int h)
 {
