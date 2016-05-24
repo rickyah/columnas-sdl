@@ -15,14 +15,20 @@ class CRenderer;
 class CGraphics
 {
 public:
-    CGraphics(int w, int h);
+    CGraphics(int w = 0, int h = 0);
     ~CGraphics();
-    bool init(int w, int h);
+    bool init(int w = 0, int h = 0);
     void destroy();
+    
+    int width() const { return _width; }
+    int height() const {return _height; }
     
     const std::shared_ptr<CRenderer> renderer() const;
     
 private:
+    int _width;
+    int _height;
+    
     std::shared_ptr<SDL_Window> _pSDLWindow;
     
     std::shared_ptr<CRenderer> _pRenderer;

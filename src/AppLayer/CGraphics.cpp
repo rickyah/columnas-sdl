@@ -8,7 +8,7 @@
 
 #include "CGraphics.hpp"
 
-CGraphics::CGraphics(int w, int h)
+CGraphics::CGraphics(int w, int h): _width(0), _height(0)
 {
     this->init(w,h);
 }
@@ -20,7 +20,19 @@ CGraphics::~CGraphics()
 
 bool CGraphics::init(int w, int h)
 {
-    _pSDLWindow = std::shared_ptr<SDL_Window>(SDL_CreateWindow(NULL,0, 0, w, h, 0),
+    SDL_DisplayMode displayMode;
+    SDL_GetCurrentDisplayMode(0, &displayMode);
+    
+    if (w <= 0 || h <= 0 || w > displayMode.w || h > displayMode.h)
+    {
+        w = displayMode.w;
+        h = displayMode.h;
+    }
+    
+    _width = w;
+    _height = h;
+
+    _pSDLWindow = std::shared_ptr<SDL_Window>(SDL_CreateWindow(NULL,0, 0, _width, _height, SDL_WINDOW_FULLSCREEN),
                                               SDL_DestroyWindow);
  
     _pRenderer = std::shared_ptr<CRenderer>(new CRenderer(_pSDLWindow));
