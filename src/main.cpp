@@ -6,24 +6,36 @@
 
 #include "SDL.h"
 #include <time.h>
-#include "common.h"
 #include "CGraphics.hpp"
 #include "EventManager.hpp"
 
-class MyEvent : public IEventData<MyEvent>
-{
-public:
-    MyEvent(): IEventData() {}
-};
+#define SCREEN_WIDTH 320
+#define SCREEN_HEIGHT 920
 
-class MyEvent2 : public IEventData<MyEvent2>
-{
-public:
-    MyEvent2(): IEventData() {}
-};
 
-template<> const EventType IEventData<MyEvent>::eventType = 10;
-template<> const EventType IEventData<MyEvent2>::eventType = 20;
+/*
+ Produces a random int x, min <= x <= max
+ following a uniform distribution
+ */
+int randomInt(int min, int max)
+{
+    return min + rand() % (max - min + 1);
+}
+
+/*
+ Produces a random float x, min <= x <= max
+ following a uniform distribution
+ */
+float randomFloat(float min, float max)
+{
+    return rand() / (float) RAND_MAX *(max - min) + min;
+}
+
+void fatalError(const char *string)
+{
+    printf("%s: %s\n", string, SDL_GetError());
+    exit(1);
+}
 
 
 void renderRandomColorRectangle(std::shared_ptr<CRenderer> renderer)
@@ -48,28 +60,31 @@ int main(int argc, char *argv[])
     int done;
     SDL_Event event;
 
-
-    CGraphics g(SCREEN_WIDTH, SCREEN_HEIGHT);
-
-    MyEvent e1;
-    MyEvent2 e2;
+//    /* initialize SDL */
+//    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
+//        fatalError("Could not initialize SDL");
+//    }
     
-    auto t1 = e1.type();
-    auto t2 = e2.type();
+    CGraphics g;
     
     g.renderer()->clear();
 
     /* Enter render loop, waiting for user to quit */
+    renderRandomColorRectangle(g.renderer());
     done = 0;
     while (!done) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_FINGERDOWN) {
+                renderRandomColorRectangle(g.renderer());
+            }
+            if (event.type == SDL_QUIT) {
                 done = 1;
             }
+                
             
             SDL_Log("Polled event %d", event.type);
         }
-        renderRandomColorRectangle(g.renderer());
+        
         SDL_Delay(1);
     }
 
