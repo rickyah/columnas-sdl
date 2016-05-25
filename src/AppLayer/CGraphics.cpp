@@ -10,16 +10,17 @@
 
 CGraphics::CGraphics(int w, int h): _width(0), _height(0)
 {
-    this->init(w,h);
+    this->Init(w,h);
 }
 
 CGraphics::~CGraphics()
 {
-    this->destroy();
+    this->Destroy();
 }
 
-bool CGraphics::init(int w, int h)
+bool CGraphics::Init(int w, int h)
 {
+    SDL_InitSubSystem(SDL_INIT_VIDEO);
     SDL_DisplayMode displayMode;
     SDL_GetCurrentDisplayMode(0, &displayMode);
     
@@ -38,7 +39,7 @@ bool CGraphics::init(int w, int h)
     _pRenderer = std::shared_ptr<CRenderer>(new CRenderer(_pSDLWindow));
 }
 
-void CGraphics::destroy()
+void CGraphics::Destroy()
 {
     _pSDLWindow.reset();
     _pRenderer.reset();

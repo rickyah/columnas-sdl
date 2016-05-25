@@ -9,16 +9,16 @@
 
 #include <memory>
 #include "SDL.h"
+#include "CRenderer.hpp"
 
-class CRenderer;
 
 class CGraphics
 {
 public:
     CGraphics(int w = 0, int h = 0);
     ~CGraphics();
-    bool init(int w = 0, int h = 0);
-    void destroy();
+    bool Init(int w = 0, int h = 0);
+    void Destroy();
     
     int width() const { return _width; }
     int height() const {return _height; }
