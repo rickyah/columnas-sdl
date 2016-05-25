@@ -39,21 +39,6 @@ private:
 };
 
 
-class CRenderer
-{
-public:
-    CRenderer(const std::shared_ptr<SDL_Window> &pSDLWindow);
-    void clear();
-    void setColor(int r, int g, int b, int a=255);
-    void fillRectangle(int x, int y, int w, int h);
-    void present();
-    
-private:
-    std::shared_ptr<SDL_Renderer> _pSDLRenderer;
-    
-    CRenderer(const CRenderer &);
-    void operator=(const CRenderer&);
-};
 
 
 #endif /* CGraphics_hpp */
