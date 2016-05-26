@@ -10,6 +10,8 @@
 #define IEventData_hpp
 
 #include <ctime>
+#include <cstdint>
+
 #include "EventQueueTypes.hpp"
 
 /**
@@ -23,7 +25,7 @@ class IEventData
 {
     
 public:
-    IEventData() : _timeStamp(std::time(nullptr)){}
+    IEventData(): _timeStamp(std::time(nullptr)){}
     
     virtual ~IEventData() {}
     uint64_t timeStamp() const { return _timeStamp; }
