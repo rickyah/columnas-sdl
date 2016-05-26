@@ -6,6 +6,11 @@
 //
 #include "EventQueue.hpp"
 
+EventQueue::~EventQueue()
+{
+    RemoveAllListeners();
+}
+
 
 bool EventQueue::AddListener(const EventType& type, const EventListenerDelegate &eventDelegate)
 {
@@ -24,6 +29,16 @@ bool EventQueue::AddListener(const EventType& type, const EventListenerDelegate 
     return true;
 }
 
+
+EventListenerDelegate EventQueue::AddListener(const EventType& type, const std::function<void (std::shared_ptr<IEventData>)> &func)
+{
+    EventListenerDelegate dlg(func);
+    
+    this->AddListener(type, dlg);
+    
+    return dlg;
+}
+
 bool EventQueue::RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate)
 {
     EventListenerList& list = _eventListeners[type];
@@ -40,7 +55,7 @@ bool EventQueue::RemoveListener(const EventType& type, const EventListenerDelega
     return false;
 }
     
-bool EventQueue::Raise(const std::shared_ptr<IEventData>& pEvent)
+bool EventQueue::Raise(std::shared_ptr<IEventData> pEvent)
 {
     EventListenerList& list = _eventListeners[pEvent->type()];
     
@@ -51,3 +66,7 @@ bool EventQueue::Raise(const std::shared_ptr<IEventData>& pEvent)
     
 }
 
+void EventQueue::RemoveAllListeners()
+{
+    _eventListeners.clear();
+}

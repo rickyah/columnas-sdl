@@ -30,12 +30,18 @@ class EventQueue
 public:
     explicit EventQueue() {};
     
+    ~EventQueue();
+    
     bool AddListener(const EventType& type, const EventListenerDelegate &eventDelegate);
+    
+    EventListenerDelegate AddListener(const EventType& type, const std::function<void (std::shared_ptr<IEventData>)> &func);
     
     bool RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate);
     
-    bool Raise(const std::shared_ptr<IEventData>& pEvent);
+    bool Raise(std::shared_ptr<IEventData> pEvent);
 
+    void RemoveAllListeners();
+    
 private:
     // Holds mappings between an EventType and an a list of EventListenerDelegates
     EventListenerMap _eventListeners;
