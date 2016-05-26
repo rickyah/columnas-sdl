@@ -15,7 +15,7 @@
 class Graphics
 {
 public:
-    Graphics(int w = 0, int h = 0);
+    explicit Graphics(int w = 0, int h = 0);
     ~Graphics();
     bool Init(int w = 0, int h = 0);
     void Destroy();

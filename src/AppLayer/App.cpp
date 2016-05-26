@@ -17,9 +17,14 @@ App::App()
         printf("Could not initialize SDL: %s\n", SDL_GetError());
         exit(1);
     }
+    
+    _pGraphics = std::make_shared<Graphics>();
+    _pEventManager = std::make_shared<EventManager>();
 }
 
 App::~App()
 {
+    _pEventManager.reset();
+    _pGraphics.reset();
     SDL_Quit();
 }
