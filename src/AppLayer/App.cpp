@@ -20,11 +20,14 @@ App::App()
     
     _pGraphics = std::make_shared<Graphics>();
     _pEventQueue = std::make_shared<EventQueue>();
+    _pEventsManager = std::make_shared<EventsManager>(_pEventQueue);
 }
 
 App::~App()
 {
+    _pEventsManager.reset();
     _pEventQueue.reset();
     _pGraphics.reset();
+    
     SDL_Quit();
 }
