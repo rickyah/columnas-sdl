@@ -25,7 +25,7 @@ public:
 
     void SetBoardState( const BoardState & initialState );
 
-    void Render(std::weak_ptr<Renderer> pRenderer);
+    void Render(std::shared_ptr<Renderer> pRenderer);
 private:
 
     std::map<TileType, std::shared_ptr<Texture>> _tileTypeToTextureMapping;

@@ -8,10 +8,8 @@
 
 #include "CColumnsBoardView.hpp"
 
-void CColumnsBoardView::Render(std::weak_ptr<Renderer> pwRenderer)
+void CColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
 {
-    auto pRenderer = pwRenderer.lock();
-
     Position offset(0,0);
     Rect r(offset,  _tileSizePixels);
     r.size.w -= 1;
