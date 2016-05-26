@@ -1,14 +1,13 @@
 //
-//  EventManager.cpp
-//  Columns
+//  EventQueue.cpp
 //
 //  Created by Ricardo Amores Hernández on 23/5/16.
 //
 //
-#include "EventManager.hpp"
+#include "EventQueue.hpp"
 
 
-bool EventManager::AddListener(const EventType& type, const EventListenerDelegate &eventDelegate)
+bool EventQueue::AddListener(const EventType& type, const EventListenerDelegate &eventDelegate)
 {
     EventListenerList& list = _eventListeners[type];
     
@@ -25,7 +24,7 @@ bool EventManager::AddListener(const EventType& type, const EventListenerDelegat
     return true;
 }
 
-bool EventManager::RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate)
+bool EventQueue::RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate)
 {
     EventListenerList& list = _eventListeners[type];
     
@@ -41,7 +40,7 @@ bool EventManager::RemoveListener(const EventType& type, const EventListenerDele
     return false;
 }
     
-bool EventManager::Raise(const std::shared_ptr<IEventData>& pEvent)
+bool EventQueue::Raise(const std::shared_ptr<IEventData>& pEvent)
 {
     EventListenerList& list = _eventListeners[pEvent->type()];
     

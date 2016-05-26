@@ -10,6 +10,8 @@
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		9C02B8271CF7B39400B01905 /* EventListenerDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C02B8211CF7B39400B01905 /* EventListenerDelegate.cpp */; };
+		9C02B8281CF7B39400B01905 /* EventQueue.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C02B8231CF7B39400B01905 /* EventQueue.cpp */; };
 		9C1808601CF70C2B00C19900 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCA61CF34BC500114CA9 /* libSDL2.a */; };
 		9C1808611CF70C5700C19900 /* libSDL2_image.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCAF1CF5028900114CA9 /* libSDL2_image.a */; };
 		9C47A2DB1CF50A7700885640 /* Sprites in Resources */ = {isa = PBXBuildFile; fileRef = 9C47A2DA1CF50A7700885640 /* Sprites */; };
@@ -21,8 +23,6 @@
 		9C68FB161CF744150058369A /* CColumnsBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB121CF744150058369A /* CColumnsBoard.cpp */; };
 		9C68FB191CF744680058369A /* CColumnsBoardView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB171CF744680058369A /* CColumnsBoardView.cpp */; };
 		9C68FB1C1CF7A3B40058369A /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB1A1CF7A3B40058369A /* App.cpp */; };
-		9C68FB201CF7A3F70058369A /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB1E1CF7A3F70058369A /* EventManager.cpp */; };
-		9C68FB231CF7A4220058369A /* EventListenerDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB211CF7A4220058369A /* EventListenerDelegate.cpp */; };
 		9C75CCAC1CF4BDF300114CA9 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C75CCAB1CF4BDF300114CA9 /* MainStoryboard.storyboard */; };
 		9C75CCB21CF5033F00114CA9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCB11CF5033F00114CA9 /* ImageIO.framework */; };
 		9C75CCB41CF5039B00114CA9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCB31CF5039B00114CA9 /* MobileCoreServices.framework */; };
@@ -57,6 +57,12 @@
 		1D6058910D05DD3D006BFB54 /* Columns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Columns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C02B8211CF7B39400B01905 /* EventListenerDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventListenerDelegate.cpp; sourceTree = "<group>"; };
+		9C02B8221CF7B39400B01905 /* EventListenerDelegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventListenerDelegate.hpp; sourceTree = "<group>"; };
+		9C02B8231CF7B39400B01905 /* EventQueue.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventQueue.cpp; sourceTree = "<group>"; };
+		9C02B8241CF7B39400B01905 /* EventQueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventQueue.hpp; sourceTree = "<group>"; };
+		9C02B8251CF7B39400B01905 /* EventQueueTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventQueueTypes.hpp; sourceTree = "<group>"; };
+		9C02B8261CF7B39400B01905 /* IEventData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IEventData.hpp; sourceTree = "<group>"; };
 		9C18085C1CF70B9900C19900 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL/simulator/libSDL2.a; sourceTree = "<group>"; };
 		9C18085D1CF70B9900C19900 /* libSDL2_image.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2_image.a; path = libs/SDL_Image/simulator/libSDL2_image.a; sourceTree = "<group>"; };
 		9C47A2DA1CF50A7700885640 /* Sprites */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sprites; sourceTree = "<group>"; };
@@ -78,12 +84,6 @@
 		9C68FB181CF744680058369A /* CColumnsBoardView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CColumnsBoardView.hpp; sourceTree = "<group>"; };
 		9C68FB1A1CF7A3B40058369A /* App.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
 		9C68FB1B1CF7A3B40058369A /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
-		9C68FB1E1CF7A3F70058369A /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventManager.cpp; sourceTree = "<group>"; };
-		9C68FB1F1CF7A3F70058369A /* EventManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventManager.hpp; sourceTree = "<group>"; };
-		9C68FB211CF7A4220058369A /* EventListenerDelegate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventListenerDelegate.cpp; sourceTree = "<group>"; };
-		9C68FB221CF7A4220058369A /* EventListenerDelegate.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventListenerDelegate.hpp; sourceTree = "<group>"; };
-		9C68FB241CF7A4C50058369A /* EventManagerTypes.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = EventManagerTypes.hpp; sourceTree = "<group>"; };
-		9C68FB251CF7A5060058369A /* IEventData.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = IEventData.hpp; sourceTree = "<group>"; };
 		9C75CCA61CF34BC500114CA9 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL/libSDL2.a; sourceTree = "<group>"; };
 		9C75CCAB1CF4BDF300114CA9 /* MainStoryboard.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = MainStoryboard.storyboard; sourceTree = "<group>"; };
 		9C75CCAF1CF5028900114CA9 /* libSDL2_image.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2_image.a; path = libs/SDL_Image/libSDL2_image.a; sourceTree = "<group>"; };
@@ -196,6 +196,19 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9C02B8201CF7B39400B01905 /* EventQueue */ = {
+			isa = PBXGroup;
+			children = (
+				9C02B8211CF7B39400B01905 /* EventListenerDelegate.cpp */,
+				9C02B8221CF7B39400B01905 /* EventListenerDelegate.hpp */,
+				9C02B8231CF7B39400B01905 /* EventQueue.cpp */,
+				9C02B8241CF7B39400B01905 /* EventQueue.hpp */,
+				9C02B8251CF7B39400B01905 /* EventQueueTypes.hpp */,
+				9C02B8261CF7B39400B01905 /* IEventData.hpp */,
+			);
+			path = EventQueue;
+			sourceTree = "<group>";
+		};
 		9C47A2E51CF5F15F00885640 /* GameLayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,19 +250,6 @@
 			path = GameLayer/View;
 			sourceTree = "<group>";
 		};
-		9C68FB1D1CF7A3F70058369A /* EventManager */ = {
-			isa = PBXGroup;
-			children = (
-				9C68FB251CF7A5060058369A /* IEventData.hpp */,
-				9C68FB241CF7A4C50058369A /* EventManagerTypes.hpp */,
-				9C68FB1E1CF7A3F70058369A /* EventManager.cpp */,
-				9C68FB1F1CF7A3F70058369A /* EventManager.hpp */,
-				9C68FB211CF7A4220058369A /* EventListenerDelegate.cpp */,
-				9C68FB221CF7A4220058369A /* EventListenerDelegate.hpp */,
-			);
-			path = EventManager;
-			sourceTree = "<group>";
-		};
 		9C75CCB51CF506F300114CA9 /* ios */ = {
 			isa = PBXGroup;
 			children = (
@@ -262,7 +262,7 @@
 		9CF4C8A21CF22FBB000151ED /* AppLayer */ = {
 			isa = PBXGroup;
 			children = (
-				9C68FB1D1CF7A3F70058369A /* EventManager */,
+				9C02B8201CF7B39400B01905 /* EventQueue */,
 				9C75CCB51CF506F300114CA9 /* ios */,
 				9CF4C8A31CF22FBB000151ED /* Graphics.cpp */,
 				9CF4C8A41CF22FBB000151ED /* Graphics.hpp */,
@@ -386,17 +386,17 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C68FB201CF7A3F70058369A /* EventManager.cpp in Sources */,
 				9C68FB1C1CF7A3B40058369A /* App.cpp in Sources */,
 				9C47A2E11CF5A2ED00885640 /* Renderer.cpp in Sources */,
 				9C47A2DE1CF5A27C00885640 /* Texture.cpp in Sources */,
 				9CF4C8A51CF22FBB000151ED /* Graphics.cpp in Sources */,
-				9C68FB231CF7A4220058369A /* EventListenerDelegate.cpp in Sources */,
+				9C02B8281CF7B39400B01905 /* EventQueue.cpp in Sources */,
 				9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */,
 				9C47A2E41CF5A3A300885640 /* DataTypes.cpp in Sources */,
 				FD77A0160E26BC0500F39101 /* main.cpp in Sources */,
 				9C68FB161CF744150058369A /* CColumnsBoard.cpp in Sources */,
 				9C68FB191CF744680058369A /* CColumnsBoardView.cpp in Sources */,
+				9C02B8271CF7B39400B01905 /* EventListenerDelegate.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

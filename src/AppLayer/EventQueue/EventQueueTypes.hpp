@@ -1,13 +1,12 @@
 //
-//  EventManagerTypes.hpp
-//  Columns
+//  EventQueue.hpp
 //
 //  Created by Ricardo Amores Hernández on 23/5/16.
 //
 //
 
-#ifndef EventManagerTypes_hpp
-#define EventManagerTypes_hpp
+#ifndef EventQueueTypes_hpp
+#define EventQueueTypes_hpp
 
 /**
  * An event will be defined by an unique number (GUID)
@@ -15,4 +14,4 @@
  */
 typedef unsigned long EventType;
 
-#endif /* EventManagerTypes_hpp */
+#endif /* EventQueue_hpp */

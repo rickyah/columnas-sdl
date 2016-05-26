@@ -10,7 +10,7 @@
 #define IEventData_hpp
 
 #include <ctime>
-#include "EventManagerTypes.hpp"
+#include "EventQueueTypes.hpp"
 
 /**
  * This is the base class for all data sent when an event is triggered

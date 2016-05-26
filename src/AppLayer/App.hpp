@@ -12,7 +12,7 @@
 #include <memory>
 #include "SDL.h"
 #include "Graphics.hpp"
-#include "EventManager.hpp"
+#include "EventQueue.hpp"
 
 class App
 {
@@ -21,11 +21,11 @@ public:
     ~App();
     
     std::shared_ptr<Graphics> graphics() { return _pGraphics; }
-    std::shared_ptr<EventManager> eventManager() { return _pEventManager; }
+    std::shared_ptr<EventQueue> eventManager() { return _pEventQueue; }
    
 private:
     std::shared_ptr<Graphics> _pGraphics;
-    std::shared_ptr<EventManager> _pEventManager;
+    std::shared_ptr<EventQueue> _pEventQueue;
     
 };
 
