@@ -10,6 +10,8 @@
 		1D3623EC0D0F72F000981E51 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D3623EB0D0F72F000981E51 /* CoreGraphics.framework */; };
 		1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1D30AB110D05D00D00671497 /* Foundation.framework */; };
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
+		9C1808601CF70C2B00C19900 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCA61CF34BC500114CA9 /* libSDL2.a */; };
+		9C1808611CF70C5700C19900 /* libSDL2_image.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCAF1CF5028900114CA9 /* libSDL2_image.a */; };
 		9C47A2DB1CF50A7700885640 /* Sprites in Resources */ = {isa = PBXBuildFile; fileRef = 9C47A2DA1CF50A7700885640 /* Sprites */; };
 		9C47A2DE1CF5A27C00885640 /* CTexture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2DC1CF5A27C00885640 /* CTexture.cpp */; };
 		9C47A2E11CF5A2ED00885640 /* CRenderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2DF1CF5A2ED00885640 /* CRenderer.cpp */; };
@@ -18,10 +20,8 @@
 		9C47A2F01CF6DA9800885640 /* BoardTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2EF1CF6DA9800885640 /* BoardTests.cpp */; };
 		9C47A2FB1CF6DC0100885640 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2FA1CF6DC0100885640 /* main.cpp */; };
 		9C47A2FC1CF6DF0800885640 /* CBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2E61CF5F41700885640 /* CBoard.cpp */; };
-		9C75CCA71CF34BC500114CA9 /* libSDL2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCA61CF34BC500114CA9 /* libSDL2.a */; };
 		9C75CCAA1CF360A100114CA9 /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C75CCA81CF360A100114CA9 /* EventManager.cpp */; };
 		9C75CCAC1CF4BDF300114CA9 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9C75CCAB1CF4BDF300114CA9 /* MainStoryboard.storyboard */; };
-		9C75CCB01CF5028900114CA9 /* libSDL2_image.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCAF1CF5028900114CA9 /* libSDL2_image.a */; };
 		9C75CCB21CF5033F00114CA9 /* ImageIO.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCB11CF5033F00114CA9 /* ImageIO.framework */; };
 		9C75CCB41CF5039B00114CA9 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCB31CF5039B00114CA9 /* MobileCoreServices.framework */; };
 		9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C75CCBA1CF5080A00114CA9 /* helpers.mm */; };
@@ -55,6 +55,9 @@
 		1D6058910D05DD3D006BFB54 /* Columns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Columns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9C18085B1CF70B5800C19900 /* Columns copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Columns copy-Info.plist"; path = "/Users/ricky/Desktop/columns-sdl/Columns copy-Info.plist"; sourceTree = "<absolute>"; };
+		9C18085C1CF70B9900C19900 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL/simulator/libSDL2.a; sourceTree = "<group>"; };
+		9C18085D1CF70B9900C19900 /* libSDL2_image.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2_image.a; path = libs/SDL_Image/simulator/libSDL2_image.a; sourceTree = "<group>"; };
 		9C47A2DA1CF50A7700885640 /* Sprites */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sprites; sourceTree = "<group>"; };
 		9C47A2DC1CF5A27C00885640 /* CTexture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CTexture.cpp; sourceTree = "<group>"; };
 		9C47A2DD1CF5A27C00885640 /* CTexture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CTexture.hpp; sourceTree = "<group>"; };
@@ -101,10 +104,10 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C1808611CF70C5700C19900 /* libSDL2_image.a in Frameworks */,
+				9C1808601CF70C2B00C19900 /* libSDL2.a in Frameworks */,
 				9C75CCB41CF5039B00114CA9 /* MobileCoreServices.framework in Frameworks */,
 				9C75CCB21CF5033F00114CA9 /* ImageIO.framework in Frameworks */,
-				9C75CCB01CF5028900114CA9 /* libSDL2_image.a in Frameworks */,
-				9C75CCA71CF34BC500114CA9 /* libSDL2.a in Frameworks */,
 				FAE0E96A1BAF96A00098DFA4 /* GameController.framework in Frameworks */,
 				FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */,
 				FDF0D7AB0E12D53800247964 /* CoreAudio.framework in Frameworks */,
@@ -145,6 +148,7 @@
 				9C47A2EE1CF6DA9800885640 /* columns.tests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				9C18085B1CF70B5800C19900 /* Columns copy-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -163,6 +167,8 @@
 		29B97323FDCFA39411CA2CEA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9C18085C1CF70B9900C19900 /* libSDL2.a */,
+				9C18085D1CF70B9900C19900 /* libSDL2_image.a */,
 				9C75CCB31CF5039B00114CA9 /* MobileCoreServices.framework */,
 				9C75CCB11CF5033F00114CA9 /* ImageIO.framework */,
 				9C75CCAF1CF5028900114CA9 /* libSDL2_image.a */,
@@ -361,6 +367,7 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				"ARCHS[sdk=iphonesimulator*]" = i386;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
@@ -378,6 +385,10 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/libs/SDL",
 					"$(PROJECT_DIR)/libs/SDL_Image",
+				);
+				"LIBRARY_SEARCH_PATHS[sdk=iphonesimulator*]" = (
+					"$(PROJECT_DIR)/libs/SDL/simulator",
+					"$(PROJECT_DIR)/libs/SDL_Image/simulator",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.develovers.Columns;
 				PRODUCT_NAME = Columns;
@@ -499,7 +510,7 @@
 				ENABLE_TESTABILITY = YES;
 				GCC_OPTIMIZATION_LEVEL = 0;
 				HEADER_SEARCH_PATHS = "";
-				ONLY_ACTIVE_ARCH = YES;
+				ONLY_ACTIVE_ARCH = NO;
 				PRELINK_LIBS = "";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
