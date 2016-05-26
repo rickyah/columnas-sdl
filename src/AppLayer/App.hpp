@@ -6,12 +6,27 @@
 //
 //
 
-#ifndef CApp_hpp
-#define CApp_hpp
+#ifndef App_hpp
+#define App_hpp
 
-class CApp
+#include <memory>
+#include "SDL.h"
+#include "Graphics.hpp"
+#include "EventManager.hpp"
+
+class App
 {
+public:
+    App();
+    ~App();
+    
+    std::shared_ptr<Graphics> graphics() { return _pGraphics; }
+    std::shared_ptr<EventManager> eventManager() { return _pEventManager; }
+   
+private:
+    std::shared_ptr<Graphics> _pGraphics;
+    std::shared_ptr<EventManager> _pEventManager;
     
 };
 
-#endif /* CApp_hpp */
+#endif /* App_hpp */
