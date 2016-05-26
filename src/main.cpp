@@ -57,7 +57,6 @@ int main(int argc, char *argv[])
     while (!done) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_FINGERDOWN) {
-                
                 g.renderer()->DrawTextureAt(pCroissantTex, {static_cast<int>(g.width() * event.tfinger.x), static_cast<int>(g.height() * event.tfinger.y)});
             }
             if (event.type == SDL_QUIT) {
