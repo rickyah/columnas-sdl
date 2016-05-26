@@ -8,12 +8,6 @@
 #include "EventManager.hpp"
 
 
-
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// EventManager
-
-EventManager::EventManager() {}
-
 bool EventManager::AddListener(const EventType& type, const EventListenerDelegate &eventDelegate)
 {
     EventListenerList& list = _eventListeners[type];

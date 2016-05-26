@@ -6,9 +6,9 @@
 //
 //
 
-#include "CTexture.hpp"
+#include "Texture.hpp"
 
-CTexture::CTexture(SDL_Texture *pTexture, Size size):
+Texture::Texture(SDL_Texture *pTexture, Size size):
     _realSize(size),
     _drawSize(size),
     _pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
@@ -16,7 +16,7 @@ CTexture::CTexture(SDL_Texture *pTexture, Size size):
     
 }
 
-CTexture::CTexture(SDL_Texture *pTexture):
+Texture::Texture(SDL_Texture *pTexture):
     _pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
 {
     SDL_QueryTexture(pTexture, NULL, NULL, &_realSize.w,  &_realSize.h);

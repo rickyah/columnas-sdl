@@ -9,6 +9,9 @@
 #ifndef CApp_hpp
 #define CApp_hpp
 
-#include <stdio.h>
+class CApp
+{
+    
+};
 
 #endif /* CApp_hpp */

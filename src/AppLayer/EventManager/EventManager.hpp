@@ -28,7 +28,7 @@ class EventManager
     typedef std::map<EventType, EventListenerList> EventListenerMap;
     
 public:
-    explicit EventManager();
+    explicit EventManager() {};
     
     bool AddListener(const EventType& type, const EventListenerDelegate &eventDelegate);
     

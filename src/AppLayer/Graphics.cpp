@@ -1,24 +1,24 @@
 //
-//  CGraphics.cpp
+//  Graphics.cpp
 //  Columns
 //
 //  Created by Ricardo Amores Hernández on 22/5/16.
 //
 //
 
-#include "CGraphics.hpp"
+#include "Graphics.hpp"
 
-CGraphics::CGraphics(int w, int h): _width(0), _height(0)
+Graphics::Graphics(int w, int h): _width(0), _height(0)
 {
     this->Init(w,h);
 }
 
-CGraphics::~CGraphics()
+Graphics::~Graphics()
 {
     this->Destroy();
 }
 
-bool CGraphics::Init(int w, int h)
+bool Graphics::Init(int w, int h)
 {
     SDL_InitSubSystem(SDL_INIT_VIDEO);
     SDL_DisplayMode displayMode;
@@ -36,16 +36,16 @@ bool CGraphics::Init(int w, int h)
     _pSDLWindow = std::shared_ptr<SDL_Window>(SDL_CreateWindow(NULL,0, 0, _width, _height, SDL_WINDOW_FULLSCREEN),
                                               SDL_DestroyWindow);
  
-    _pRenderer = std::shared_ptr<CRenderer>(new CRenderer(_pSDLWindow));
+    _pRenderer = std::shared_ptr<Renderer>(new Renderer(_pSDLWindow));
 }
 
-void CGraphics::Destroy()
+void Graphics::Destroy()
 {
     _pSDLWindow.reset();
     _pRenderer.reset();
 }
 
-const std::shared_ptr<CRenderer> CGraphics::renderer() const
+const std::shared_ptr<Renderer> Graphics::renderer() const
 {
     return _pRenderer;
 }
