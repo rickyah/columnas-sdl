@@ -5,13 +5,10 @@
 */
 
 #include "SDL.h"
+#include "SDL_image.h"
 #include <time.h>
 #include "CGraphics.hpp"
 #include "EventManager.hpp"
-
-#define SCREEN_WIDTH 320
-#define SCREEN_HEIGHT 920
-
 
 /*
  Produces a random int x, min <= x <= max
@@ -38,44 +35,30 @@ void fatalError(const char *string)
 }
 
 
-void renderRandomColorRectangle(std::shared_ptr<CRenderer> renderer)
-{
-    /*  Fill the rectangle in the color */
-    renderer->setColor(randomInt(50, 255),
-                       randomInt(50, 255),
-                       randomInt(50, 255),
-                       randomInt(0, 10));
-    
-    renderer->fillRectangle(randomInt(0, SCREEN_WIDTH),
-                            randomInt(0, SCREEN_WIDTH),
-                            randomInt(0, SCREEN_WIDTH),
-                            randomInt(0, SCREEN_HEIGHT));
-    
-    renderer->present();
-
-}
-
 int main(int argc, char *argv[])
 {
     int done;
     SDL_Event event;
 
-//    /* initialize SDL */
-//    if (SDL_Init(SDL_INIT_VIDEO) < 0) {
-//        fatalError("Could not initialize SDL");
-//    }
-    
-    CGraphics g;
-    
-    g.renderer()->clear();
+    // initialize SDL (each subsystem inits in the appropiated classes)
+    if (SDL_Init(0)) {
+        fatalError("Could not initialize SDL");
+    }
 
+    CGraphics g;
+
+    auto pCroissantTex = g.renderer()->LoadTextureFromFile("Sprites/Croissant.png");
+    g.renderer()->SetColor(128, 128, 128);
+    g.renderer()->Clear();
+    
+    
     /* Enter render loop, waiting for user to quit */
-    renderRandomColorRectangle(g.renderer());
     done = 0;
     while (!done) {
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_FINGERDOWN) {
-                renderRandomColorRectangle(g.renderer());
+                
+                g.renderer()->DrawTextureAt(pCroissantTex, {static_cast<int>(g.width() * event.tfinger.x), static_cast<int>(g.height() * event.tfinger.y)});
             }
             if (event.type == SDL_QUIT) {
                 done = 1;
@@ -86,6 +69,7 @@ int main(int argc, char *argv[])
         }
         
         SDL_Delay(1);
+        g.renderer()->Present();
     }
 
     /* shutdown SDL */
