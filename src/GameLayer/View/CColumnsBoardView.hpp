@@ -11,8 +11,8 @@
 
 #include <memory>
 #include <map>
-#include "CRenderer.hpp"
-#include "CTexture.hpp"
+#include "Renderer.hpp"
+#include "Texture.hpp"
 #include "CColumnsBoard.hpp"
 #include "DataTypes.hpp"
 
@@ -21,14 +21,14 @@ class CColumnsBoardView
 public:
     explicit CColumnsBoardView(){}
 
-    void SetPieceToTextureMapping(Size tileSizePixels, std::map<TileType, std::shared_ptr<CTexture> > mappings);
+    void SetPieceToTextureMapping(Size tileSizePixels, std::map<TileType, std::shared_ptr<Texture> > mappings);
 
     void SetBoardState( const BoardState & initialState );
 
-    void Render(std::weak_ptr<CRenderer> pRenderer);
+    void Render(std::weak_ptr<Renderer> pRenderer);
 private:
 
-    std::map<TileType, std::shared_ptr<CTexture> > _tileTypeToTextureMapping;
+    std::map<TileType, std::shared_ptr<Texture>> _tileTypeToTextureMapping;
     BoardState _state;
     Size _tileSizePixels;
     CColumnsBoardView(const CColumnsBoardView &);

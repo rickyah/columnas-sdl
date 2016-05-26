@@ -8,7 +8,7 @@
 
 #include "CColumnsBoardView.hpp"
 
-void CColumnsBoardView::Render(std::weak_ptr<CRenderer> pwRenderer)
+void CColumnsBoardView::Render(std::weak_ptr<Renderer> pwRenderer)
 {
     auto pRenderer = pwRenderer.lock();
 
@@ -42,7 +42,7 @@ void CColumnsBoardView::Render(std::weak_ptr<CRenderer> pwRenderer)
 }
 
 void CColumnsBoardView::SetPieceToTextureMapping(Size tileSizePixels,
-                                                 std::map<TileType, std::shared_ptr<CTexture> > mappings)
+                                                 std::map<TileType, std::shared_ptr<Texture> > mappings)
 {
     _tileSizePixels = tileSizePixels;
     _tileTypeToTextureMapping = mappings;

@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
         {1,1,1}
     });
 
-    auto tex = g.renderer().lock()->LoadTextureFromFile("Sprites/Croissant.png");
+    auto tex = app.graphics()->renderer()->LoadTextureFromFile("Sprites/Croissant.png");
 
     view.SetPieceToTextureMapping(tex->realSize(),
                                   {
@@ -63,7 +63,7 @@ int main(int argc, char *argv[])
                 done = 1;
             }
                 
-            view.Render(g.renderer());
+            view.Render(app.graphics()->renderer());
             SDL_Log("Polled event %d", event.type);
         }
         
