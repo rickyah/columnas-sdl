@@ -23,7 +23,8 @@ public:
     int width() const { return _width; }
     int height() const {return _height; }
     
-    const std::shared_ptr<Renderer> renderer() const;
+
+    std::shared_ptr<Renderer> renderer();
     
 private:
     int _width;

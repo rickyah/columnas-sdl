@@ -22,8 +22,8 @@ std::vector<TilePosition> MergeVectors(std::vector<TilePosition> dest, std::vect
     return dest;
 }
 
-CBoard::CBoard(std::vector< std::vector<TileType> > boardData):
-    _boardTiles(boardData)
+CBoard::CBoard(BoardState boardState):
+    _boardTiles(boardState)
 {
 
 }
@@ -117,6 +117,7 @@ std::vector<TilePosition> CBoard::SearchAdjacentTilesAt(uint8_t row, uint8_t col
 
     rowItr += increaser.first;
     colItr += increaser.second;
+
     while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && _boardTiles[rowItr][colItr] == matchTileValue)
     {
         result.push_back(std::make_pair(rowItr, colItr));

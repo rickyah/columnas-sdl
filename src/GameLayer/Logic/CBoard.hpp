@@ -15,7 +15,7 @@
 
 typedef short TileType;
 typedef std::pair<uint8_t, uint8_t> TilePosition;
-
+typedef std::vector< std::vector<TileType> > BoardState;
 
 /*
  * Represents a generic game NxM board
@@ -30,7 +30,7 @@ public:
 
     // Allows using initialization_lists to set up a board, usefull for testing purposes
     // TODO: check if this should be changed to a Mememto pattern
-    explicit CBoard(std::vector< std::vector<TileType> > boardData);
+    explicit CBoard(BoardState boardData);
 
     // Sets up an board of a given rows and columns, and an initial tile value.
     explicit CBoard(uint8_t rows, uint8_t columns, TileType initialValue = 0);
@@ -71,7 +71,7 @@ private:
      */
     std::vector<TilePosition> SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t, int8_t> increaser) const;
 
-    std::vector< std::vector<TileType> > _boardTiles;
+    BoardState _boardTiles;
 
     /* This acts a proxy class to expose a double subscription syntax for CBoards without exposing all the inner data
      * structure methods so you can do things like:

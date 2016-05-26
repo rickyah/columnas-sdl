@@ -16,10 +16,10 @@
 		9C47A2DE1CF5A27C00885640 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2DC1CF5A27C00885640 /* Texture.cpp */; };
 		9C47A2E11CF5A2ED00885640 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2DF1CF5A2ED00885640 /* Renderer.cpp */; };
 		9C47A2E41CF5A3A300885640 /* DataTypes.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2E21CF5A3A300885640 /* DataTypes.cpp */; };
-		9C47A2E81CF5F41700885640 /* CBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2E61CF5F41700885640 /* CBoard.cpp */; };
 		9C47A2F01CF6DA9800885640 /* BoardTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2EF1CF6DA9800885640 /* BoardTests.cpp */; };
 		9C47A2FB1CF6DC0100885640 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2FA1CF6DC0100885640 /* main.cpp */; };
-		9C47A2FC1CF6DF0800885640 /* CBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2E61CF5F41700885640 /* CBoard.cpp */; };
+		9C68FB161CF744150058369A /* CColumnsBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB121CF744150058369A /* CColumnsBoard.cpp */; };
+		9C68FB191CF744680058369A /* CColumnsBoardView.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB171CF744680058369A /* CColumnsBoardView.cpp */; };
 		9C68FB1C1CF7A3B40058369A /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB1A1CF7A3B40058369A /* App.cpp */; };
 		9C68FB201CF7A3F70058369A /* EventManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB1E1CF7A3F70058369A /* EventManager.cpp */; };
 		9C68FB231CF7A4220058369A /* EventListenerDelegate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB211CF7A4220058369A /* EventListenerDelegate.cpp */; };
@@ -57,7 +57,6 @@
 		1D6058910D05DD3D006BFB54 /* Columns.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Columns.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1DF5F4DF0D08C38300B7A737 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		8D1107310486CEB800E47090 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9C18085B1CF70B5800C19900 /* Columns copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "Columns copy-Info.plist"; path = "/Users/ricky/Desktop/columns-sdl/Columns copy-Info.plist"; sourceTree = "<absolute>"; };
 		9C18085C1CF70B9900C19900 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL/simulator/libSDL2.a; sourceTree = "<group>"; };
 		9C18085D1CF70B9900C19900 /* libSDL2_image.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2_image.a; path = libs/SDL_Image/simulator/libSDL2_image.a; sourceTree = "<group>"; };
 		9C47A2DA1CF50A7700885640 /* Sprites */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sprites; sourceTree = "<group>"; };
@@ -67,12 +66,16 @@
 		9C47A2E01CF5A2ED00885640 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
 		9C47A2E21CF5A3A300885640 /* DataTypes.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DataTypes.cpp; sourceTree = "<group>"; };
 		9C47A2E31CF5A3A300885640 /* DataTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DataTypes.hpp; sourceTree = "<group>"; };
-		9C47A2E61CF5F41700885640 /* CBoard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CBoard.cpp; path = GameLayer/CBoard.cpp; sourceTree = "<group>"; };
-		9C47A2E71CF5F41700885640 /* CBoard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CBoard.hpp; path = GameLayer/CBoard.hpp; sourceTree = "<group>"; };
 		9C47A2ED1CF6DA9800885640 /* columns.tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = columns.tests; sourceTree = BUILT_PRODUCTS_DIR; };
 		9C47A2EF1CF6DA9800885640 /* BoardTests.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = BoardTests.cpp; sourceTree = "<group>"; };
 		9C47A2F71CF6DB7800885640 /* catch.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = catch.hpp; sourceTree = "<group>"; };
 		9C47A2FA1CF6DC0100885640 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		9C68FB101CF744150058369A /* CBoard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CBoard.cpp; sourceTree = "<group>"; };
+		9C68FB111CF744150058369A /* CBoard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CBoard.hpp; sourceTree = "<group>"; };
+		9C68FB121CF744150058369A /* CColumnsBoard.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CColumnsBoard.cpp; sourceTree = "<group>"; };
+		9C68FB131CF744150058369A /* CColumnsBoard.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CColumnsBoard.hpp; sourceTree = "<group>"; };
+		9C68FB171CF744680058369A /* CColumnsBoardView.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CColumnsBoardView.cpp; sourceTree = "<group>"; };
+		9C68FB181CF744680058369A /* CColumnsBoardView.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = CColumnsBoardView.hpp; sourceTree = "<group>"; };
 		9C68FB1A1CF7A3B40058369A /* App.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = App.cpp; sourceTree = "<group>"; };
 		9C68FB1B1CF7A3B40058369A /* App.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = App.hpp; sourceTree = "<group>"; };
 		9C68FB1E1CF7A3F70058369A /* EventManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventManager.cpp; sourceTree = "<group>"; };
@@ -156,7 +159,6 @@
 				9C47A2EE1CF6DA9800885640 /* columns.tests */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
-				9C18085B1CF70B5800C19900 /* Columns copy-Info.plist */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -197,8 +199,8 @@
 		9C47A2E51CF5F15F00885640 /* GameLayer */ = {
 			isa = PBXGroup;
 			children = (
-				9C47A2E61CF5F41700885640 /* CBoard.cpp */,
-				9C47A2E71CF5F41700885640 /* CBoard.hpp */,
+				9C68FB0F1CF744150058369A /* Logic */,
+				9C68FB141CF744150058369A /* View */,
 			);
 			name = GameLayer;
 			sourceTree = "<group>";
@@ -211,6 +213,28 @@
 				9C47A2FA1CF6DC0100885640 /* main.cpp */,
 			);
 			path = columns.tests;
+			sourceTree = "<group>";
+		};
+		9C68FB0F1CF744150058369A /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				9C68FB101CF744150058369A /* CBoard.cpp */,
+				9C68FB111CF744150058369A /* CBoard.hpp */,
+				9C68FB121CF744150058369A /* CColumnsBoard.cpp */,
+				9C68FB131CF744150058369A /* CColumnsBoard.hpp */,
+			);
+			name = Logic;
+			path = GameLayer/Logic;
+			sourceTree = "<group>";
+		};
+		9C68FB141CF744150058369A /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9C68FB171CF744680058369A /* CColumnsBoardView.cpp */,
+				9C68FB181CF744680058369A /* CColumnsBoardView.hpp */,
+			);
+			name = View;
+			path = GameLayer/View;
 			sourceTree = "<group>";
 		};
 		9C68FB1D1CF7A3F70058369A /* EventManager */ = {
@@ -370,8 +394,9 @@
 				9C68FB231CF7A4220058369A /* EventListenerDelegate.cpp in Sources */,
 				9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */,
 				9C47A2E41CF5A3A300885640 /* DataTypes.cpp in Sources */,
-				9C47A2E81CF5F41700885640 /* CBoard.cpp in Sources */,
 				FD77A0160E26BC0500F39101 /* main.cpp in Sources */,
+				9C68FB161CF744150058369A /* CColumnsBoard.cpp in Sources */,
+				9C68FB191CF744680058369A /* CColumnsBoardView.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -379,7 +404,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9C47A2FC1CF6DF0800885640 /* CBoard.cpp in Sources */,
 				9C47A2FB1CF6DC0100885640 /* main.cpp in Sources */,
 				9C47A2F01CF6DA9800885640 /* BoardTests.cpp in Sources */,
 			);

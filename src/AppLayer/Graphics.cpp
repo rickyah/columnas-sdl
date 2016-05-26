@@ -45,7 +45,7 @@ void Graphics::Destroy()
     _pRenderer.reset();
 }
 
-const std::shared_ptr<Renderer> Graphics::renderer() const
+std::shared_ptr<Renderer> Graphics::renderer()
 {
     return _pRenderer;
 }
