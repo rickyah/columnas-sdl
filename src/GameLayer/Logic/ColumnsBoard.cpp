@@ -6,4 +6,9 @@
 //
 //
 
-#include "CColumnsBoard.hpp"
+#include "ColumnsBoard.hpp"
+
+bool ColumnsBoard::MovePlayerBlock(TilePosition newPos)
+{
+    
+}

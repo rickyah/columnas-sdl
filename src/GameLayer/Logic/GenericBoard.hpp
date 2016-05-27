@@ -6,15 +6,27 @@
 //
 //
 
-#ifndef CBoard_hpp
-#define CBoard_hpp
+#ifndef GenericBoard_hpp
+#define GenericBoard_hpp
 
 #include <vector>
 #include <stdio.h>
 
 
 typedef short TileType;
-typedef std::pair<uint8_t, uint8_t> TilePosition;
+struct TilePosition
+{
+    TilePosition():TilePosition(0,0){};
+    TilePosition(uint8_t _x, uint8_t _y):x(_x),y(_y){};
+    uint8_t x;
+    uint8_t y;
+    
+    bool operator==(const TilePosition& rhs) const
+    {
+        return x == rhs.x && y == rhs.y;
+    }
+};
+
 typedef std::vector< std::vector<TileType> > BoardState;
 
 /*
@@ -23,17 +35,17 @@ typedef std::vector< std::vector<TileType> > BoardState;
  * Allows getting and setting different tile values (int8_t types) in an agnostic way
  * Implements operations to search for adjacent tiles that have the same values
  */
-class CBoard
+class GenericBoard
 {
 
 public:
 
     // Allows using initialization_lists to set up a board, usefull for testing purposes
     // TODO: check if this should be changed to a Mememto pattern
-    explicit CBoard(BoardState boardData);
+    explicit GenericBoard(BoardState boardData);
 
     // Sets up an board of a given rows and columns, and an initial tile value.
-    explicit CBoard(uint8_t rows, uint8_t columns, TileType initialValue = 0);
+    explicit GenericBoard(uint8_t rows, uint8_t columns, TileType initialValue = 0);
 
     uint8_t rows() const { return _boardTiles.size(); }
     uint8_t columns() const { return _boardTiles[0].size(); }
@@ -45,11 +57,13 @@ public:
     std::vector<TilePosition> GetSecondaryDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
     std::vector<TilePosition> GetDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
     std::vector<TilePosition> GetAllAdjacentTiles(uint8_t row, uint8_t col) const;
-
-    static TilePosition MakeTilePos(uint8_t row, uint8_t col)
-    {
-        return std::pair<uint8_t, uint8_t>(row, col);
-    }
+    
+protected:
+    /**
+     * Current state of the board
+     */
+    BoardState _boardTiles;
+    
 private:
 
     /*
@@ -69,9 +83,13 @@ private:
      * advancing one position in each step, starting at (2,3) the sequence of elements iterated would be
      * (4,3) ... (M,3), (2,3), (1,3), (0,3)
      */
-    std::vector<TilePosition> SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t, int8_t> increaser) const;
+    std::vector<TilePosition> SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t,int8_t> increaser) const;
 
-    BoardState _boardTiles;
+    const std::pair<int8_t, int8_t> kRowIncreaser;
+    const std::pair<int8_t, int8_t> kColIncreaser;
+    const std::pair<int8_t, int8_t> kMainDiagIncreaser;
+    const std::pair<int8_t, int8_t> kSecDiagIncreaser;
+    
 
     /* This acts a proxy class to expose a double subscription syntax for CBoards without exposing all the inner data
      * structure methods so you can do things like:
@@ -86,7 +104,7 @@ private:
      */
     class BoardIndexer
     {
-        friend class CBoard;
+        friend class GenericBoard;
 
     public:
 
@@ -115,7 +133,7 @@ private:
         std::vector<TileType> *_rowRef;
     };
 
-    CBoard::BoardIndexer _boardIndexer;
+    GenericBoard::BoardIndexer _boardIndexer;
 
 public:
 
@@ -123,4 +141,4 @@ public:
     BoardIndexer& operator[](std::size_t idx);
 };
 
-#endif /* CBoard_hpp */
+#endif /* GenericBoard_hpp */

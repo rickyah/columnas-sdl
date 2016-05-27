@@ -4,11 +4,11 @@
 //  Created by Ricardo Amores Hernández on 26/5/16.
 
 #include "catch.hpp"
-#include "CBoard.hpp"
+#include "GenericBoard.hpp"
 
 
 TEST_CASE( "Game Board", "[GameModel]" ) {
-    CBoard board({
+    GenericBoard board({
         {0,0,0,1,1,1},
         {2,0,0,1,1,2},
         {1,0,1,1,1,3},
@@ -20,7 +20,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
     SECTION("Init a board with a given initial value")
     {
-        CBoard b(3, 4, 11);
+        GenericBoard b(3, 4, 11);
 
         REQUIRE(b.rows() == 3);
         REQUIRE(b.columns() == 4);
@@ -41,9 +41,9 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
         REQUIRE(result.size() == 3);
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,2)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,2)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,4)) != result.end());
     }
 
     SECTION("Get equal adjacent tiles in a column from a given position") {
@@ -51,10 +51,10 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
         REQUIRE(result.size() == 4);
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(0,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(3,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(0,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(3,3)) != result.end());
     }
 
     SECTION("Get equal adjacent tiles in the row and column from a given position") {
@@ -62,14 +62,14 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
         REQUIRE(result.size() == 6);
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,2)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,2)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,4)) != result.end());
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(0,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(3,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(0,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(3,3)) != result.end());
     }
 
     SECTION("Get equal adjacent tiles in the main diagonal from a given position") {
@@ -77,8 +77,8 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
         REQUIRE(result.size() == 2);
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(3,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(3,4)) != result.end());
     }
 
     SECTION("Get equal adjacent tiles in the secondary diagonal from a given position") {
@@ -86,9 +86,9 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
         REQUIRE(result.size() == 3);
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(1,4)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(0,5)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(1,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(0,5)) != result.end());
     }
 
     SECTION("Get equal adjacent tiles in both diagonals from a given position") {
@@ -96,10 +96,10 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
         REQUIRE(result.size() == 4);
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(1,4)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(0,5)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(3,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(1,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(0,5)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(3,4)) != result.end());
     }
 
 
@@ -108,21 +108,21 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
         REQUIRE(result.size() == 9);
 
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
 
         // rows
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,2)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,2)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,4)) != result.end());
 
         // cols
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(0,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(2,3)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(3,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(0,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(2,3)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(3,3)) != result.end());
 
         // Diagonals
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(1,4)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(0,5)) != result.end());
-        REQUIRE(std::find(result.begin(), result.end(), CBoard::MakeTilePos(3,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(1,4)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(0,5)) != result.end());
+        REQUIRE(std::find(result.begin(), result.end(), TilePosition(3,4)) != result.end());
     }
 
 }

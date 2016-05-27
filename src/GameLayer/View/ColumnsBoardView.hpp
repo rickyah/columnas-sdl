@@ -13,7 +13,7 @@
 #include <map>
 #include "Renderer.hpp"
 #include "Texture.hpp"
-#include "CColumnsBoard.hpp"
+#include "ColumnsBoard.hpp"
 #include "DataTypes.hpp"
 
 class CColumnsBoardView
