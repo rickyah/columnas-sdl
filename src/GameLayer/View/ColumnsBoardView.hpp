@@ -1,13 +1,13 @@
 //
-//  CColumnsBoardView.hpp
+//  ColumnsBoardView.hpp
 //  Columns
 //
 //  Created by Ricardo Amores Hernández on 26/5/16.
 //
 //
 
-#ifndef CColumnsBoardView_hpp
-#define CColumnsBoardView_hpp
+#ifndef ColumnsBoardView_hpp
+#define ColumnsBoardView_hpp
 
 #include <memory>
 #include <map>
@@ -16,10 +16,10 @@
 #include "ColumnsBoard.hpp"
 #include "DataTypes.hpp"
 
-class CColumnsBoardView
+class ColumnsBoardView
 {
 public:
-    explicit CColumnsBoardView(){}
+    explicit ColumnsBoardView(){}
 
     void SetPieceToTextureMapping(Size tileSizePixels, std::map<TileType, std::shared_ptr<Texture> > mappings);
 
@@ -31,8 +31,8 @@ private:
     std::map<TileType, std::shared_ptr<Texture>> _tileTypeToTextureMapping;
     BoardState _state;
     Size _tileSizePixels;
-    CColumnsBoardView(const CColumnsBoardView &);
-    CColumnsBoardView operator=(const CColumnsBoardView &);
+    ColumnsBoardView(const ColumnsBoardView &);
+    ColumnsBoardView operator=(const ColumnsBoardView &);
 };
 
-#endif /* CColumnsBoardView_hpp */
+#endif /* ColumnsBoardView_hpp */

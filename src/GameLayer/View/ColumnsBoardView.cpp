@@ -1,14 +1,14 @@
 //
-//  CColumnsBoardView.cpp
+//  ColumnsBoardView.cpp
 //  Columns
 //
 //  Created by Ricardo Amores Hernández on 26/5/16.
 //
 //
 
-#include "CColumnsBoardView.hpp"
+#include "ColumnsBoardView.hpp"
 
-void CColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
+void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
 {
     Position offset(0,0);
     Rect r(offset,  _tileSizePixels);
@@ -39,7 +39,7 @@ void CColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
     }
 }
 
-void CColumnsBoardView::SetPieceToTextureMapping(Size tileSizePixels,
+void ColumnsBoardView::SetPieceToTextureMapping(Size tileSizePixels,
                                                  std::map<TileType, std::shared_ptr<Texture> > mappings)
 {
     _tileSizePixels = tileSizePixels;
@@ -49,7 +49,7 @@ void CColumnsBoardView::SetPieceToTextureMapping(Size tileSizePixels,
     }
 }
 
-void CColumnsBoardView::SetBoardState( const BoardState & initialState)
+void ColumnsBoardView::SetBoardState( const BoardState & initialState)
 {
     _state = initialState;
 }
