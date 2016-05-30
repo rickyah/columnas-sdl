@@ -20,7 +20,7 @@ class EventsManager
 public:
     EventsManager(std::shared_ptr<EventQueue> eventQueue);
     
-    void Update();
+    bool Update();
     
 private:
     std::shared_ptr<EventQueue> _pEventQueue;

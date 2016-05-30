@@ -13,7 +13,7 @@ EventsManager::EventsManager(std::shared_ptr<EventQueue> eventQueue):_pEventQueu
 }
 
 
-void EventsManager::Update()
+bool EventsManager::Update()
 {
     static SDL_Event event;
     
@@ -22,7 +22,7 @@ void EventsManager::Update()
         switch(event.type)
         {
             case SDL_FINGERDOWN:
-                _pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
+                //_pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
                 break;
     
             case SDL_FINGERUP:
@@ -30,19 +30,20 @@ void EventsManager::Update()
                 break;
         
             case SDL_FINGERMOTION:
-                _pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
+               // _pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
                 break;
 
             case SDL_QUIT:
                 _pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppQuit_Event>()));
+                return false;
                 break;
                 
             default:
                 SDL_Log("Polled unknown event %d", event.type);
-        }
-        
-        
+        }    
     }
+    
+    return true;
 }
 
 
