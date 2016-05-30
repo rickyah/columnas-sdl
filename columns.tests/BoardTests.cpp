@@ -124,5 +124,21 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
         REQUIRE(std::find(result.begin(), result.end(), TilePosition(0,5)) != result.end());
         REQUIRE(std::find(result.begin(), result.end(), TilePosition(3,4)) != result.end());
     }
+    
+    
+    SECTION("Can retrieve a board state copy") {
+        GenericBoard b({
+            {0,0,0},
+            {1,2,0},
+            {1,1,2},
+        });
+        
+        const BoardState & state = b.boardState();
+        
+        
+        b[0][0] = 1;
+        
+        REQUIRE(state[0][0] == 1);
+    }
 
 }

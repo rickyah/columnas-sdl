@@ -14,11 +14,9 @@
 #include "GenericBoard.hpp"
 
 
-enum EBoardPieces {
+enum ESpecialBoardPieces {
     Disabled = -1,
     Empty = 0,
-    Piece1 = 1,
-    Piece2 = 2
 };
 
 class ColumnsBoard;

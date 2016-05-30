@@ -66,8 +66,29 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
         
     }
     
-    SECTION("Can't move player block to occupied tiles")
-    {
+    SECTION("Can move player to the right") {
+    }
+    
+    
+    SECTION("Can move player to the left") {
+    }
+    
+    SECTION("Can move player down") {
+        board.SetPlayerBlockInitialPosition(TilePosition(0,0));
+        
+        board.ResetPlayerBlock({2,2,2});
+        
+        
+        REQUIRE(board.MovePlayerBlockDown());
+        
+        REQUIRE(board[0][0] == ESpecialBoardPieces::Empty);
+        REQUIRE(board[1][0] == 2);
+        REQUIRE(board[2][0] == 2);
+        REQUIRE(board[3][0] == 2);
+    }
+    
+    
+    SECTION("Can't move player block to occupied tiles") {
         board.SetPlayerBlockInitialPosition(TilePosition(0,0));
         
         board.ResetPlayerBlock({2,2,2});
@@ -88,6 +109,7 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
         REQUIRE(board.MovePlayerBlockDown());
         REQUIRE(board.MovePlayerBlockDown());
         REQUIRE(board.MovePlayerBlockDown());
+        
         REQUIRE_FALSE(board.MovePlayerBlockDown());
       
         board.ResetPlayerBlock({2,2,2});

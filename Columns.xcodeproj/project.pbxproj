@@ -34,6 +34,7 @@
 		9C8A398C1CF8833D00C2E236 /* ColumnsBoardTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A398B1CF8833D00C2E236 /* ColumnsBoardTest.cpp */; };
 		9C8A39931CF88A5D00C2E236 /* GenericBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB101CF744150058369A /* GenericBoard.cpp */; };
 		9C8A39941CF88A6600C2E236 /* ColumnsBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB121CF744150058369A /* ColumnsBoard.cpp */; };
+		9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB101CF744150058369A /* GenericBoard.cpp */; };
 		FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */; };
 		FAE0E96A1BAF96A00098DFA4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE0E9691BAF96A00098DFA4 /* GameController.framework */; };
 		FD77A0160E26BC0500F39101 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD77A00A0E26BC0500F39101 /* main.cpp */; };
@@ -422,6 +423,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9C68FB1C1CF7A3B40058369A /* App.cpp in Sources */,
+				9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */,
 				9C8A398A1CF7BC6600C2E236 /* AppEvents.cpp in Sources */,
 				9C02B8281CF7B39400B01905 /* EventQueue.cpp in Sources */,
 				9C8A39851CF7B64F00C2E236 /* EventsManager.cpp in Sources */,

@@ -47,9 +47,9 @@ bool ColumnsBoard::CanMovePlayerBlockTo(TilePosition newPos) const
     // Check if we can move
     for(auto i = 0; i <_playerBlock.size(); ++i)
     {
-        if (!IsPositionInsideBoardBounds(newPos)) return false;
+        if (!GenericBoard::IsPositionInsideBoardBounds(newPos)) return false;
         
-        if(!IsPositionInsidePlayerBlock(newPos) && _boardTiles[newPos.row][newPos.col] != EBoardPieces::Empty)
+        if(!IsPositionInsidePlayerBlock(newPos) && _boardTiles[newPos.row][newPos.col] != ESpecialBoardPieces::Empty)
         {
             return false;
         }
@@ -78,10 +78,14 @@ void ColumnsBoard::UpdateBoardStateWithPlayerBlockAtPosition(const TilePosition 
     // Move block and update board state
     for(auto i = 0; i <_playerBlock.size(); ++i)
     {
-        _boardTiles[_playerBlockPosition.row + i][_playerBlockPosition.col] = EBoardPieces::Empty;
-        
+        _boardTiles[_playerBlockPosition.row + i][_playerBlockPosition.col] = ESpecialBoardPieces::Empty;
+    }
+    
+    for(auto i = 0; i <_playerBlock.size(); ++i)
+    {        
         _boardTiles[newPos.row + i][newPos.col] = _playerBlock[i];
     }
+    
     
     _playerBlockPosition = newPos;
 }

@@ -39,7 +39,7 @@ GenericBoard::GenericBoard(uint8_t rows, uint8_t columns, TileType initialValue)
 }
 
 
-bool GenericBoard::IsPositionInsideBoardBounds(TilePosition pos) const
+bool GenericBoard::IsPositionInsideBoardBounds(const TilePosition &pos) const
 {
     return pos.row >= 0 && pos.row < rows() && pos.col >= 0 && pos.col < columns();
 }

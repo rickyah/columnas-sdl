@@ -48,10 +48,12 @@ public:
     // Sets up an board of a given rows and columns, and an initial tile value.
     explicit GenericBoard(uint8_t rows, uint8_t columns, TileType initialValue = 0);
 
+    const BoardState& boardState() { return _boardTiles; };
+    
     uint8_t rows() const { return _boardTiles.size(); }
     uint8_t columns() const { return _boardTiles[0].size(); }
 
-    bool IsPositionInsideBoardBounds(TilePosition pos) const;
+    bool IsPositionInsideBoardBounds(const TilePosition &IsPositionInsideBoardBoundspos) const;
     
     std::vector<TilePosition> GetRowAdjacentTiles(uint8_t row, uint8_t col) const;
     std::vector<TilePosition> GetColAdjacentTiles(uint8_t row, uint8_t col) const;
@@ -142,6 +144,7 @@ public:
 
     // Override the operator after the definition of BoardIndexer
     BoardIndexer& operator[](std::size_t idx);
+    const BoardIndexer& operator[](std::size_t idx) const;
 };
 
 #endif /* GenericBoard_hpp */
