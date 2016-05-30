@@ -32,7 +32,6 @@
 		9C8A39881CF7B76A00C2E236 /* guids.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9C8A39871CF7B76A00C2E236 /* guids.txt */; };
 		9C8A398A1CF7BC6600C2E236 /* AppEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A39891CF7B7EC00C2E236 /* AppEvents.cpp */; };
 		9C8A398C1CF8833D00C2E236 /* ColumnsBoardTest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A398B1CF8833D00C2E236 /* ColumnsBoardTest.cpp */; };
-		9C8A398E1CF8839100C2E236 /* PlayerBlockTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A398D1CF8839100C2E236 /* PlayerBlockTests.cpp */; };
 		9C8A39931CF88A5D00C2E236 /* GenericBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB101CF744150058369A /* GenericBoard.cpp */; };
 		9C8A39941CF88A6600C2E236 /* ColumnsBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB121CF744150058369A /* ColumnsBoard.cpp */; };
 		FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */; };
@@ -106,7 +105,6 @@
 		9C8A39871CF7B76A00C2E236 /* guids.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = guids.txt; sourceTree = "<group>"; };
 		9C8A39891CF7B7EC00C2E236 /* AppEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AppEvents.cpp; sourceTree = "<group>"; };
 		9C8A398B1CF8833D00C2E236 /* ColumnsBoardTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColumnsBoardTest.cpp; sourceTree = "<group>"; };
-		9C8A398D1CF8839100C2E236 /* PlayerBlockTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerBlockTests.cpp; sourceTree = "<group>"; };
 		FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		FAE0E9691BAF96A00098DFA4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		FD77A0050E26BC0500F39101 /* accelerometer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = accelerometer.c; sourceTree = "<group>"; };
@@ -240,7 +238,6 @@
 				9C47A2EF1CF6DA9800885640 /* BoardTests.cpp */,
 				9C8A398B1CF8833D00C2E236 /* ColumnsBoardTest.cpp */,
 				9C47A2FA1CF6DC0100885640 /* main.cpp */,
-				9C8A398D1CF8839100C2E236 /* PlayerBlockTests.cpp */,
 			);
 			path = columns.tests;
 			sourceTree = "<group>";
@@ -446,7 +443,6 @@
 			files = (
 				9C8A39941CF88A6600C2E236 /* ColumnsBoard.cpp in Sources */,
 				9C8A39931CF88A5D00C2E236 /* GenericBoard.cpp in Sources */,
-				9C8A398E1CF8839100C2E236 /* PlayerBlockTests.cpp in Sources */,
 				9C47A2FB1CF6DC0100885640 /* main.cpp in Sources */,
 				9C8A398C1CF8833D00C2E236 /* ColumnsBoardTest.cpp in Sources */,
 				9C47A2F01CF6DA9800885640 /* BoardTests.cpp in Sources */,
@@ -459,14 +455,8 @@
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				"ARCHS[sdk=iphonesimulator*]" = (
-					i386,
-					x86_64,
-				);
-				"ARCHS[sdk=macosx10.11]" = (
-					i386,
-					x86_64,
-				);
+				"ARCHS[sdk=iphonesimulator*]" = i386;
+				"ARCHS[sdk=macosx10.11]" = i386;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CODE_SIGN_IDENTITY = "iPhone Developer";

@@ -12,23 +12,134 @@
 TEST_CASE( "PlayerBlock", "[GameModel]" ) {
     PlayerBlock block;
     
-    SECTION("Is safe to iterate without pieces") {
-        for(auto i = 0; i < block.size(); ++i)
-        {
-        
-        }
-    }
-    
     
     SECTION("Can move the block pieces in cycles")
     {
         block.SetNewPieces({1,2,3});
         
-//        CBoard b(3, 4, 11);
-//        
-//        REQUIRE(b.rows() == 3);
-//        REQUIRE(b.columns() == 4);
-//        REQUIRE(b[0][0] == 11);
-//        REQUIRE(b[2][3] == 11);
+        REQUIRE(block.size() == 3);
+        
+        REQUIRE(block[0] == 1);
+        REQUIRE(block[1] == 2);
+        REQUIRE(block[2] == 3);
+        
+        
+        block.MovePieces();
+        
+        REQUIRE(block[0] == 2);
+        REQUIRE(block[1] == 3);
+        REQUIRE(block[2] == 1);
+        
+        block.MovePieces();
+        
+        REQUIRE(block[0] == 3);
+        REQUIRE(block[1] == 1);
+        REQUIRE(block[2] == 2);
+        
+        block.MovePieces();
+        
+        REQUIRE(block[0] == 1);
+        REQUIRE(block[1] == 2);
+        REQUIRE(block[2] == 3);
     }
+}
+
+TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
+    ColumnsBoard board({
+        {0,0,0,0,0},
+        {0,0,0,0,0},
+        {0,0,0,0,1},
+        {0,0,0,1,1},
+        {0,0,1,1,1},
+        {0,1,1,1,1}
+    });
+    
+    SECTION("Board state updates when position player block") {
+        
+        board.SetPlayerBlockInitialPosition(TilePosition(0,3));
+        
+        board.ResetPlayerBlock({2,2,2});
+        
+        REQUIRE(board[0][3] == 2);
+        REQUIRE(board[1][3] == 2);
+        REQUIRE(board[2][3] == 2);
+        
+    }
+    
+    SECTION("Can't move player block to occupied tiles")
+    {
+        board.SetPlayerBlockInitialPosition(TilePosition(0,0));
+        
+        board.ResetPlayerBlock({2,2,2});
+        
+        REQUIRE_FALSE(board.MovePlayerBlockLeft());
+        
+        
+        board.ResetPlayerBlock({2,2,2});
+        
+        REQUIRE(board.MovePlayerBlockRight());
+        REQUIRE(board.MovePlayerBlockRight());
+        REQUIRE(board.MovePlayerBlockRight());
+        REQUIRE_FALSE(board.MovePlayerBlockRight());
+        
+        
+        board.ResetPlayerBlock({2,2,2});
+        
+        REQUIRE(board.MovePlayerBlockDown());
+        REQUIRE(board.MovePlayerBlockDown());
+        REQUIRE(board.MovePlayerBlockDown());
+        REQUIRE_FALSE(board.MovePlayerBlockDown());
+      
+        board.ResetPlayerBlock({2,2,2});
+        
+        REQUIRE(board.MovePlayerBlockDown());
+        REQUIRE(board.MovePlayerBlockDown());
+        REQUIRE(board.MovePlayerBlockRight());
+        REQUIRE(board.MovePlayerBlockLeft());
+        REQUIRE(board.MovePlayerBlockRight());
+        REQUIRE_FALSE(board.MovePlayerBlockRight());
+        
+    }
+    
+    SECTION("Moving player block updates board state")
+    {
+        board.SetPlayerBlockInitialPosition(TilePosition(0,0));
+        board.ResetPlayerBlock({2,2,2});
+        
+        REQUIRE(board[0][0] == 2);
+        REQUIRE(board[1][0] == 2);
+        REQUIRE(board[2][0] == 2);
+        
+        REQUIRE(board.MovePlayerBlockRight());
+        
+        // Old position
+        REQUIRE(board[0][0] == 0);
+        REQUIRE(board[1][0] == 0);
+        REQUIRE(board[2][0] == 0);
+        
+        // New position
+        REQUIRE(board[0][1] == 2);
+        REQUIRE(board[1][1] == 2);
+        REQUIRE(board[2][1] == 2);
+        
+    }
+    
+    SECTION("Moving pieces inside player block updates board state")
+    {
+        board.SetPlayerBlockInitialPosition(TilePosition(0,0));
+        board.ResetPlayerBlock({2,3,4});
+        
+        REQUIRE(board[0][0] == 2);
+        REQUIRE(board[1][0] == 3);
+        REQUIRE(board[2][0] == 4);
+        
+        board.MovePlayerBlockPieces();
+        
+    
+        REQUIRE(board[0][0] == 3);
+        REQUIRE(board[1][0] == 4);
+        REQUIRE(board[2][0] == 2);
+        
+    }
+    
 }

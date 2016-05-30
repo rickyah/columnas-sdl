@@ -1,7 +1,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "App.hpp"
-#include "CColumnsBoardView.hpp"
+#include "ColumnsBoardView.hpp"
+#include "ColumnsBoard.hpp"
 
 /*
  Produces a random int x, min <= x <= max
@@ -26,11 +27,17 @@ int main(int argc, char *argv[])
 {
     int done;
 
+    TilePosition p1, p2;
 
     App app;
 
-    CColumnsBoardView view;
+    ColumnsBoardView view;
 
+    PlayerBlock b;
+    b.SetNewPieces({1,2,3});
+
+    
+    
     Position p = {10, 20};
 
     view.SetBoardState({

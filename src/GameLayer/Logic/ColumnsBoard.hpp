@@ -38,7 +38,7 @@ public:
     /*
      * define a new set of pieces to use
      */
-    void SetNewPieces(std::vector<TileType> newPieces)
+    void SetNewPieces(const std::vector<TileType> &newPieces)
     {
         _pieces = newPieces;
         _firstPieceIdx = 0;
@@ -85,8 +85,12 @@ public:
     explicit ColumnsBoard(uint8_t width, uint8_t height):GenericBoard(width, height){}
     
     void SetPlayerBlockInitialPosition(TilePosition pos) { _playerBlockInitialPosition = pos; }
-    bool MovePlayerBlock(TilePosition newPos);
+    void ResetPlayerBlock(const std::vector<TileType> &pieces);
+    bool MovePlayerBlockLeft();
+    bool MovePlayerBlockRight();
+    bool MovePlayerBlockDown();
     
+    void MovePlayerBlockPieces();
     
     void Update();
     
@@ -96,8 +100,10 @@ private:
     TilePosition _playerBlockPosition;
     TilePosition _playerBlockInitialPosition;
     
-    bool CanMovePlayerBlockTo(TilePosition newPosition) const;
-    void UpdateBoardStateWithPlayerBlockAtPosition(TilePosition newPos);
+    bool IsPositionInsidePlayerBlock(TilePosition pos) const;
+    bool CanMovePlayerBlockTo(TilePosition newPos) const;
+    bool MovePlayerBlockToPosition(const TilePosition &newPos);
+    void UpdateBoardStateWithPlayerBlockAtPosition(const TilePosition &newPos);
 };
 
 

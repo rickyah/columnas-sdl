@@ -17,13 +17,13 @@ typedef short TileType;
 struct TilePosition
 {
     TilePosition():TilePosition(0,0){};
-    TilePosition(uint8_t _x, uint8_t _y):x(_x),y(_y){};
-    uint8_t x;
-    uint8_t y;
+    TilePosition(uint8_t _row, uint8_t _col):row(_row),col(_col){};
+    uint8_t row;
+    uint8_t col;
     
     bool operator==(const TilePosition& rhs) const
     {
-        return x == rhs.x && y == rhs.y;
+        return row == rhs.row && col == rhs.col;
     }
 };
 
@@ -34,6 +34,7 @@ typedef std::vector< std::vector<TileType> > BoardState;
  *
  * Allows getting and setting different tile values (int8_t types) in an agnostic way
  * Implements operations to search for adjacent tiles that have the same values
+ * 
  */
 class GenericBoard
 {
@@ -50,6 +51,8 @@ public:
     uint8_t rows() const { return _boardTiles.size(); }
     uint8_t columns() const { return _boardTiles[0].size(); }
 
+    bool IsPositionInsideBoardBounds(TilePosition pos) const;
+    
     std::vector<TilePosition> GetRowAdjacentTiles(uint8_t row, uint8_t col) const;
     std::vector<TilePosition> GetColAdjacentTiles(uint8_t row, uint8_t col) const;
     std::vector<TilePosition> GetRowAndColAdjacentTiles(uint8_t row, uint8_t col) const;
