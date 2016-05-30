@@ -35,6 +35,7 @@
 		9C8A39931CF88A5D00C2E236 /* GenericBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB101CF744150058369A /* GenericBoard.cpp */; };
 		9C8A39941CF88A6600C2E236 /* ColumnsBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB121CF744150058369A /* ColumnsBoard.cpp */; };
 		9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB101CF744150058369A /* GenericBoard.cpp */; };
+		9C8FD48A1CFCF19F00293A51 /* crc32.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD4891CFCF19F00293A51 /* crc32.hpp */; };
 		FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */; };
 		FAE0E96A1BAF96A00098DFA4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE0E9691BAF96A00098DFA4 /* GameController.framework */; };
 		FD77A0160E26BC0500F39101 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD77A00A0E26BC0500F39101 /* main.cpp */; };
@@ -106,6 +107,7 @@
 		9C8A39871CF7B76A00C2E236 /* guids.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = guids.txt; sourceTree = "<group>"; };
 		9C8A39891CF7B7EC00C2E236 /* AppEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AppEvents.cpp; sourceTree = "<group>"; };
 		9C8A398B1CF8833D00C2E236 /* ColumnsBoardTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColumnsBoardTest.cpp; sourceTree = "<group>"; };
+		9C8FD4891CFCF19F00293A51 /* crc32.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = crc32.hpp; sourceTree = "<group>"; };
 		FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		FAE0E9691BAF96A00098DFA4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		FD77A0050E26BC0500F39101 /* accelerometer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = accelerometer.c; sourceTree = "<group>"; };
@@ -309,6 +311,7 @@
 				9C47A2E31CF5A3A300885640 /* DataTypes.hpp */,
 				9C68FB1A1CF7A3B40058369A /* App.cpp */,
 				9C68FB1B1CF7A3B40058369A /* App.hpp */,
+				9C8FD4891CFCF19F00293A51 /* crc32.hpp */,
 			);
 			path = AppLayer;
 			sourceTree = "<group>";
@@ -425,6 +428,7 @@
 				9C68FB1C1CF7A3B40058369A /* App.cpp in Sources */,
 				9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */,
 				9C8A398A1CF7BC6600C2E236 /* AppEvents.cpp in Sources */,
+				9C8FD48A1CFCF19F00293A51 /* crc32.hpp in Sources */,
 				9C02B8281CF7B39400B01905 /* EventQueue.cpp in Sources */,
 				9C8A39851CF7B64F00C2E236 /* EventsManager.cpp in Sources */,
 				9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */,
