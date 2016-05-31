@@ -10,25 +10,29 @@
 #define ColumnsBoardView_hpp
 
 #include <memory>
-#include <map>
+#include <unordered_map>
 #include "Renderer.hpp"
 #include "Texture2d.hpp"
 #include "ColumnsBoard.hpp"
 #include "DataTypes.hpp"
+#include "ResourcesDefinitions.hpp"
+
 
 class ColumnsBoardView
 {
+    typedef std::unordered_map<TileType, std::shared_ptr<Texture2dResource>> TileTypeToTextureMapping;
+
 public:
     explicit ColumnsBoardView(){}
 
-    void SetPieceToTextureMapping(Size tileSizePixels, std::map<TileType, std::shared_ptr<Texture> > mappings);
+    void SetPieceToTextureMapping(Size tileSizePixels, TileTypeToTextureMapping mappings);
 
     void SetBoardState( const BoardState & initialState );
 
     void Render(std::shared_ptr<Renderer> pRenderer);
 private:
 
-    std::map<TileType, std::shared_ptr<Texture>> _tileTypeToTextureMapping;
+    TileTypeToTextureMapping _tile2TextureMapping;
     BoardState _state;
     Size _tileSizePixels;
     ColumnsBoardView(const ColumnsBoardView &);

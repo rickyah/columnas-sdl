@@ -14,9 +14,8 @@
 #include "Graphics.hpp"
 #include "EventQueue.hpp"
 #include "EventsManager.hpp"
-
-
-
+#include "ResourceManager.hpp"
+#include "ResourceLoaderInterfaces.hpp"
 
 /*
  * Application layer wrapper
@@ -57,6 +56,8 @@ public:
     // Gets a reference to the system's event processor
     std::shared_ptr<EventsManager> eventsManager() { return _pEventsManager; }
     
+    // Gets a reference to the system's resource manager
+    std::shared_ptr<ResourceManager> resourceManager() { return _pResourceManager; }
     
     Uint32 ticksSinceStart() const;
     
@@ -110,9 +111,12 @@ private:
     double _renderRateMs = 1000/60.0;
     int _logicFrameCount = 0;
     int _renderFrameCount = 0;
+    
     std::shared_ptr<Graphics> _pGraphics;
     std::shared_ptr<EventQueue> _pEventQueue;
     std::shared_ptr<EventsManager> _pEventsManager;
+    std::shared_ptr<ResourceManager> _pResourceManager;
+    
     std::function<void (TimeInfo)> _logicUpdateFc;
     TimeInfo _logicTimeInfo;
     std::function<void (TimeInfo)> _renderUpdateFc;

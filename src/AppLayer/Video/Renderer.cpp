@@ -33,18 +33,23 @@ std::shared_ptr<Texture2d> Renderer::CreateTextureFromSurface(SDL_Surface * pSur
                                      textureSize);
 }
 
+void Renderer::CreateHardwareTexture(std::shared_ptr<Texture2d> texture) const
+{
+    if(!texture->_pTextureData)
+    {
+        texture->_pTextureData = std::shared_ptr<SDL_Texture>(
+            SDL_CreateTextureFromSurface(_pSDLRenderer.get(), texture->_pSurfaceData.get()),
+            SDL_DestroyTexture);
+    }
+}
+
 void Renderer::DrawTextureAt(std::shared_ptr<Texture2d> pTexture, Position pos)
 {
+    CreateHardwareTexture(pTexture);
+    
     SDL_Rect drawSize = {pos.x, pos.y, pTexture->drawSize().w, pTexture->drawSize().h};
     SDL_RenderCopy(_pSDLRenderer.get(), pTexture->textureData().get(), NULL, &drawSize);
 }
-
-
-std::shared_ptr<Texture2d> Renderer::LoadTextureFromFile(const char* fileName)
-{
-    return std::make_shared<Texture2d>(IMG_LoadTexture(_pSDLRenderer.get(), fileName));
-}
-
 
 void Renderer::FillRectangle(Rect rectangle)
 {

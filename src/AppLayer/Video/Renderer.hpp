@@ -12,16 +12,16 @@
 #include <memory>
 #include "SDL.h"
 #include "SDL_Image.h"
-#include "Texture2d.hpp"
 #include "DataTypes.hpp"
+#include "Texture2d.hpp"
 
 class Renderer
 {
 public:
     Renderer(const std::shared_ptr<SDL_Window> &pSDLWindow);
     void Clear();
-    std::shared_ptr<Texture2d> LoadTextureFromFile(const char* fileName);
     std::shared_ptr<Texture2d> CreateTextureFromSurface(SDL_Surface * pSurface);
+    void CreateHardwareTexture(std::shared_ptr<Texture2d> texture) const;
     void DrawTextureAt(std::shared_ptr<Texture2d> pTexture, Position pos);
     void FillRectangle(Rect rectangle);
     void Present();

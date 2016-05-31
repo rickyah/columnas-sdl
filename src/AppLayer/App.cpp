@@ -7,7 +7,7 @@
 //
 
 #include "App.hpp"
-
+#include "SDLResourceLoaders.hpp"
 
 App::App()
 {
@@ -21,6 +21,7 @@ App::App()
     _pGraphics = std::make_shared<Graphics>();
     _pEventQueue = std::make_shared<EventQueue>();
     _pEventsManager = std::make_shared<EventsManager>(_pEventQueue);
+    _pResourceManager= std::make_shared<ResourceManager>(std::make_shared<SDLTextureLoader>());
 }
 
 App::~App()

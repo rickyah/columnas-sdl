@@ -1,10 +1,11 @@
 #include <algorithm>
+#include <string>
 #include "SDL.h"
 #include "SDL_image.h"
 #include "App.hpp"
 #include "ColumnsBoardView.hpp"
 #include "ColumnsBoard.hpp"
-#include "crc32.hpp"
+#include "ResourcesDefinitions.hpp"
 
 /*
  Produces a random int x, min <= x <= max
@@ -27,19 +28,27 @@ float randomFloat(float min, float max)
 int main(int argc, char *argv[])
 {
     int done;
-
+  
+    
     TilePosition p1, p2;
 
     App app;
 
+    
+    auto tex1 = app.resourceManager()->Register<Texture2dResource>(RESOURCE_ID("Sprites/Croissant@2x.png"));
+    auto tex2 = app.resourceManager()->Register<Texture2dResource>(RESOURCE_ID("Sprites/Cupcake@2x.png"));
+
+    auto tex3 = app.resourceManager()->Register<Texture2dResource>(RESOURCE_ID("blau.png"));
+    tex3->Load();
+    
     ColumnsBoard board({
         {0,0,0,0,0,0},
         {0,0,0,0,0,0},
         {0,0,0,0,0,0},
         {0,0,0,0,0,0},
-        {0,0,0,0,0,0},
-        {0,0,0,0,0,0},
-        {0,1,2,2,2,4},
+        {0,0,0,0,0,3},
+        {0,0,0,0,3,3},
+        {0,1,2,2,2,3},
         {2,2,1,2,1,1},
     });
     ColumnsBoardView view;
@@ -52,14 +61,11 @@ int main(int argc, char *argv[])
 
     Position p = {10, 20};
     
-
-    auto tex = app.graphics()->renderer()->LoadTextureFromFile("Sprites/Croissant@2x.png");
-
-    auto tex2 = app.graphics()->renderer()->LoadTextureFromFile("Sprites/Cupcake@2x.png");
-    view.SetPieceToTextureMapping(tex->realSize(),
+    view.SetPieceToTextureMapping(tex1->texture()->drawSize(),
                                   {
-                                      {1, tex },
-                                      {2, tex2 }
+                                      {1, tex1 },
+                                      {2, tex2 },
+                                      {3, tex3 }
                                   });
 
     app.eventQueue()->AddListener(AppTouch_Event::sEventType, EventListenerDelegate([&board](std::shared_ptr<IEventData> data){

@@ -36,6 +36,8 @@
 		9C8A39941CF88A6600C2E236 /* ColumnsBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB121CF744150058369A /* ColumnsBoard.cpp */; };
 		9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB101CF744150058369A /* GenericBoard.cpp */; };
 		9C8FD48A1CFCF19F00293A51 /* crc32.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD4891CFCF19F00293A51 /* crc32.hpp */; };
+		9C8FD48E1CFE06B100293A51 /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD48C1CFE06B100293A51 /* Resource.cpp */; };
+		9C8FD4911CFE0F3B00293A51 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD48F1CFE0F3B00293A51 /* ResourceManager.cpp */; };
 		FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */; };
 		FAE0E96A1BAF96A00098DFA4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE0E9691BAF96A00098DFA4 /* GameController.framework */; };
 		FD77A0160E26BC0500F39101 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD77A00A0E26BC0500F39101 /* main.cpp */; };
@@ -108,6 +110,15 @@
 		9C8A39891CF7B7EC00C2E236 /* AppEvents.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = AppEvents.cpp; sourceTree = "<group>"; };
 		9C8A398B1CF8833D00C2E236 /* ColumnsBoardTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColumnsBoardTest.cpp; sourceTree = "<group>"; };
 		9C8FD4891CFCF19F00293A51 /* crc32.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = crc32.hpp; sourceTree = "<group>"; };
+		9C8FD48C1CFE06B100293A51 /* Resource.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Resource.cpp; sourceTree = "<group>"; };
+		9C8FD48D1CFE06B100293A51 /* Resource.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Resource.hpp; sourceTree = "<group>"; };
+		9C8FD48F1CFE0F3B00293A51 /* ResourceManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ResourceManager.cpp; sourceTree = "<group>"; };
+		9C8FD4901CFE0F3B00293A51 /* ResourceManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ResourceManager.hpp; sourceTree = "<group>"; };
+		9C8FD4931CFE212100293A51 /* ResourceId.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ResourceId.hpp; sourceTree = "<group>"; };
+		9C8FD4981CFE38E800293A51 /* SDLResourceLoaders.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = SDLResourceLoaders.hpp; sourceTree = "<group>"; };
+		9C8FD49B1CFE436300293A51 /* ResourceLoaderInterfaces.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ResourceLoaderInterfaces.hpp; path = ../ResourceLoaderInterfaces.hpp; sourceTree = "<group>"; };
+		9C8FD49C1CFE4CCF00293A51 /* ResourcesDefinitions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcesDefinitions.hpp; sourceTree = "<group>"; };
+		9C8FD49D1CFE4F1400293A51 /* ResourceManagerImpl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManagerImpl.hpp; sourceTree = "<group>"; };
 		FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		FAE0E9691BAF96A00098DFA4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		FD77A0050E26BC0500F39101 /* accelerometer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = accelerometer.c; sourceTree = "<group>"; };
@@ -300,9 +311,34 @@
 			path = Events;
 			sourceTree = "<group>";
 		};
+		9C8FD48B1CFE06A500293A51 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				9C8FD4951CFE38C000293A51 /* ResourceLoaders */,
+				9C8FD48C1CFE06B100293A51 /* Resource.cpp */,
+				9C8FD48D1CFE06B100293A51 /* Resource.hpp */,
+				9C8FD48F1CFE0F3B00293A51 /* ResourceManager.cpp */,
+				9C8FD4901CFE0F3B00293A51 /* ResourceManager.hpp */,
+				9C8FD49D1CFE4F1400293A51 /* ResourceManagerImpl.hpp */,
+				9C8FD4931CFE212100293A51 /* ResourceId.hpp */,
+				9C8FD49C1CFE4CCF00293A51 /* ResourcesDefinitions.hpp */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		9C8FD4951CFE38C000293A51 /* ResourceLoaders */ = {
+			isa = PBXGroup;
+			children = (
+				9C8FD49B1CFE436300293A51 /* ResourceLoaderInterfaces.hpp */,
+				9C8FD4981CFE38E800293A51 /* SDLResourceLoaders.hpp */,
+			);
+			path = ResourceLoaders;
+			sourceTree = "<group>";
+		};
 		9CF4C8A21CF22FBB000151ED /* AppLayer */ = {
 			isa = PBXGroup;
 			children = (
+				9C8FD48B1CFE06A500293A51 /* Resources */,
 				9C8A39821CF7B64F00C2E236 /* Events */,
 				9C8A39781CF7B63B00C2E236 /* Video */,
 				9C02B8201CF7B39400B01905 /* EventQueue */,
@@ -425,21 +461,23 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				FD77A0160E26BC0500F39101 /* main.cpp in Sources */,
 				9C68FB1C1CF7A3B40058369A /* App.cpp in Sources */,
 				9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */,
 				9C8A398A1CF7BC6600C2E236 /* AppEvents.cpp in Sources */,
-				9C8FD48A1CFCF19F00293A51 /* crc32.hpp in Sources */,
-				9C02B8281CF7B39400B01905 /* EventQueue.cpp in Sources */,
-				9C8A39851CF7B64F00C2E236 /* EventsManager.cpp in Sources */,
-				9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */,
-				9C8A39801CF7B63B00C2E236 /* Renderer.cpp in Sources */,
-				9C47A2E41CF5A3A300885640 /* DataTypes.cpp in Sources */,
-				FD77A0160E26BC0500F39101 /* main.cpp in Sources */,
 				9C68FB161CF744150058369A /* ColumnsBoard.cpp in Sources */,
 				9C68FB191CF744680058369A /* ColumnsBoardView.cpp in Sources */,
-				9C8A39811CF7B63B00C2E236 /* Texture2d.cpp in Sources */,
-				9C8A397F1CF7B63B00C2E236 /* Graphics.cpp in Sources */,
+				9C8FD48A1CFCF19F00293A51 /* crc32.hpp in Sources */,
+				9C47A2E41CF5A3A300885640 /* DataTypes.cpp in Sources */,
 				9C02B8271CF7B39400B01905 /* EventListenerDelegate.cpp in Sources */,
+				9C8A39851CF7B64F00C2E236 /* EventsManager.cpp in Sources */,
+				9C02B8281CF7B39400B01905 /* EventQueue.cpp in Sources */,
+				9C8A397F1CF7B63B00C2E236 /* Graphics.cpp in Sources */,
+				9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */,
+				9C8A39801CF7B63B00C2E236 /* Renderer.cpp in Sources */,
+				9C8FD48E1CFE06B100293A51 /* Resource.cpp in Sources */,
+				9C8FD4911CFE0F3B00293A51 /* ResourceManager.cpp in Sources */,
+				9C8A39811CF7B63B00C2E236 /* Texture2d.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

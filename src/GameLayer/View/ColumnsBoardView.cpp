@@ -14,6 +14,7 @@ void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
     Rect r(offset,  _tileSizePixels);
     r.size.w -= 1;
     r.size.h -= 1;
+    
     for(auto & row : _state)
     {
         for(TileType & tileType: row)
@@ -24,11 +25,11 @@ void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
             pRenderer->FillRectangle(r);
 
             {
-                auto texture = _tileTypeToTextureMapping.find(tileType);
+                auto texture = _tile2TextureMapping.find(tileType);
 
-                if (texture != _tileTypeToTextureMapping.end())
+                if (texture != _tile2TextureMapping.end())
                 {
-                    pRenderer->DrawTextureAt(texture->second, offset);
+                    pRenderer->DrawTextureAt(texture->second->texture(), offset);
                 }
             }
 
@@ -40,12 +41,12 @@ void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
 }
 
 void ColumnsBoardView::SetPieceToTextureMapping(Size tileSizePixels,
-                                                 std::map<TileType, std::shared_ptr<Texture> > mappings)
+                                                TileTypeToTextureMapping mappings)
 {
     _tileSizePixels = tileSizePixels;
-    _tileTypeToTextureMapping = mappings;
+    _tile2TextureMapping = mappings;
     for(auto const &kvp : mappings) {
-        kvp.second->drawSize(tileSizePixels);
+        kvp.second->texture()->drawSize(tileSizePixels);
     }
 }
 

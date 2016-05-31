@@ -5,9 +5,12 @@
 //  Created by Ricardo Amores Hernández on 31/5/16.
 //
 //
+#ifndef CRC32_hpp
+#define CRC32_hpp
 
 #include <cstring>
 #include <cstdint>
+
 
 // Generate CRC lookup table
 template <unsigned c, int k = 8>
@@ -41,8 +44,8 @@ constexpr size_t strlen_c(const char* str) {
     return *str ? 1+strlen_c(str+1) : 0;
 }
 
-constexpr int CRC32(const char* str) {
+constexpr int crc32(const char* str) {
     return crc32((uint8_t*)str, strlen_c(str));
 }
 
-typedef uint32_t crc32hash;
+#endif /* CRC32_hpp */
