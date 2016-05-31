@@ -1,5 +1,5 @@
 //
-//  Texture.hpp
+//  Texture2d.hpp
 //  Columns
 //
 //  Created by Ricardo Amores Hernández on 25/5/16.
@@ -13,12 +13,12 @@
 #include "SDL.h"
 #include "DataTypes.hpp"
 
-class Texture
+class Texture2d
 {
 public:
-    Texture(SDL_Texture *pTexture);
-    Texture(SDL_Texture *pTexture, Size size);
-    ~Texture() {};
+    Texture2d(SDL_Texture *pTexture);
+    Texture2d(SDL_Texture *pTexture, Size size);
+    ~Texture2d() {};
     const Size realSize() const { return _realSize; }
     const Size drawSize() const { return _drawSize; }
     void drawSize(Size newSize) { _drawSize = newSize; }

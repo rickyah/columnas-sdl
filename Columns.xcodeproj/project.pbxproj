@@ -27,7 +27,7 @@
 		9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9C75CCBA1CF5080A00114CA9 /* helpers.mm */; };
 		9C8A397F1CF7B63B00C2E236 /* Graphics.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A39791CF7B63B00C2E236 /* Graphics.cpp */; };
 		9C8A39801CF7B63B00C2E236 /* Renderer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A397B1CF7B63B00C2E236 /* Renderer.cpp */; };
-		9C8A39811CF7B63B00C2E236 /* Texture.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A397D1CF7B63B00C2E236 /* Texture.cpp */; };
+		9C8A39811CF7B63B00C2E236 /* Texture2d.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A397D1CF7B63B00C2E236 /* Texture2d.cpp */; };
 		9C8A39851CF7B64F00C2E236 /* EventsManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A39831CF7B64F00C2E236 /* EventsManager.cpp */; };
 		9C8A39881CF7B76A00C2E236 /* guids.txt in Resources */ = {isa = PBXBuildFile; fileRef = 9C8A39871CF7B76A00C2E236 /* guids.txt */; };
 		9C8A398A1CF7BC6600C2E236 /* AppEvents.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8A39891CF7B7EC00C2E236 /* AppEvents.cpp */; };
@@ -99,8 +99,8 @@
 		9C8A397A1CF7B63B00C2E236 /* Graphics.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Graphics.hpp; sourceTree = "<group>"; };
 		9C8A397B1CF7B63B00C2E236 /* Renderer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Renderer.cpp; sourceTree = "<group>"; };
 		9C8A397C1CF7B63B00C2E236 /* Renderer.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Renderer.hpp; sourceTree = "<group>"; };
-		9C8A397D1CF7B63B00C2E236 /* Texture.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture.cpp; sourceTree = "<group>"; };
-		9C8A397E1CF7B63B00C2E236 /* Texture.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Texture.hpp; sourceTree = "<group>"; };
+		9C8A397D1CF7B63B00C2E236 /* Texture2d.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Texture2d.cpp; sourceTree = "<group>"; };
+		9C8A397E1CF7B63B00C2E236 /* Texture2d.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Texture2d.hpp; sourceTree = "<group>"; };
 		9C8A39831CF7B64F00C2E236 /* EventsManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EventsManager.cpp; sourceTree = "<group>"; };
 		9C8A39841CF7B64F00C2E236 /* EventsManager.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventsManager.hpp; sourceTree = "<group>"; };
 		9C8A39861CF7B66F00C2E236 /* AppEvents.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = AppEvents.hpp; sourceTree = "<group>"; };
@@ -283,8 +283,8 @@
 				9C8A397A1CF7B63B00C2E236 /* Graphics.hpp */,
 				9C8A397B1CF7B63B00C2E236 /* Renderer.cpp */,
 				9C8A397C1CF7B63B00C2E236 /* Renderer.hpp */,
-				9C8A397D1CF7B63B00C2E236 /* Texture.cpp */,
-				9C8A397E1CF7B63B00C2E236 /* Texture.hpp */,
+				9C8A397D1CF7B63B00C2E236 /* Texture2d.cpp */,
+				9C8A397E1CF7B63B00C2E236 /* Texture2d.hpp */,
 			);
 			path = Video;
 			sourceTree = "<group>";
@@ -437,7 +437,7 @@
 				FD77A0160E26BC0500F39101 /* main.cpp in Sources */,
 				9C68FB161CF744150058369A /* ColumnsBoard.cpp in Sources */,
 				9C68FB191CF744680058369A /* ColumnsBoardView.cpp in Sources */,
-				9C8A39811CF7B63B00C2E236 /* Texture.cpp in Sources */,
+				9C8A39811CF7B63B00C2E236 /* Texture2d.cpp in Sources */,
 				9C8A397F1CF7B63B00C2E236 /* Graphics.cpp in Sources */,
 				9C02B8271CF7B39400B01905 /* EventListenerDelegate.cpp in Sources */,
 			);

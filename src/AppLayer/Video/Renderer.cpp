@@ -20,12 +20,12 @@ void Renderer::Clear()
     SDL_RenderClear(_pSDLRenderer.get());
 }
 
-std::shared_ptr<Texture> Renderer::CreateTextureFromSurface(SDL_Surface * pSurface)
+std::shared_ptr<Texture2d> Renderer::CreateTextureFromSurface(SDL_Surface * pSurface)
 {
 
     Size textureSize = {pSurface->w, pSurface->h};
     
-    return std::make_shared<Texture>(SDL_CreateTexture(_pSDLRenderer.get(),
+    return std::make_shared<Texture2d>(SDL_CreateTexture(_pSDLRenderer.get(),
                                                        SDL_PIXELFORMAT_UNKNOWN,
                                                        SDL_TEXTUREACCESS_STATIC,
                                                        pSurface->w,
@@ -33,16 +33,16 @@ std::shared_ptr<Texture> Renderer::CreateTextureFromSurface(SDL_Surface * pSurfa
                                      textureSize);
 }
 
-void Renderer::DrawTextureAt(std::shared_ptr<Texture> pTexture, Position pos)
+void Renderer::DrawTextureAt(std::shared_ptr<Texture2d> pTexture, Position pos)
 {
     SDL_Rect drawSize = {pos.x, pos.y, pTexture->drawSize().w, pTexture->drawSize().h};
     SDL_RenderCopy(_pSDLRenderer.get(), pTexture->textureData().get(), NULL, &drawSize);
 }
 
 
-std::shared_ptr<Texture> Renderer::LoadTextureFromFile(const char* fileName)
+std::shared_ptr<Texture2d> Renderer::LoadTextureFromFile(const char* fileName)
 {
-    return std::make_shared<Texture>(IMG_LoadTexture(_pSDLRenderer.get(), fileName));
+    return std::make_shared<Texture2d>(IMG_LoadTexture(_pSDLRenderer.get(), fileName));
 }
 
 

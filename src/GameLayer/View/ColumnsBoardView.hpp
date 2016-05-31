@@ -12,7 +12,7 @@
 #include <memory>
 #include <map>
 #include "Renderer.hpp"
-#include "Texture.hpp"
+#include "Texture2d.hpp"
 #include "ColumnsBoard.hpp"
 #include "DataTypes.hpp"
 

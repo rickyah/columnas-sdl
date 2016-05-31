@@ -12,7 +12,7 @@
 #include <memory>
 #include "SDL.h"
 #include "SDL_Image.h"
-#include "Texture.hpp"
+#include "Texture2d.hpp"
 #include "DataTypes.hpp"
 
 class Renderer
@@ -20,9 +20,9 @@ class Renderer
 public:
     Renderer(const std::shared_ptr<SDL_Window> &pSDLWindow);
     void Clear();
-    std::shared_ptr<Texture> LoadTextureFromFile(const char* fileName);
-    std::shared_ptr<Texture> CreateTextureFromSurface(SDL_Surface * pSurface);
-    void DrawTextureAt(std::shared_ptr<Texture> pTexture, Position pos);
+    std::shared_ptr<Texture2d> LoadTextureFromFile(const char* fileName);
+    std::shared_ptr<Texture2d> CreateTextureFromSurface(SDL_Surface * pSurface);
+    void DrawTextureAt(std::shared_ptr<Texture2d> pTexture, Position pos);
     void FillRectangle(Rect rectangle);
     void Present();
     void SetColor(int r, int g, int b, int a=255);

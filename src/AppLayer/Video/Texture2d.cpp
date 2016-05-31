@@ -1,14 +1,14 @@
 //
-//  CTexture.cpp
+//  Texture2d.cpp
 //  Columns
 //
 //  Created by Ricardo Amores Hernández on 25/5/16.
 //
 //
 
-#include "Texture.hpp"
+#include "Texture2d.hpp"
 
-Texture::Texture(SDL_Texture *pTexture, Size size):
+Texture2d::Texture2d(SDL_Texture *pTexture, Size size):
     _realSize(size),
     _drawSize(size),
     _pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
@@ -16,7 +16,7 @@ Texture::Texture(SDL_Texture *pTexture, Size size):
     
 }
 
-Texture::Texture(SDL_Texture *pTexture):
+Texture2d::Texture2d(SDL_Texture *pTexture):
     _pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
 {
     SDL_QueryTexture(pTexture, NULL, NULL, &_realSize.w,  &_realSize.h);
