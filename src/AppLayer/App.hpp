@@ -106,7 +106,7 @@ public:
     /*
      * Sets the update rate for the logic calls in miliseconds.
      */
-    void setRenderFPS(double fps) { _renderRateMs = fps <=0 ? UpdateRate::FPSUncapped : 1000.0/fps; }
+    void renderFPS(double fps) { _renderRateMs = fps <=0 ? UpdateRate::FPSUncapped : 1000.0/fps; }
     
     // Count of current number of logic updates since the app started
     int logicFrameCount() const { return _logicFrameCount; }
