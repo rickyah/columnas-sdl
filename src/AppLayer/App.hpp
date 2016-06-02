@@ -35,6 +35,14 @@ class App
 {
 public:
     
+    enum UpdateRate
+    {
+        FPSUncapped = 0,
+        FPS30 = 30,
+        FPS60 = 60,
+        FPS120 = 120
+    };
+    
     struct TimeInfo
     {
         double dt;
@@ -88,7 +96,7 @@ public:
     /*
      * Sets the update rate for the logic calls in miliseconds.
      */
-    void logicFPS(double fps) { _logicRateMs = 1000.0/fps; }
+    void logicFPS(double fps) { _logicRateMs = fps <= 0? UpdateRate::FPS120 : 1000.0/fps; }
     
     /*
      * Get the update rate for the render calls. Defaults to 1000/60 (60 per second)
@@ -98,7 +106,7 @@ public:
     /*
      * Sets the update rate for the logic calls in miliseconds.
      */
-    void setRenderFPS(double fps) { _renderRateMs = 1000.0/fps; }
+    void setRenderFPS(double fps) { _renderRateMs = fps <=0 ? UpdateRate::FPSUncapped : 1000.0/fps; }
     
     // Count of current number of logic updates since the app started
     int logicFrameCount() const { return _logicFrameCount; }
