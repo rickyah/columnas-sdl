@@ -37,7 +37,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     }
 
     SECTION("Get equal adjacent tiles in a row from a given position") {
-        std::vector<TilePosition> result = board.GetRowAdjacentTiles(2, 3);
+        auto result = board.GetRowAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 3);
 
@@ -47,7 +47,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     }
 
     SECTION("Get equal adjacent tiles in a column from a given position") {
-        std::vector<TilePosition> result = board.GetColAdjacentTiles(2, 3);
+        auto result = board.GetColAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 4);
 
@@ -58,7 +58,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     }
 
     SECTION("Get equal adjacent tiles in the row and column from a given position") {
-        std::vector<TilePosition> result = board.GetRowAndColAdjacentTiles(2, 3);
+        auto result = board.GetRowAndColAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 6);
 
@@ -73,7 +73,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     }
 
     SECTION("Get equal adjacent tiles in the main diagonal from a given position") {
-        std::vector<TilePosition> result = board.GetMainDiagonalAdjacentTiles(2, 3);
+        auto result = board.GetMainDiagonalAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 2);
 
@@ -82,7 +82,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     }
 
     SECTION("Get equal adjacent tiles in the secondary diagonal from a given position") {
-        std::vector<TilePosition> result = board.GetSecondaryDiagonalAdjacentTiles(2, 3);
+        auto result = board.GetSecondaryDiagonalAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 3);
 
@@ -92,7 +92,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     }
 
     SECTION("Get equal adjacent tiles in both diagonals from a given position") {
-        std::vector<TilePosition> result = board.GetDiagonalAdjacentTiles(2, 3);
+        auto result = board.GetDiagonalAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 4);
 
@@ -104,7 +104,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
 
 
     SECTION("Get alladjacent tiles in rows, columns and diagonals from a given position") {
-        std::vector<TilePosition> result = board.GetAllAdjacentTiles(2, 3);
+        auto result = board.GetAllAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 9);
 

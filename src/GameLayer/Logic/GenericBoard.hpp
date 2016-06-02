@@ -10,7 +10,8 @@
 #define GenericBoard_hpp
 
 #include <vector>
-#include <stdio.h>
+#include <unordered_set>
+#include <ostream>
 
 
 typedef short TileType;
@@ -25,7 +26,22 @@ struct TilePosition
     {
         return row == rhs.row && col == rhs.col;
     }
+    
+    friend std::ostream& operator<<(std::ostream& os, const TilePosition& pos);
 };
+
+
+// Need to specializy the std::hash template to allow hashing of TilePosition in order to
+// use them in data structures requiring a hash (map, sets, etc)
+namespace std {
+    template <> struct hash<TilePosition>
+    {
+        size_t operator()(const TilePosition & pos) const
+        {
+            return (51 + std::hash<uint8_t>()(pos.row)) * 51 + std::hash<uint8_t>()(pos.col);
+        }
+    };
+}
 
 typedef std::vector< std::vector<TileType> > BoardState;
 
@@ -55,21 +71,19 @@ public:
 
     bool IsPositionInsideBoardBounds(const TilePosition &IsPositionInsideBoardBoundspos) const;
     
-    std::vector<TilePosition> GetRowAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::vector<TilePosition> GetColAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::vector<TilePosition> GetRowAndColAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::vector<TilePosition> GetMainDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::vector<TilePosition> GetSecondaryDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::vector<TilePosition> GetDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::vector<TilePosition> GetAllAdjacentTiles(uint8_t row, uint8_t col) const;
+    std::unordered_set<TilePosition> GetRowAdjacentTiles(uint8_t row, uint8_t col) const;
+    std::unordered_set<TilePosition> GetColAdjacentTiles(uint8_t row, uint8_t col) const;
+    std::unordered_set<TilePosition> GetRowAndColAdjacentTiles(uint8_t row, uint8_t col) const;
+    std::unordered_set<TilePosition> GetMainDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
+    std::unordered_set<TilePosition> GetSecondaryDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
+    std::unordered_set<TilePosition> GetDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
+    std::unordered_set<TilePosition> GetAllAdjacentTiles(uint8_t row, uint8_t col) const;
     
 protected:
     /**
      * Current state of the board
      */
     BoardState _boardTiles;
-    
-private:
 
     /*
      * Search from a given position in the board for all the elements adjacent to that element with the same value
@@ -88,8 +102,9 @@ private:
      * advancing one position in each step, starting at (2,3) the sequence of elements iterated would be
      * (4,3) ... (M,3), (2,3), (1,3), (0,3)
      */
-    std::vector<TilePosition> SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t,int8_t> increaser) const;
-
+    std::unordered_set<TilePosition> SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t,int8_t> increaser) const;
+private:
+    
     const std::pair<int8_t, int8_t> kRowIncreaser;
     const std::pair<int8_t, int8_t> kColIncreaser;
     const std::pair<int8_t, int8_t> kMainDiagIncreaser;

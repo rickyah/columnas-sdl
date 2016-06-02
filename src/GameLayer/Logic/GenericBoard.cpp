@@ -8,17 +8,24 @@
 
 #include "GenericBoard.hpp"
 
-std::vector<TilePosition> MergeVectors(std::vector<TilePosition> dest, std::vector< std::vector<TilePosition> > srcList)
+std::ostream& operator<<(std::ostream& os, const TilePosition& pos)
 {
+    os << "[" << pos.row << ", " << pos.col << "]";
+    return os;
+}
+
+
+
+
+std::unordered_set<TilePosition> Merge(std::initializer_list< std::unordered_set<TilePosition> > srcList)
+{
+    std::unordered_set<TilePosition> dest;
+    
     for( auto src : srcList )
     {
-        dest.insert(
-                    dest.end(),
-                    std::make_move_iterator(src.begin()),
-                    std::make_move_iterator(src.end())
-                    );
+        dest.insert(src.begin(), src.end());
     }
-
+    
     return dest;
 }
 
@@ -51,76 +58,77 @@ GenericBoard::BoardIndexer& GenericBoard::operator[](std::size_t idx)
     return _boardIndexer;
 }
 
-std::vector<TilePosition> GenericBoard::GetAllAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetAllAdjacentTiles(uint8_t row, uint8_t col) const
 {
-    std::vector<TilePosition> result = MergeVectors(SearchAdjacentTilesAt(row, col, kRowIncreaser),
-                                                    {
-                                                        SearchAdjacentTilesAt(row, col, kColIncreaser),
-                                                        SearchAdjacentTilesAt(row, col, kMainDiagIncreaser),
-                                                        SearchAdjacentTilesAt(row, col, kSecDiagIncreaser),
-                                                    });
-
-    result.push_back(TilePosition(row, col));
-
+    auto result =  Merge({
+        SearchAdjacentTilesAt(row, col, kRowIncreaser),
+        SearchAdjacentTilesAt(row, col, kColIncreaser),
+        SearchAdjacentTilesAt(row, col, kMainDiagIncreaser),
+        SearchAdjacentTilesAt(row, col, kSecDiagIncreaser)
+    });
+    
+    result.insert(TilePosition(row,col));
+    
     return result;
+
 }
 
-std::vector<TilePosition> GenericBoard::GetRowAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetRowAdjacentTiles(uint8_t row, uint8_t col) const
 {
     auto result = SearchAdjacentTilesAt(row, col, kRowIncreaser);
-    result.push_back(TilePosition(row, col));
+    result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::vector<TilePosition> GenericBoard::GetColAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetColAdjacentTiles(uint8_t row, uint8_t col) const
 {
     auto result = SearchAdjacentTilesAt(row, col, kColIncreaser);
-    result.push_back(TilePosition(row, col));
+    result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::vector<TilePosition> GenericBoard::GetRowAndColAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetRowAndColAdjacentTiles(uint8_t row, uint8_t col) const
 {
-    std::vector<TilePosition> result = MergeVectors(SearchAdjacentTilesAt(row, col, kRowIncreaser),
-                                                    {SearchAdjacentTilesAt(row, col, kColIncreaser)});
+    auto result = Merge({SearchAdjacentTilesAt(row, col, kRowIncreaser),
+                         SearchAdjacentTilesAt(row, col, kColIncreaser)});
 
-    result.push_back(TilePosition(row, col));
+    result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::vector<TilePosition> GenericBoard::GetMainDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetMainDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
 {
     auto result = SearchAdjacentTilesAt(row, col, kMainDiagIncreaser);
-    result.push_back(TilePosition(row, col));
+    result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::vector<TilePosition> GenericBoard::GetSecondaryDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetSecondaryDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
 {
     auto result = SearchAdjacentTilesAt(row, col, kSecDiagIncreaser);
-    result.push_back(TilePosition(row, col));
+    result.insert(TilePosition(row, col));
 
     return result;
 }
 
 
-std::vector<TilePosition> GenericBoard::GetDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
 {
-    std::vector<TilePosition> result = MergeVectors(SearchAdjacentTilesAt(row, col, kMainDiagIncreaser),
-                                                    {SearchAdjacentTilesAt(row, col, kSecDiagIncreaser)});
+    auto result = Merge({SearchAdjacentTilesAt(row, col, kMainDiagIncreaser),
+                                              SearchAdjacentTilesAt(row, col, kSecDiagIncreaser)});
 
-    result.push_back(TilePosition(row, col));
+    result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::vector<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t,int8_t> increaser) const
+std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t,int8_t> increaser) const
 {
-    std::vector<TilePosition> result;
+    std::unordered_set<TilePosition> result;
 
     TileType matchTileValue = _boardTiles[row][col];
 
@@ -131,7 +139,7 @@ std::vector<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row, uint8
 
     while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && _boardTiles[rowItr][colItr] == matchTileValue)
     {
-        result.push_back(TilePosition(rowItr, colItr));
+        result.insert(TilePosition(rowItr, colItr));
 
         rowItr += increaser.first;
         colItr += increaser.second;
@@ -143,7 +151,7 @@ std::vector<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row, uint8
 
     while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && _boardTiles[rowItr][colItr] == matchTileValue)
     {
-        result.push_back(TilePosition(rowItr, colItr));
+        result.insert(TilePosition(rowItr, colItr));
 
         rowItr -= increaser.first;
         colItr -= increaser.second;
