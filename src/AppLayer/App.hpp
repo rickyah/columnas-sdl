@@ -78,7 +78,7 @@ public:
      * @param double delta time
      * @param int frameCount
      */
-    void SetRenderUpdateFunction(std::function<void (TimeInfo)> func) { _renderUpdateFc = func; }
+    void SetRenderUpdateFunction(std::function<void (TimeInfo, std::shared_ptr<Renderer>)> func) { _renderUpdateFc = func; }
     
     /*
      * Get the update rate for the logic calls. Defaults to 120 per second
@@ -107,6 +107,7 @@ public:
     int renderFrameCount() const {return _renderFrameCount; }
     
 private:
+   
     double _logicRateMs = 1000/120.0;
     double _renderRateMs = 1000/60.0;
     int _logicFrameCount = 0;
@@ -119,7 +120,7 @@ private:
     
     std::function<void (TimeInfo)> _logicUpdateFc;
     TimeInfo _logicTimeInfo;
-    std::function<void (TimeInfo)> _renderUpdateFc;
+    std::function<void (TimeInfo, std::shared_ptr<Renderer>)> _renderUpdateFc;
     TimeInfo _renderTimeInfo;
 };
 

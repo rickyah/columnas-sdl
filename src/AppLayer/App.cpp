@@ -76,13 +76,15 @@ void App::UpdateGameLoop()
         _renderTimeInfo.frameCount = _renderFrameCount++;
         _renderTimeInfo.elapsedMs = ticksSinceStart();
         
-        if(_renderUpdateFc) _renderUpdateFc(_renderTimeInfo);
-        _pGraphics->renderer()->Present();
+        if(_renderUpdateFc) _renderUpdateFc(_renderTimeInfo, graphics()->renderer());
         
-        auto elapsedFrameMs =  ((ticksSinceStart() - previousFrameStartTicks));
-        double sleepTimeMs = _renderRateMs - elapsedFrameMs;
+        if (_renderRateMs > 0)
+        {
+            auto elapsedFrameMs =  ((ticksSinceStart() - previousFrameStartTicks));
+            double sleepTimeMs = _renderRateMs - elapsedFrameMs;
         
-        Delay(sleepTimeMs);
+            Delay(sleepTimeMs);
+        }
     }
     
     return 0;
