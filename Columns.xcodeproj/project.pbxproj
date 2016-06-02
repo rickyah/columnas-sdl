@@ -38,6 +38,7 @@
 		9C8FD48A1CFCF19F00293A51 /* crc32.hpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD4891CFCF19F00293A51 /* crc32.hpp */; };
 		9C8FD48E1CFE06B100293A51 /* Resource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD48C1CFE06B100293A51 /* Resource.cpp */; };
 		9C8FD4911CFE0F3B00293A51 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD48F1CFE0F3B00293A51 /* ResourceManager.cpp */; };
+		9C8FD49F1CFF389200293A51 /* FSMTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD49E1CFF389200293A51 /* FSMTests.cpp */; };
 		FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */; };
 		FAE0E96A1BAF96A00098DFA4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE0E9691BAF96A00098DFA4 /* GameController.framework */; };
 		FD77A0160E26BC0500F39101 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD77A00A0E26BC0500F39101 /* main.cpp */; };
@@ -119,6 +120,8 @@
 		9C8FD49B1CFE436300293A51 /* ResourceLoaderInterfaces.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = ResourceLoaderInterfaces.hpp; path = ../ResourceLoaderInterfaces.hpp; sourceTree = "<group>"; };
 		9C8FD49C1CFE4CCF00293A51 /* ResourcesDefinitions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourcesDefinitions.hpp; sourceTree = "<group>"; };
 		9C8FD49D1CFE4F1400293A51 /* ResourceManagerImpl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManagerImpl.hpp; sourceTree = "<group>"; };
+		9C8FD49E1CFF389200293A51 /* FSMTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FSMTests.cpp; sourceTree = "<group>"; };
+		9C8FD4A51CFF3EFF00293A51 /* FSM.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FSM.hpp; sourceTree = "<group>"; };
 		FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		FAE0E9691BAF96A00098DFA4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		FD77A0050E26BC0500F39101 /* accelerometer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = accelerometer.c; sourceTree = "<group>"; };
@@ -252,6 +255,7 @@
 				9C47A2EF1CF6DA9800885640 /* BoardTests.cpp */,
 				9C8A398B1CF8833D00C2E236 /* ColumnsBoardTest.cpp */,
 				9C47A2FA1CF6DC0100885640 /* main.cpp */,
+				9C8FD49E1CFF389200293A51 /* FSMTests.cpp */,
 			);
 			path = columns.tests;
 			sourceTree = "<group>";
@@ -335,9 +339,18 @@
 			path = ResourceLoaders;
 			sourceTree = "<group>";
 		};
+		9C8FD4A01CFF3E5700293A51 /* FSM */ = {
+			isa = PBXGroup;
+			children = (
+				9C8FD4A51CFF3EFF00293A51 /* FSM.hpp */,
+			);
+			path = FSM;
+			sourceTree = "<group>";
+		};
 		9CF4C8A21CF22FBB000151ED /* AppLayer */ = {
 			isa = PBXGroup;
 			children = (
+				9C8FD4A01CFF3E5700293A51 /* FSM */,
 				9C8FD48B1CFE06A500293A51 /* Resources */,
 				9C8A39821CF7B64F00C2E236 /* Events */,
 				9C8A39781CF7B63B00C2E236 /* Video */,
@@ -487,6 +500,7 @@
 			files = (
 				9C8A39941CF88A6600C2E236 /* ColumnsBoard.cpp in Sources */,
 				9C8A39931CF88A5D00C2E236 /* GenericBoard.cpp in Sources */,
+				9C8FD49F1CFF389200293A51 /* FSMTests.cpp in Sources */,
 				9C47A2FB1CF6DC0100885640 /* main.cpp in Sources */,
 				9C8A398C1CF8833D00C2E236 /* ColumnsBoardTest.cpp in Sources */,
 				9C47A2F01CF6DA9800885640 /* BoardTests.cpp in Sources */,
