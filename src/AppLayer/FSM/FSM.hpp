@@ -21,7 +21,7 @@ class IState
 public:
     virtual ~IState() {}
     
-    virtual void Update(double dt) {}
+    virtual void OnUpdate(double dt) {}
     
     virtual void OnInit() {}
     virtual void OnEnter() {}
@@ -179,7 +179,7 @@ void FSM<TStateId, TState>::Update(double dt)
     
     if(_currentState)
     {
-        _currentState->Update(dt);
+        _currentState->OnUpdate(dt);
     }
 }
 
