@@ -13,6 +13,10 @@
 #include <unordered_set>
 #include <ostream>
 
+enum ESpecialBoardPieces {
+    Disabled = -1,
+    Empty = 0,
+};
 
 typedef short TileType;
 struct TilePosition
@@ -22,14 +26,42 @@ struct TilePosition
     uint8_t row;
     uint8_t col;
     
-    bool operator==(const TilePosition& rhs) const
+    bool operator==(const TilePosition& other) const
     {
-        return row == rhs.row && col == rhs.col;
+        return row == other.row && col == other.col;
+    }
+    
+    bool operator!=(const TilePosition &other)
+    {
+        return !this->operator==(other);
     }
     
     friend std::ostream& operator<<(std::ostream& os, const TilePosition& pos);
 };
 
+
+// Data structures to query and change the board state
+typedef std::unordered_set<TilePosition> TilesSet;
+struct TileMovement
+{
+    TilePosition from;
+    TilePosition to;
+    
+    TileMovement(TilePosition _from, TilePosition _to): from(_from), to(_to) {}
+    
+    
+    bool operator==(const TileMovement &other) const {
+        return this->from == other.from && this->to == other.to;
+    }
+    
+    
+    bool operator!=(const TileMovement &other)
+    {
+        return !this->operator==(other);
+    }
+};
+
+typedef std::vector<TileMovement> TilesMovementSet;
 
 // Need to specializy the std::hash template to allow hashing of TilePosition in order to
 // use them in data structures requiring a hash (map, sets, etc)
@@ -71,6 +103,8 @@ public:
     uint8_t columns() const { return _boardTiles[0].size(); }
 
     bool IsPositionInsideBoardBounds(const TilePosition &IsPositionInsideBoardBoundspos) const;
+    void RemovePieces(const TilesSet &pieces);
+    void MovePieces(const TilesMovementSet &pieces);
     
     std::unordered_set<TilePosition> GetRowAdjacentTiles(uint8_t row, uint8_t col) const;
     std::unordered_set<TilePosition> GetColAdjacentTiles(uint8_t row, uint8_t col) const;

@@ -52,6 +52,27 @@ bool GenericBoard::IsPositionInsideBoardBounds(const TilePosition &pos) const
 }
 
 
+void GenericBoard::RemovePieces(const TilesSet &pieces)
+{
+    for(auto piece: pieces)
+    {
+        _boardTiles[piece.row][piece.col] = ESpecialBoardPieces::Empty;
+    }
+}
+
+void GenericBoard::MovePieces(const TilesMovementSet &pieces)
+{
+    
+    for(int i = 0; i < pieces.size(); ++i)
+    {
+        TileMovement move = pieces[i];
+        TileType valueToMove = _boardTiles[move.from.row][move.from.col];
+        _boardTiles[move.from.row][move.from.col] = ESpecialBoardPieces::Empty;
+        _boardTiles[move.to.row][move.to.col] = valueToMove;
+    }
+    
+}
+
 GenericBoard::BoardIndexer& GenericBoard::operator[](std::size_t idx)
 {
     _boardIndexer.SetRow(&_boardTiles[idx]);

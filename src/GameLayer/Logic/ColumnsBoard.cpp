@@ -106,15 +106,6 @@ TilesSet ColumnsBoard::FindPiecesToDestroy() const
     return _listPiecesToDestroy;
 }
 
-void ColumnsBoard::RemovePieces(const TilesSet &pieces)
-{
-    for(auto piece: pieces)
-    {
-        _boardTiles[piece.row][piece.col] = ESpecialBoardPieces::Empty;
-    }
-}
-
-
 TilesMovementSet ColumnsBoard::FindAllPiecesToMove() const
 {
     // Search in all columns
@@ -141,19 +132,6 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInSubset(const TilesSet &destroye
 
     return FindPiecesToMoveInColumns(_tmpColumnsToCheck);
 
-}
-
-void ColumnsBoard::MovePieces(const TilesMovementSet &pieces)
-{
-    
-    for(int i = 0; i < pieces.size(); ++i)
-    {
-        TileMovement move = pieces[i];
-        TileType valueToMove = _boardTiles[move.from.row][move.from.col];
-        _boardTiles[move.from.row][move.from.col] = ESpecialBoardPieces::Empty;
-        _boardTiles[move.to.row][move.to.col] = valueToMove;
-    }
-    
 }
 
 TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_set<uint8_t> &columnsToCheck) const
