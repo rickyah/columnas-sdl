@@ -106,7 +106,7 @@ TilesSet ColumnsBoard::FindPiecesToDestroy() const
     return _listPiecesToDestroy;
 }
 
-void ColumnsBoard::DestroyPieces(TilesSet pieces)
+void ColumnsBoard::DestroyPieces(const TilesSet &pieces)
 {
     for(auto piece: pieces)
     {
@@ -114,14 +114,14 @@ void ColumnsBoard::DestroyPieces(TilesSet pieces)
     }
 }
 
-TilesMovementSet ColumnsBoard::FindPiecesToMove(TilesSet destroyedPieces) const
+TilesMovementSet ColumnsBoard::FindPiecesToMove(const TilesSet &destroyedPieces) const
 {
     static std::vector<TilePosition> sortedDestroyedPieces;
     _listPiecesToFall.from.clear();
     _listPiecesToFall.to.clear();
     
     if (destroyedPieces.size() == 0) return _listPiecesToFall;
-    
+       
     std::copy(destroyedPieces.begin(), destroyedPieces.end(), std::back_inserter(sortedDestroyedPieces));
     std::sort(sortedDestroyedPieces.begin(), sortedDestroyedPieces.end(), [](const TilePosition & a, const TilePosition & b) -> bool{
         if (a.col == b.col) return a.row > b.row;
@@ -158,7 +158,7 @@ TilesMovementSet ColumnsBoard::FindPiecesToMove(TilesSet destroyedPieces) const
 }
 
 
-void ColumnsBoard::MovePieces(TilesMovementSet pieces)
+void ColumnsBoard::MovePieces(const TilesMovementSet &pieces)
 {
 
     for(int i = 0; i < pieces.size(); ++i)

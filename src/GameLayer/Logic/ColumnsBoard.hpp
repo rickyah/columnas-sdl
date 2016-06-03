@@ -102,9 +102,9 @@ public:
     void Update();
     
     TilesSet FindPiecesToDestroy() const;
-    void DestroyPieces(TilesSet pieces);
-    TilesMovementSet FindPiecesToMove(TilesSet) const;
-    void MovePieces(TilesMovementSet pieces);
+    void DestroyPieces(const TilesSet &pieces);
+    TilesMovementSet FindPiecesToMove(const TilesSet &) const;
+    void MovePieces(const TilesMovementSet &pieces);
     
 private:
     PlayerBlock _playerBlock;
