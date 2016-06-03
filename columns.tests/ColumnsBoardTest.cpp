@@ -222,7 +222,7 @@ TEST_CASE("Change board state") {
         REQUIRE(pieces.size() == 5);
         
         // Destroy the pieces
-        board.DestroyPieces(pieces);
+        board.RemovePieces(pieces);
         
         
         // And the board should be like this
@@ -238,59 +238,28 @@ TEST_CASE("Change board state") {
         REQUIRE(CompareBoardStates(newBoardState2, board.boardState()));
     }
     
-    SECTION("test")
+    SECTION("Find pieces to fall")
     {
-        std::vector<TilePosition> pos({ {0,1}, {0,2}, {0,4} });
-        std::vector<uint8_t> r(pos.size());
-        std::transform(pos.begin(), pos.end(), r.begin(), [](const TilePosition & p) {
-            return p.col;
+        ColumnsBoard board( {   // Destroyed positions:
+            {0,0,0,0,0},        // {0,0,0,0,0}
+            {0,0,2,0,0},        // {0,0,2,0,0}
+            {0,0,2,0,2},        // {0,0,2,0,2}
+            {2,0,0,0,0},        // {2,0,*,*,*}
+            {0,0,0,2,1},        // {*,*,*,2,1}
+            {2,2,0,2,2}         // {2,2,*,2,2}
         });
-        
-        auto r2 = r;
-    }
-    
-    SECTION("Make pieces fall")
-    {
-        ColumnsBoard board( {
-            {0,0,0,0,0},
-            {0,0,2,0,0},
-            {0,0,2,0,2},
-            {2,0,0,0,0},
-            {0,0,0,2,1},
-            {2,2,0,2,2}
-        });
-        
-        /*
-         Destroyed positions:
-         
-         {0,0,0,0,0},
-         {0,0,2,0,0},
-         {0,0,2,0,2},
-         {2,0,*,*,*},
-         {*,*,*,2,1},
-         {2,2,*,2,2}
-         */
-        auto piecesToFall = board.FindPiecesToMove({
-            {3,4},{3,3},{3,2},
+
+        auto piecesToFall = board.FindPiecesToMoveInSubset({
+            {3,2},{3,3},{3,4},
             {4,0},{4,1},{4,2},
             {5,2}
         });
         
-        REQUIRE(piecesToFall.from.size() == 4);
-        REQUIRE(piecesToFall.to.size() == 4);
+        REQUIRE(piecesToFall.size() == 4);
         
-        board.MovePieces(piecesToFall);
+
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({3,0},{3,4})) != piecesToFall.end());
         
-        BoardState newBoardState = {
-            {0,0,0,0,0},
-            {0,0,0,0,0},
-            {0,0,0,0,0},
-            {0,0,0,0,2},
-            {2,0,2,2,1},
-            {2,2,2,2,2}
-        };
-        
-        REQUIRE(CompareBoardStates(board.boardState(), newBoardState));
     }
 }
 

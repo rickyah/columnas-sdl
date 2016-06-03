@@ -106,16 +106,22 @@ public:
     void DestroyPieces(const TilesSet &pieces);
     TilesMovementSet FindPiecesToMove(const TilesSet &) const;
     void MovePieces(const TilesMovementSet &pieces);
+
+    TilesMovementSet FindAllPiecesToMove() const;
+    TilesMovementSet FindPiecesToMoveInSubset(const TilesSet &) const;
+
     
 private:
+    uint8_t _numPiecesToDestroy;
     PlayerBlock _playerBlock;
     TilePosition _playerBlockPosition;
     TilePosition _playerBlockInitialPosition;
     
     mutable TilesSet _listPiecesToDestroy;
     mutable TilesMovementSet _listPiecesToFall;
+    mutable std::unordered_set<uint8_t> _tmpColumnsToCheck;
     
-    uint8_t _numPiecesToDestroy;
+    TilesMovementSet FindPiecesToMoveInColumns(const std::unordered_set<uint8_t> &) const;
     bool IsPositionInsidePlayerBlock(TilePosition pos) const;
     bool CanMovePlayerBlockTo(TilePosition newPos) const;
     bool MovePlayerBlockToPosition(const TilePosition &newPos);

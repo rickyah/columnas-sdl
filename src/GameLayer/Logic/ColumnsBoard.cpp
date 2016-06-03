@@ -106,7 +106,7 @@ TilesSet ColumnsBoard::FindPiecesToDestroy() const
     return _listPiecesToDestroy;
 }
 
-void ColumnsBoard::DestroyPieces(const TilesSet &pieces)
+void ColumnsBoard::RemovePieces(const TilesSet &pieces)
 {
     for(auto piece: pieces)
     {
@@ -114,58 +114,94 @@ void ColumnsBoard::DestroyPieces(const TilesSet &pieces)
     }
 }
 
-TilesMovementSet ColumnsBoard::FindPiecesToMove(const TilesSet &destroyedPieces) const
-{
-    static std::vector<TilePosition> sortedDestroyedPieces;
-    _listPiecesToFall.from.clear();
-    _listPiecesToFall.to.clear();
-    
-    if (destroyedPieces.size() == 0) return _listPiecesToFall;
-       
-    std::copy(destroyedPieces.begin(), destroyedPieces.end(), std::back_inserter(sortedDestroyedPieces));
-    std::sort(sortedDestroyedPieces.begin(), sortedDestroyedPieces.end(), [](const TilePosition & a, const TilePosition & b) -> bool{
-        if (a.col == b.col) return a.row > b.row;
-        return a.col < b.col;
-    });
-    
-    
-    int currentCol = -1;
-    auto idxPlaceRow = sortedDestroyedPieces[0].row;
-    
-    for(int i = 0; i < sortedDestroyedPieces.size(); ++i)
-    {
-        auto pos =  sortedDestroyedPieces[i];
-        
-        if (currentCol == pos.col) continue;
-        
-        
-        currentCol = sortedDestroyedPieces[i].col;
-        idxPlaceRow = sortedDestroyedPieces[i].row;
-        
-        
-        for(int j = idxPlaceRow; j > 0; --j)
-        {
-            if(_boardTiles[j][currentCol] != ESpecialBoardPieces::Empty)
-            {
-                _listPiecesToFall.from.push_back(TilePosition(j, currentCol));
-                _listPiecesToFall.to.push_back(TilePosition(idxPlaceRow, currentCol));
-                idxPlaceRow--;
-            }
-        }
-    }
 
-    return _listPiecesToFall;
+TilesMovementSet ColumnsBoard::FindAllPiecesToMove() const
+{
+    // Search in all columns
+    _tmpColumnsToCheck.clear();
+    
+    for(int r = 0; r < columns(); ++r) _tmpColumnsToCheck.insert(r);
+    
+    return FindPiecesToMoveInColumns(_tmpColumnsToCheck);
 }
 
+
+TilesMovementSet ColumnsBoard::FindPiecesToMoveInSubset(const TilesSet &destroyedPieces) const
+{
+    _tmpColumnsToCheck.clear();
+    
+    // slight optimization: only check columns where one piece got destroyed as are the ones that can have
+    // falling blocks
+    std::transform(destroyedPieces.begin(),
+                   destroyedPieces.end(),
+                   std::inserter(_tmpColumnsToCheck, _tmpColumnsToCheck.begin()),
+                   [](const TilePosition & p) {
+                       return p.col;
+                   });
+
+    return FindPiecesToMoveInColumns(_tmpColumnsToCheck);
+
+}
 
 void ColumnsBoard::MovePieces(const TilesMovementSet &pieces)
 {
-
+    
     for(int i = 0; i < pieces.size(); ++i)
     {
-        TileType valueToMove = _boardTiles[pieces.from[i].row][pieces.from[i].col];
-        _boardTiles[pieces.from[i].row][pieces.from[i].col] = ESpecialBoardPieces::Empty;
-        _boardTiles[pieces.to[i].row][pieces.to[i].col] = valueToMove;
+        TileMovement move = pieces[i];
+        TileType valueToMove = _boardTiles[move.from.row][move.from.col];
+        _boardTiles[move.from.row][move.from.col] = ESpecialBoardPieces::Empty;
+        _boardTiles[move.to.row][move.to.col] = valueToMove;
     }
     
 }
+
+TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_set<uint8_t> &columnsToCheck) const
+{
+    _listPiecesToFall.clear();
+    
+    for(int currentCol: columnsToCheck)
+    {
+        
+        // indexes to the positions marking where a piece should move FROM, TO the new position
+        int fromRowIdx, toRowIdx;
+        fromRowIdx = toRowIdx = rows()-1;
+        
+        // Search the first empty tile in the column starting from the bottom
+        // Thats the first position we can potentially move a piece TO
+        while(toRowIdx > 0 && _boardTiles[toRowIdx][currentCol] != ESpecialBoardPieces::Empty)
+        {
+            toRowIdx--;
+        }
+        
+        // search in the upper tile above the first empty one
+        fromRowIdx = toRowIdx-1;
+        
+        while(fromRowIdx > 0 && toRowIdx > 0)
+        {
+            // Update the FROM index until we found a non empty tile that can be moved
+            if(_boardTiles[fromRowIdx][currentCol] == ESpecialBoardPieces::Empty)
+            {
+                fromRowIdx--;
+            }
+            else
+            {
+                // If the tile to move is not empty, we got a piece that can be moved FROM an index TO another index
+                // But only if the TO index points to an empty tile
+                if (fromRowIdx != toRowIdx && _boardTiles[toRowIdx][currentCol] == ESpecialBoardPieces::Empty)
+                {
+                    
+                    _listPiecesToFall.push_back(TileMovement(TilePosition(fromRowIdx, currentCol), TilePosition(toRowIdx, currentCol)));
+                    
+                    fromRowIdx--;
+                }
+                
+                // If the TO index points to a non empty tile, we just look in the row above
+                toRowIdx--;
+            }
+        }
+    }
+    
+    return _listPiecesToFall;
+}
+
