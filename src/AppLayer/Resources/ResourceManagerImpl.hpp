@@ -13,7 +13,7 @@ template <class T>
 std::shared_ptr<T> ResourceManager::Register(const ResourceId &res)
 {
     auto resource = CreateResource<T>(res);
-    _idToResourceMapping[res.id] = resource;
+    mIdToResourceMapping[res.id] = resource;
     
     return std::static_pointer_cast<T>(resource);
 }
@@ -21,7 +21,7 @@ std::shared_ptr<T> ResourceManager::Register(const ResourceId &res)
 template <class T>
 std::shared_ptr<T> ResourceManager::Get(ResourceId res)
 {
-    return std::static_pointer_cast<T>(_idToResourceMapping[res.id]);
+    return std::static_pointer_cast<T>(mIdToResourceMapping[res.id]);
 }
 
 

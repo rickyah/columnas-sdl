@@ -12,17 +12,17 @@
 bool ColumnsBoard::MovePlayerBlockRight()
 {
  
-    return MovePlayerBlockToPosition(TilePosition(_playerBlockPosition.row, _playerBlockPosition.col+1));
+    return MovePlayerBlockToPosition(TilePosition(mPlayerBlockPosition.row, mPlayerBlockPosition.col+1));
 }
 
 bool ColumnsBoard::MovePlayerBlockLeft()
 {
-    return MovePlayerBlockToPosition(TilePosition(_playerBlockPosition.row, _playerBlockPosition.col-1));
+    return MovePlayerBlockToPosition(TilePosition(mPlayerBlockPosition.row, mPlayerBlockPosition.col-1));
 }
 
 bool ColumnsBoard::MovePlayerBlockDown()
 {
-    return MovePlayerBlockToPosition(TilePosition(_playerBlockPosition.row+1, _playerBlockPosition.col));
+    return MovePlayerBlockToPosition(TilePosition(mPlayerBlockPosition.row+1, mPlayerBlockPosition.col));
 }
 
 
@@ -37,19 +37,19 @@ bool ColumnsBoard::MovePlayerBlockToPosition(const TilePosition &newPos)
 
 bool ColumnsBoard::IsPositionInsidePlayerBlock(TilePosition pos) const
 {
-    return pos.col == _playerBlockPosition.col
-        && pos.row >= _playerBlockPosition.row
-        && pos.row < _playerBlockPosition.row + _playerBlock.size();
+    return pos.col == mPlayerBlockPosition.col
+        && pos.row >= mPlayerBlockPosition.row
+        && pos.row < mPlayerBlockPosition.row + mPlayerBlock.size();
 }
 
 bool ColumnsBoard::CanMovePlayerBlockTo(TilePosition newPos) const
 {
     // Check if we can move
-    for(auto i = 0; i <_playerBlock.size(); ++i)
+    for(auto i = 0; i < mPlayerBlock.size(); ++i)
     {
         if (!GenericBoard::IsPositionInsideBoardBounds(newPos)) return false;
         
-        if(!IsPositionInsidePlayerBlock(newPos) && _boardTiles[newPos.row][newPos.col] != ESpecialBoardPieces::Empty)
+        if(!IsPositionInsidePlayerBlock(newPos) && mBoardTiles[newPos.row][newPos.col] != ESpecialBoardPieces::Empty)
         {
             return false;
         }
@@ -62,92 +62,95 @@ bool ColumnsBoard::CanMovePlayerBlockTo(TilePosition newPos) const
 
 void ColumnsBoard::ResetPlayerBlock(const std::vector<TileType> &pieces)
 {
-    _playerBlock.SetNewPieces(pieces);
+    mPlayerBlock.SetNewPieces(pieces);
     
-    UpdateBoardStateWithPlayerBlockAtPosition(_playerBlockInitialPosition);
+    UpdateBoardStateWithPlayerBlockAtPosition(mPlayerBlockInitialPosition);
 }
 
 void ColumnsBoard::MovePlayerBlockPieces()
 {
-    _playerBlock.MovePieces();
-    UpdateBoardStateWithPlayerBlockAtPosition(_playerBlockPosition);
+    mPlayerBlock.MovePieces();
+    UpdateBoardStateWithPlayerBlockAtPosition(mPlayerBlockPosition);
 }
 
 void ColumnsBoard::UpdateBoardStateWithPlayerBlockAtPosition(const TilePosition &newPos)
 {
     // Move block and update board state
-    for(auto i = 0; i <_playerBlock.size(); ++i)
+    for(auto i = 0; i < mPlayerBlock.size(); ++i)
     {
-        _boardTiles[_playerBlockPosition.row + i][_playerBlockPosition.col] = ESpecialBoardPieces::Empty;
+        mBoardTiles[mPlayerBlockPosition.row + i][mPlayerBlockPosition.col] = ESpecialBoardPieces::Empty;
     }
     
-    for(auto i = 0; i <_playerBlock.size(); ++i)
+    for(auto i = 0; i < mPlayerBlock.size(); ++i)
     {        
-        _boardTiles[newPos.row + i][newPos.col] = _playerBlock[i];
+        mBoardTiles[newPos.row + i][newPos.col] = mPlayerBlock[i];
     }
     
     
-    _playerBlockPosition = newPos;
+    mPlayerBlockPosition = newPos;
 }
 
 TilesSet ColumnsBoard::FindPiecesToDestroy() const
 {
-    _listPiecesToDestroy.clear();
+    mListPiecesToDestroy.clear();
     
-    for(auto i = 0; i <_playerBlock.size(); ++i)
+    for(auto i = 0; i < mPlayerBlock.size(); ++i)
     {
-        auto set = GetAllAdjacentTiles(_playerBlockPosition.row + i, _playerBlockPosition.col);
-        if (set.size() > (_numPiecesToDestroy -1) )
+        auto set = GetAllAdjacentTiles(mPlayerBlockPosition.row + i, mPlayerBlockPosition.col);
+        
+        // sustract 1 as the GetAllAdjacentTiles does not takes into account the piece in the position
+        // you search
+        if (set.size() > (mNumEqualPiecesToDestroy -1) )
         {
-            _listPiecesToDestroy.insert(set.begin(), set.end());   
+            mListPiecesToDestroy.insert(set.begin(), set.end());
         }
     }
  
-    return _listPiecesToDestroy;
+    return mListPiecesToDestroy;
 }
 
 TilesMovementSet ColumnsBoard::FindAllPiecesToMove() const
 {
     // Search in all columns
-    _tmpColumnsToCheck.clear();
+    mTmpColumnsToCheck.clear();
     
-    for(int r = 0; r < columns(); ++r) _tmpColumnsToCheck.insert(r);
+    for(int r = 0; r < columns(); ++r) mTmpColumnsToCheck.insert(r);
     
-    return FindPiecesToMoveInColumns(_tmpColumnsToCheck);
+    return FindPiecesToMoveInColumns(mTmpColumnsToCheck);
 }
 
 
 TilesMovementSet ColumnsBoard::FindPiecesToMoveInSubset(const TilesSet &destroyedPieces) const
 {
-    _tmpColumnsToCheck.clear();
+    mTmpColumnsToCheck.clear();
     
     // slight optimization: only check columns where one piece got destroyed as are the ones that can have
     // falling blocks
     std::transform(destroyedPieces.begin(),
                    destroyedPieces.end(),
-                   std::inserter(_tmpColumnsToCheck, _tmpColumnsToCheck.begin()),
+                   std::inserter(mTmpColumnsToCheck, mTmpColumnsToCheck.begin()),
                    [](const TilePosition & p) {
                        return p.col;
                    });
 
-    return FindPiecesToMoveInColumns(_tmpColumnsToCheck);
+    return FindPiecesToMoveInColumns(mTmpColumnsToCheck);
 
 }
 
 TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_set<uint8_t> &columnsToCheck) const
 {
-    _listPiecesToFall.clear();
+    mListPiecesToFall.clear();
     
     for(int currentCol: columnsToCheck)
     {
         
         // indexes to the positions marking where a piece should move FROM, TO the new position
         int fromRowIdx, toRowIdx;
-        fromRowIdx = toRowIdx = rows()-1;
+        toRowIdx = rows()-1;
         
         // Search the first empty tile in the column starting from the bottom
         // Thats the first position we can potentially move a piece TO
-        while(toRowIdx > 0 && _boardTiles[toRowIdx][currentCol] != ESpecialBoardPieces::Empty)
+        while(toRowIdx > 0 && mBoardTiles[toRowIdx][currentCol] != ESpecialBoardPieces::Empty)
         {
             toRowIdx--;
         }
@@ -158,7 +161,7 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_se
         while(fromRowIdx > 0 && toRowIdx > 0)
         {
             // Update the FROM index until we found a non empty tile that can be moved
-            if(_boardTiles[fromRowIdx][currentCol] == ESpecialBoardPieces::Empty)
+            if(mBoardTiles[fromRowIdx][currentCol] == ESpecialBoardPieces::Empty)
             {
                 fromRowIdx--;
             }
@@ -166,10 +169,10 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_se
             {
                 // If the tile to move is not empty, we got a piece that can be moved FROM an index TO another index
                 // But only if the TO index points to an empty tile
-                if (fromRowIdx != toRowIdx && _boardTiles[toRowIdx][currentCol] == ESpecialBoardPieces::Empty)
+                if (fromRowIdx != toRowIdx && mBoardTiles[toRowIdx][currentCol] == ESpecialBoardPieces::Empty)
                 {
                     
-                    _listPiecesToFall.push_back(TileMovement(TilePosition(fromRowIdx, currentCol), TilePosition(toRowIdx, currentCol)));
+                    mListPiecesToFall.push_back(TileMovement(TilePosition(fromRowIdx, currentCol), TilePosition(toRowIdx, currentCol)));
                     
                     fromRowIdx--;
                 }
@@ -180,6 +183,6 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_se
         }
     }
     
-    return _listPiecesToFall;
+    return mListPiecesToFall;
 }
 

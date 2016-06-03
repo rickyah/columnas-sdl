@@ -8,4 +8,4 @@
 
 #include "EventListenerDelegate.hpp"
 
-EventListenerDelegate::AutoIncrementalIdType EventListenerDelegate::_nextId = 0;
+EventListenerDelegate::AutoIncrementalIdType EventListenerDelegate::sNextId = 0;

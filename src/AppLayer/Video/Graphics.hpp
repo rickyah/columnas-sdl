@@ -20,19 +20,19 @@ public:
     bool Init(int w = 0, int h = 0);
     void Destroy();
     
-    int width() const { return _width; }
-    int height() const {return _height; }
+    int width() const { return mWidth; }
+    int height() const {return mHeight; }
     
 
-    std::shared_ptr<Renderer> renderer();
+    std::shared_ptr<Renderer> renderer() { return pRenderer; }
     
 private:
-    int _width;
-    int _height;
+    int mWidth;
+    int mHeight;
     
-    std::shared_ptr<SDL_Window> _pSDLWindow;
+    std::shared_ptr<SDL_Window> pSDLWindow;
     
-    std::shared_ptr<Renderer> _pRenderer;
+    std::shared_ptr<Renderer> pRenderer;
     
     Graphics(const Graphics &);
     

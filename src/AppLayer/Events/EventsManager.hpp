@@ -23,7 +23,7 @@ public:
     bool Update();
     
 private:
-    std::shared_ptr<EventQueue> _pEventQueue;
+    std::shared_ptr<EventQueue> pEventQueue;
 
 };
 #endif /* EventsManager_hpp */

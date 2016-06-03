@@ -18,17 +18,18 @@ App::App()
         exit(1);
     }
     
-    _pGraphics = std::make_shared<Graphics>();
-    _pEventQueue = std::make_shared<EventQueue>();
-    _pEventsManager = std::make_shared<EventsManager>(_pEventQueue);
-    _pResourceManager= std::make_shared<ResourceManager>(std::make_shared<SDLTextureLoader>());
+    pGraphics = std::make_shared<Graphics>();
+    pEventQueue = std::make_shared<EventQueue>();
+    pEventsManager = std::make_shared<EventsManager>(pEventQueue);
+    pResourceManager = std::make_shared<ResourceManager>(std::make_shared<SDLTextureLoader>());
 }
 
 App::~App()
 {
-    _pEventsManager.reset();
-    _pEventQueue.reset();
-    _pGraphics.reset();
+    pResourceManager.reset();
+    pEventsManager.reset();
+    pEventQueue.reset();
+    pGraphics.reset();
     
     SDL_Quit();
 }
@@ -50,7 +51,7 @@ void App::UpdateGameLoop()
     double accumulatorMs = 0.0;
     
     // This returns false when the event to quit is detected
-    while (_pEventsManager->Update())
+    while (pEventsManager->Update())
     {
         double currentFrameStartTicks = ticksSinceStart();
         // Clamp frametime max value
@@ -60,28 +61,28 @@ void App::UpdateGameLoop()
         accumulatorMs += frameTimeMs;
         
         // Simulate game
-        while (accumulatorMs >= _logicRateMs )
+        while (accumulatorMs >= mLogicRateMs )
         {
-            _logicTimeInfo.dt = _logicRateMs;
-            _logicTimeInfo.frameCount = _logicFrameCount++;
-            _logicTimeInfo.elapsedMs = ticksSinceStart();
+            mLogicTimeInfo.dt = mLogicRateMs;
+            mLogicTimeInfo.frameCount = mLogicFrameCount++;
+            mLogicTimeInfo.elapsedMs = ticksSinceStart();
             
-            if(_logicUpdateFc) _logicUpdateFc(_logicTimeInfo);
-            accumulatorMs -= _logicRateMs;
+            if(mFuncLogicUpdate) mFuncLogicUpdate(mLogicTimeInfo);
+            accumulatorMs -= mLogicRateMs;
         }
 
         // render
 
-        _renderTimeInfo.dt = accumulatorMs/_renderRateMs;
-        _renderTimeInfo.frameCount = _renderFrameCount++;
-        _renderTimeInfo.elapsedMs = ticksSinceStart();
+        mRenderTimeInfo.dt = accumulatorMs/mRenderRateMs;
+        mRenderTimeInfo.frameCount = mRenderFrameCount++;
+        mRenderTimeInfo.elapsedMs = ticksSinceStart();
         
-        if(_renderUpdateFc) _renderUpdateFc(_renderTimeInfo, graphics()->renderer());
+        if(mFuncRenderUpdate) mFuncRenderUpdate(mRenderTimeInfo, graphics()->renderer());
         
-        if (_renderRateMs > 0)
+        if (mRenderRateMs > 0)
         {
             auto elapsedFrameMs =  ((ticksSinceStart() - previousFrameStartTicks));
-            double sleepTimeMs = _renderRateMs - elapsedFrameMs;
+            double sleepTimeMs = mRenderRateMs - elapsedFrameMs;
         
             Delay(sleepTimeMs);
         }

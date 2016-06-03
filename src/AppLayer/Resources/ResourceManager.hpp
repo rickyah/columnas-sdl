@@ -20,7 +20,7 @@
 class ResourceManager
 {
 public:
-    ResourceManager(std::shared_ptr<ITextureLoader> pTextureLoader);
+    ResourceManager(std::shared_ptr<ITextureLoader> ptrTextureLoader);
     
     template <class T> std::shared_ptr<T> Register(const ResourceId &res);
     
@@ -40,9 +40,9 @@ private:
     ResourceManager(const ResourceManager &);
     ResourceManager & operator=(const ResourceManager &);
     
-    std::unordered_map<uint32_t, std::shared_ptr<Resource>> _idToResourceMapping;
+    std::unordered_map<uint32_t, std::shared_ptr<Resource>> mIdToResourceMapping;
     
-    std::shared_ptr<ITextureLoader> _pTextureLoader;
+    std::shared_ptr<ITextureLoader> pTextureLoader;
 };
 
 // template method implementations must be in the header
@@ -50,7 +50,7 @@ template <class T>
 std::shared_ptr<T> ResourceManager::Register(const ResourceId &res)
 {
     auto resource = CreateResource<T>(res);
-    _idToResourceMapping[res.id] = resource;
+    mIdToResourceMapping[res.id] = resource;
     
     return std::static_pointer_cast<T>(resource);
 }
@@ -58,7 +58,7 @@ std::shared_ptr<T> ResourceManager::Register(const ResourceId &res)
 template <class T>
 std::shared_ptr<T> ResourceManager::Get(ResourceId res)
 {
-    return std::static_pointer_cast<T>(_idToResourceMapping[res.id]);
+    return std::static_pointer_cast<T>(mIdToResourceMapping[res.id]);
 }
 
 

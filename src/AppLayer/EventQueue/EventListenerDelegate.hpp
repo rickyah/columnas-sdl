@@ -29,20 +29,20 @@ public:
     typedef uint_fast64_t AutoIncrementalIdType;
     const AutoIncrementalIdType id;
     
-    EventListenerDelegate(std::function<void (std::shared_ptr<IEventData>)> func):_function(func), id(_nextId++) { }
+    EventListenerDelegate(std::function<void (std::shared_ptr<IEventData>)> func):mFunction(func), id(sNextId++) { }
     
     void operator() (std::shared_ptr<IEventData> pEventData)
     {
-        _function(pEventData);
+        mFunction(pEventData);
     }
     
 private:
     
     //auto-incremental id
-    static AutoIncrementalIdType _nextId;
+    static AutoIncrementalIdType sNextId;
     
     // target
-    std::function<void (std::shared_ptr<IEventData>)> _function;
+    std::function<void (std::shared_ptr<IEventData>)> mFunction;
 };
 
 

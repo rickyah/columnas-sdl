@@ -11,29 +11,29 @@
 
 Texture2d::~Texture2d()
 {
-    _pTextureData.reset();
-    _pSurfaceData.reset();
+    pTextureData.reset();
+    pSurfaceData.reset();
 }
 
 
 Texture2d::Texture2d(SDL_Surface *pSurface):
-    _realSize(Size(pSurface->w, pSurface->h)),
-    _drawSize(Size(pSurface->w, pSurface->h)),
-    _pSurfaceData(std::shared_ptr<SDL_Surface>(pSurface, SDL_FreeSurface))
+    mRealSize(Size(pSurface->w, pSurface->h)),
+    mDrawSize(Size(pSurface->w, pSurface->h)),
+    pSurfaceData(std::shared_ptr<SDL_Surface>(pSurface, SDL_FreeSurface))
 {
 }
 
 Texture2d::Texture2d(SDL_Texture *pTexture, Size textureSize):
-    _realSize(textureSize),
-    _drawSize(textureSize),
-    _pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
+    mRealSize(textureSize),
+    mDrawSize(textureSize),
+    pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
 {
 }
 
 
 Texture2d::Texture2d(SDL_Texture *pTexture):
-    _pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
+    pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
 {
-    SDL_QueryTexture(pTexture, NULL, NULL, &_realSize.w,  &_realSize.h);
-    _drawSize = _realSize;
+    SDL_QueryTexture(pTexture, NULL, NULL, &mRealSize.w,  &mRealSize.h);
+    mDrawSize = mRealSize;
 }

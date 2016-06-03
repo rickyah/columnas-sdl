@@ -22,22 +22,22 @@ public:
     Texture2d(SDL_Texture *pTexture, Size textureSize);
     
     ~Texture2d();
-    const Size realSize() const { return _realSize; }
-    const Size drawSize() const { return _drawSize; }
-    void drawSize(Size newSize) { _drawSize = newSize; }
+    const Size realSize() const { return mRealSize; }
+    const Size drawSize() const { return mDrawSize; }
+    void drawSize(Size newSize) { mDrawSize = newSize; }
    
-    const std::shared_ptr<SDL_Surface> surfaceData() const { return _pSurfaceData; }
-    const std::shared_ptr<SDL_Texture> textureData() const { return _pTextureData; }
+    const std::shared_ptr<SDL_Surface> surfaceData() const { return pSurfaceData; }
+    const std::shared_ptr<SDL_Texture> textureData() const { return pTextureData; }
     
     
     std::shared_ptr<Texture2d> LoadTextureFromFile(const char* fileName);
     std::shared_ptr<Texture2d> CreateTextureFromSurface(SDL_Surface * pSurface);
     
 private:
-    Size _drawSize;
-    Size _realSize;
-    std::shared_ptr<SDL_Surface> _pSurfaceData;
-    std::shared_ptr<SDL_Texture> _pTextureData;
+    Size mDrawSize;
+    Size mRealSize;
+    std::shared_ptr<SDL_Surface> pSurfaceData;
+    std::shared_ptr<SDL_Texture> pTextureData;
 };
 
 #endif /* Texture_hpp */

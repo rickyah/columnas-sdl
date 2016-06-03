@@ -17,28 +17,28 @@ class Texture2dResource : public Resource
 {
 public:
     
-    Texture2dResource(ResourceId rId, std::shared_ptr<ITextureLoader> pLoader):Resource(rId), _pResourceLoader(pLoader) {}
+    Texture2dResource(ResourceId rId, std::shared_ptr<ITextureLoader> pLoader):Resource(rId), pResourceLoader(pLoader) {}
     
     std::shared_ptr<Texture2d> texture()
     {
-        if (!_pResource)
+        if (!pResource)
         {
             Load();
         }
         
-        return _pResource;
+        return pResource;
     }
     
     virtual void Load()
     {
-        _pResource = _pResourceLoader->LoadResourceData(name());
+        pResource = pResourceLoader->LoadResourceData(name());
     }
     
 protected:
     
 private:
-    std::shared_ptr<Texture2d> _pResource;
-    std::shared_ptr<ITextureLoader> _pResourceLoader;
+    std::shared_ptr<Texture2d> pResource;
+    std::shared_ptr<ITextureLoader> pResourceLoader;
 };
 
 

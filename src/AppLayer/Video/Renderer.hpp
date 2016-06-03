@@ -28,7 +28,7 @@ public:
     void SetColor(int r, int g, int b, int a=255);
     
 private:
-    std::shared_ptr<SDL_Renderer> _pSDLRenderer;
+    std::shared_ptr<SDL_Renderer> pSDLRenderer;
     
     Renderer(const Renderer &);
     void operator=(const Renderer&);

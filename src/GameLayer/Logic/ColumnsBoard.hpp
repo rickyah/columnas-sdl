@@ -15,16 +15,14 @@
 #include "PlayerBlock.hpp"
 
 
-
-
 class ColumnsBoard : public GenericBoard
 {
 public:
     explicit ColumnsBoard(BoardState state):GenericBoard(state){}
     explicit ColumnsBoard(uint8_t width, uint8_t height):GenericBoard(width, height){}
     
-    void SetPlayerBlockInitialPosition(TilePosition pos) { _playerBlockInitialPosition = pos; }
-    void SetNumEqualPiecesToDestroy(uint8_t numPieces) { _numPiecesToDestroy = numPieces; }
+    void SetPlayerBlockInitialPosition(TilePosition pos) { mPlayerBlockInitialPosition = pos; }
+    void SetNumEqualPiecesToDestroy(uint8_t numPieces) { mNumEqualPiecesToDestroy = numPieces; }
     void ResetPlayerBlock(const std::vector<TileType> &pieces);
     bool MovePlayerBlockLeft();
     bool MovePlayerBlockRight();
@@ -41,14 +39,14 @@ public:
     
     
 private:
-    uint8_t _numPiecesToDestroy;
-    PlayerBlock _playerBlock;
-    TilePosition _playerBlockPosition;
-    TilePosition _playerBlockInitialPosition;
+    uint8_t mNumEqualPiecesToDestroy;
+    PlayerBlock mPlayerBlock;
+    TilePosition mPlayerBlockPosition;
+    TilePosition mPlayerBlockInitialPosition;
     
-    mutable TilesSet _listPiecesToDestroy;
-    mutable TilesMovementSet _listPiecesToFall;
-    mutable std::unordered_set<uint8_t> _tmpColumnsToCheck;
+    mutable TilesSet mListPiecesToDestroy;
+    mutable TilesMovementSet mListPiecesToFall;
+    mutable std::unordered_set<uint8_t> mTmpColumnsToCheck;
     
     TilesMovementSet FindPiecesToMoveInColumns(const std::unordered_set<uint8_t> &) const;
     bool IsPositionInsidePlayerBlock(TilePosition pos) const;

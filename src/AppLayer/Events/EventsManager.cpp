@@ -7,7 +7,7 @@
 //
 
 #include "EventsManager.hpp"
-EventsManager::EventsManager(std::shared_ptr<EventQueue> eventQueue):_pEventQueue(eventQueue)
+EventsManager::EventsManager(std::shared_ptr<EventQueue> eventQueue):pEventQueue(eventQueue)
 {
     SDL_InitSubSystem(SDL_INIT_EVENTS);
 }
@@ -22,19 +22,19 @@ bool EventsManager::Update()
         switch(event.type)
         {
             case SDL_FINGERDOWN:
-                //_pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
+                //pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
                 break;
     
             case SDL_FINGERUP:
-                _pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
+                pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
                 break;
         
             case SDL_FINGERMOTION:
-               // _pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
+               // pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppTouch_Event>()));
                 break;
 
             case SDL_QUIT:
-                _pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppQuit_Event>()));
+                pEventQueue->Raise(std::static_pointer_cast<IEventData>(std::make_shared<AppQuit_Event>()));
                 return false;
                 break;
                 

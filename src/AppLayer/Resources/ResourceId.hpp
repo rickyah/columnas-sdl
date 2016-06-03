@@ -17,7 +17,7 @@
 // id:  crc32 hash of the name, used for lookup
 struct ResourceId
 {
-    constexpr ResourceId(const char* _name, uint32_t _id):name(_name),id(_id) {}
+    constexpr ResourceId(const char* Name, uint32_t Id):name(Name),id(Id) {}
     
     const char* name;
     const uint32_t id;

@@ -8,7 +8,7 @@
 
 #include "Graphics.hpp"
 
-Graphics::Graphics(int w, int h): _width(0), _height(0)
+Graphics::Graphics(int w, int h): mWidth(0), mHeight(0)
 {
     this->Init(w,h);
 }
@@ -30,22 +30,18 @@ bool Graphics::Init(int w, int h)
         h = displayMode.h;
     }
     
-    _width = w;
-    _height = h;
+    mWidth = w;
+    mHeight = h;
 
-    _pSDLWindow = std::shared_ptr<SDL_Window>(SDL_CreateWindow(NULL,0, 0, _width, _height, SDL_WINDOW_FULLSCREEN),
+    pSDLWindow = std::shared_ptr<SDL_Window>(SDL_CreateWindow(NULL,0, 0, mWidth, mHeight, SDL_WINDOW_FULLSCREEN),
                                               SDL_DestroyWindow);
  
-    _pRenderer = std::shared_ptr<Renderer>(new Renderer(_pSDLWindow));
+    pRenderer = std::shared_ptr<Renderer>(new Renderer(pSDLWindow));
 }
 
 void Graphics::Destroy()
 {
-    _pSDLWindow.reset();
-    _pRenderer.reset();
+    pSDLWindow.reset();
+    pRenderer.reset();
 }
 
-std::shared_ptr<Renderer> Graphics::renderer()
-{
-    return _pRenderer;
-}

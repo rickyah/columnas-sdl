@@ -28,8 +28,8 @@ public:
      */
     void SetNewPieces(const std::vector<TileType> &newPieces)
     {
-        _pieces = newPieces;
-        _firstPieceIdx = 0;
+        mPieces = newPieces;
+        mFirstPieceIdx = 0;
     }
     
     /*
@@ -38,7 +38,7 @@ public:
      */
     const TileType& operator[](std::size_t idx) const
     {
-        return _pieces[(_firstPieceIdx + idx) % size()];
+        return mPieces[(mFirstPieceIdx + idx) % size()];
     }
     
     /*
@@ -51,15 +51,15 @@ public:
      */
     void MovePieces()
     {
-        ++_firstPieceIdx;
-        _firstPieceIdx = _firstPieceIdx % size();
+        ++mFirstPieceIdx;
+        mFirstPieceIdx = mFirstPieceIdx % size();
     }
     
-    size_t size() const { return _pieces.size(); }
+    size_t size() const { return mPieces.size(); }
     
 private:
-    std::vector<TileType> _pieces;
-    size_t _firstPieceIdx = 0;
+    std::vector<TileType> mPieces;
+    size_t mFirstPieceIdx = 0;
     
     PlayerBlock(const PlayerBlock &);
     PlayerBlock& operator=(const PlayerBlock &);

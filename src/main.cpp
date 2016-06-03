@@ -3,6 +3,8 @@
 #include "SDL.h"
 #include "SDL_image.h"
 #include "App.hpp"
+#include "ColumnsGameController.hpp"
+
 #include "ColumnsBoardView.hpp"
 #include "ColumnsBoard.hpp"
 #include "ResourcesDefinitions.hpp"
@@ -27,9 +29,6 @@ float randomFloat(float min, float max)
 
 int main(int argc, char *argv[])
 {
-    int done;
-  
-    
     TilePosition p1, p2;
 
     App app;
@@ -75,15 +74,14 @@ int main(int argc, char *argv[])
     }));
     
     /* game loop */
-    done = 0;
     
     app.SetLogicUpdateFunction([&view](App::TimeInfo time)  {
         SDL_Log("[%d] Game UPDATE [%f ms]\n", time.frameCount, time.dt);
     });
     
-    app.SetRenderUpdateFunction([&app, &view, &board](App::TimeInfo time)  {
+    app.SetRenderUpdateFunction([&app, &view, &board](App::TimeInfo time, std::shared_ptr<Renderer> renderer)  {
         view.SetBoardState(board.boardState());
-        view.Render(app.graphics()->renderer());
+        view.Render(renderer);
         SDL_Log("[%d] RENDER [%f ms]\n", time.frameCount, time.dt);
     });
         

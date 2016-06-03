@@ -44,7 +44,7 @@ public:
     
 private:
     // Holds mappings between an EventType and an a list of EventListenerDelegates
-    EventListenerMap _eventListeners;
+    EventListenerMap mEventListeners;
 };
 
 #endif /* EventQueue_hpp */

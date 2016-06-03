@@ -30,7 +30,7 @@ std::unordered_set<TilePosition> Merge(std::initializer_list< std::unordered_set
 }
 
 GenericBoard::GenericBoard(BoardState boardState):
-    _boardTiles(boardState),
+    mBoardTiles(boardState),
     kRowIncreaser(std::make_pair<int8_t, int8_t>(0,1)),
     kColIncreaser(std::make_pair<int8_t, int8_t>(1,0)),
     kMainDiagIncreaser(std::make_pair<int8_t, int8_t>(1,1)),
@@ -40,7 +40,7 @@ GenericBoard::GenericBoard(BoardState boardState):
 }
 
 GenericBoard::GenericBoard(uint8_t rows, uint8_t columns, TileType initialValue):
-    _boardTiles(rows, std::vector<TileType>(columns, initialValue))
+    mBoardTiles(rows, std::vector<TileType>(columns, initialValue))
 {
 
 }
@@ -56,7 +56,7 @@ void GenericBoard::RemovePieces(const TilesSet &pieces)
 {
     for(auto piece: pieces)
     {
-        _boardTiles[piece.row][piece.col] = ESpecialBoardPieces::Empty;
+        mBoardTiles[piece.row][piece.col] = ESpecialBoardPieces::Empty;
     }
 }
 
@@ -66,17 +66,17 @@ void GenericBoard::MovePieces(const TilesMovementSet &pieces)
     for(int i = 0; i < pieces.size(); ++i)
     {
         TileMovement move = pieces[i];
-        TileType valueToMove = _boardTiles[move.from.row][move.from.col];
-        _boardTiles[move.from.row][move.from.col] = ESpecialBoardPieces::Empty;
-        _boardTiles[move.to.row][move.to.col] = valueToMove;
+        TileType valueToMove = mBoardTiles[move.from.row][move.from.col];
+        mBoardTiles[move.from.row][move.from.col] = ESpecialBoardPieces::Empty;
+        mBoardTiles[move.to.row][move.to.col] = valueToMove;
     }
     
 }
 
 GenericBoard::BoardIndexer& GenericBoard::operator[](std::size_t idx)
 {
-    _boardIndexer.SetRow(&_boardTiles[idx]);
-    return _boardIndexer;
+    mBoardIndexer.SetRow(&mBoardTiles[idx]);
+    return mBoardIndexer;
 }
 
 std::unordered_set<TilePosition> GenericBoard::GetAllAdjacentTiles(uint8_t row, uint8_t col) const
@@ -151,14 +151,14 @@ std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row
 {
     std::unordered_set<TilePosition> result;
 
-    TileType matchTileValue = _boardTiles[row][col];
+    TileType matchTileValue = mBoardTiles[row][col];
 
     int rowItr = row, colItr = col;
 
     rowItr += increaser.first;
     colItr += increaser.second;
 
-    while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && _boardTiles[rowItr][colItr] == matchTileValue)
+    while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && mBoardTiles[rowItr][colItr] == matchTileValue)
     {
         result.insert(TilePosition(rowItr, colItr));
 
@@ -170,7 +170,7 @@ std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row
     rowItr -= increaser.first;
     colItr -= increaser.second;
 
-    while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && _boardTiles[rowItr][colItr] == matchTileValue)
+    while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && mBoardTiles[rowItr][colItr] == matchTileValue)
     {
         result.insert(TilePosition(rowItr, colItr));
 

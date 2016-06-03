@@ -19,19 +19,19 @@
 class Resource
 {
 public:
-    uint32_t id() const { return _id; }
-    std::string name() const {  return _name; };
+    uint32_t id() const { return mId; }
+    std::string name() const {  return mName; };
     virtual void Load() = 0;
     
 protected:
-    Resource(ResourceId rId):_id(rId.id), _name(rId.name) {}
+    Resource(ResourceId rId): mId(rId.id), mName(rId.name) {}
     virtual ~Resource() {};
 private:
     Resource(const Resource &);
     Resource& operator=(const Resource &);
     
-    uint32_t _id;
-    std::string _name;
+    uint32_t mId;
+    std::string mName;
 };
 
 

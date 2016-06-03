@@ -11,11 +11,11 @@
 void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
 {
     Position offset(0,0);
-    Rect r(offset,  _tileSizePixels);
+    Rect r(offset,  mTileSizePixels);
     r.size.w -= 1;
     r.size.h -= 1;
     
-    for(auto & row : _state)
+    for(auto & row : mState)
     {
         for(TileType & tileType: row)
         {
@@ -25,32 +25,27 @@ void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
             pRenderer->FillRectangle(r);
 
             {
-                auto texture = _tile2TextureMapping.find(tileType);
+                auto texture = mTile2TextureMapping.find(tileType);
 
-                if (texture != _tile2TextureMapping.end())
+                if (texture != mTile2TextureMapping.end())
                 {
                     pRenderer->DrawTextureAt(texture->second->texture(), offset);
                 }
             }
 
-            offset.x += _tileSizePixels.w;
+            offset.x += mTileSizePixels.w;
         }
         offset.x = 0;
-        offset.y += _tileSizePixels.h;
+        offset.y += mTileSizePixels.h;
     }
 }
 
 void ColumnsBoardView::SetPieceToTextureMapping(Size tileSizePixels,
                                                 TileTypeToTextureMapping mappings)
 {
-    _tileSizePixels = tileSizePixels;
-    _tile2TextureMapping = mappings;
+    mTileSizePixels = tileSizePixels;
+    mTile2TextureMapping = mappings;
     for(auto const &kvp : mappings) {
         kvp.second->texture()->drawSize(tileSizePixels);
     }
-}
-
-void ColumnsBoardView::SetBoardState( const BoardState & initialState)
-{
-    _state = initialState;
 }

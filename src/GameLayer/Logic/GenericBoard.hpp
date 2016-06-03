@@ -22,7 +22,7 @@ typedef short TileType;
 struct TilePosition
 {
     TilePosition():TilePosition(0,0){};
-    TilePosition(uint8_t _row, uint8_t _col):row(_row),col(_col){};
+    TilePosition(uint8_t Row, uint8_t Col):row(Row),col(Col){};
     uint8_t row;
     uint8_t col;
     
@@ -47,7 +47,7 @@ struct TileMovement
     TilePosition from;
     TilePosition to;
     
-    TileMovement(TilePosition _from, TilePosition _to): from(_from), to(_to) {}
+    TileMovement(TilePosition From, TilePosition To): from(From), to(To) {}
     
     
     bool operator==(const TileMovement &other) const {
@@ -96,11 +96,11 @@ public:
     // Sets up an board of a given rows and columns, and an initial tile value.
     explicit GenericBoard(uint8_t rows, uint8_t columns, TileType initialValue = 0);
 
-    const BoardState& boardState() { return _boardTiles; };
-    void boardState(const BoardState& newState ) { _boardTiles = newState; };
+    const BoardState& boardState() { return mBoardTiles; };
+    void boardState(const BoardState& newState ) { mBoardTiles = newState; };
     
-    uint8_t rows() const { return _boardTiles.size(); }
-    uint8_t columns() const { return _boardTiles[0].size(); }
+    uint8_t rows() const { return mBoardTiles.size(); }
+    uint8_t columns() const { return mBoardTiles[0].size(); }
 
     bool IsPositionInsideBoardBounds(const TilePosition &IsPositionInsideBoardBoundspos) const;
     void RemovePieces(const TilesSet &pieces);
@@ -118,7 +118,7 @@ protected:
     /**
      * Current state of the board
      */
-    BoardState _boardTiles;
+    BoardState mBoardTiles;
 
     /*
      * Search from a given position in the board for all the elements adjacent to that element with the same value
@@ -165,12 +165,12 @@ private:
 
         TileType& operator[](std::size_t idx)
         {
-            return _rowRef->operator[](idx);
+            return pRowRef->operator[](idx);
         }
 
         const TileType& operator[](std::size_t idx) const
         {
-            return _rowRef->operator[](idx);
+            return pRowRef->operator[](idx);
         }
 
     private:
@@ -179,16 +179,16 @@ private:
 
         void SetRow(std::vector<TileType> *row)
         {
-            _rowRef = row;
+            pRowRef = row;
         }
 
 
 
     private:
-        std::vector<TileType> *_rowRef;
+        std::vector<TileType> *pRowRef;
     };
 
-    GenericBoard::BoardIndexer _boardIndexer;
+    GenericBoard::BoardIndexer mBoardIndexer;
 
 public:
 

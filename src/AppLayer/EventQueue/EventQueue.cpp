@@ -14,7 +14,7 @@ EventQueue::~EventQueue()
 
 bool EventQueue::AddListener(const EventType& type, const EventListenerDelegate &eventDelegate)
 {
-    EventListenerList& list = _eventListeners[type];
+    EventListenerList& list = mEventListeners[type];
     
     for (auto it = list.begin(); it != list.end(); ++it)
     {
@@ -41,7 +41,7 @@ EventListenerDelegate EventQueue::AddListener(const EventType& type, const std::
 
 bool EventQueue::RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate)
 {
-    EventListenerList& list = _eventListeners[type];
+    EventListenerList& list = mEventListeners[type];
     
     for (auto it = list.begin(); it != list.end(); ++it)
     {
@@ -57,7 +57,7 @@ bool EventQueue::RemoveListener(const EventType& type, const EventListenerDelega
     
 bool EventQueue::Raise(std::shared_ptr<IEventData> pEvent)
 {
-    EventListenerList& list = _eventListeners[pEvent->type()];
+    EventListenerList& list = mEventListeners[pEvent->type()];
     
     for(EventListenerDelegate &dlg : list)
     {
@@ -68,5 +68,5 @@ bool EventQueue::Raise(std::shared_ptr<IEventData> pEvent)
 
 void EventQueue::RemoveAllListeners()
 {
-    _eventListeners.clear();
+    mEventListeners.clear();
 }

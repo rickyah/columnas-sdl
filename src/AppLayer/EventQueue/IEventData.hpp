@@ -25,16 +25,16 @@ class IEventData
 {
     
 public:
-    IEventData(): _timeStamp(std::time(nullptr)){}
+    IEventData(): mTimeStamp(std::time(nullptr)){}
     
     virtual ~IEventData() {}
-    uint64_t timeStamp() const { return _timeStamp; }
+    uint64_t timeStamp() const { return mTimeStamp; }
     
     virtual const EventType& type() const = 0;
     
 private:
     
-    const uint64_t _timeStamp;
+    const uint64_t mTimeStamp;
 };
 
 

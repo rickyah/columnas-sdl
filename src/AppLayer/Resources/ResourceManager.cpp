@@ -9,8 +9,8 @@
 #include "ResourceManager.hpp"
 
 
-ResourceManager::ResourceManager(std::shared_ptr<ITextureLoader> pTextureLoader)
-:_pTextureLoader(pTextureLoader)
+ResourceManager::ResourceManager(std::shared_ptr<ITextureLoader> ptrTextureLoader)
+:pTextureLoader(ptrTextureLoader)
 {
     
 }
@@ -20,5 +20,5 @@ ResourceManager::ResourceManager(std::shared_ptr<ITextureLoader> pTextureLoader)
 template <>
 std::shared_ptr<Resource> ResourceManager::CreateResource<Texture2dResource>(const ResourceId & resourceId) const
 {
-    return std::make_shared<Texture2dResource>(resourceId, _pTextureLoader);
+    return std::make_shared<Texture2dResource>(resourceId, pTextureLoader);
 }

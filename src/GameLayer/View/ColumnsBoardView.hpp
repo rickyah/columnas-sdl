@@ -27,14 +27,14 @@ public:
 
     void SetPieceToTextureMapping(Size tileSizePixels, TileTypeToTextureMapping mappings);
 
-    void SetBoardState( const BoardState & initialState );
+    void SetBoardState( const BoardState & initialState ) { mState = initialState; }
 
     void Render(std::shared_ptr<Renderer> pRenderer);
 private:
 
-    TileTypeToTextureMapping _tile2TextureMapping;
-    BoardState _state;
-    Size _tileSizePixels;
+    TileTypeToTextureMapping mTile2TextureMapping;
+    BoardState mState;
+    Size mTileSizePixels;
     ColumnsBoardView(const ColumnsBoardView &);
     ColumnsBoardView operator=(const ColumnsBoardView &);
 };

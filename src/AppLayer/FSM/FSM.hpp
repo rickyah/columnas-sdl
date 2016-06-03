@@ -65,7 +65,7 @@ class FSM
 public:
 
     
-    TStatePtr currentState() const { return _currentState; }
+    TStatePtr currentState() const { return pCurrentState; }
     
     /*
      *  Changes to a new registered state what was previously registerd in the FSM
@@ -99,10 +99,10 @@ public:
     ~FSM();
     
 private:
-    std::unordered_map<TStateId, TStatePtr> _states;
+    std::unordered_map<TStateId, TStatePtr> mStates;
     
-    TStatePtr _nextState;
-    TStatePtr _currentState;
+    TStatePtr pNextState;
+    TStatePtr pCurrentState;
     
 };
 
@@ -117,19 +117,19 @@ bool FSM<TStateId, TState>::RegisterState(TStateId id, TStatePtr pState)
     
     auto pair = std::make_pair(id, pState);
     
-    return _states.insert(pair).second;
+    return mStates.insert(pair).second;
 }
 
 template <typename TStateId, typename TState>
 bool FSM<TStateId, TState>::ChangeTo(TStateId id)
 {
-    auto nextState = _states[id];
+    auto nextState = mStates[id];
     
     if (nextState == nullptr) return false;
     
     if (_currentState != nextState)
     {
-        _nextState = nextState;
+        pNextState = nextState;
     }
     
     return true;
@@ -138,24 +138,24 @@ bool FSM<TStateId, TState>::ChangeTo(TStateId id)
 template <typename TStateId, typename TState>
 bool FSM<TStateId, TState>::RemoveState(TStateId id)
 {
-    auto pState = _states[id];
+    auto pState = mStates[id];
     
     if (pState == nullptr) return false;
     
-    if (_nextState == pState)
+    if (pNextState == pState)
     {
-        _nextState = nullptr;
+        pNextState = nullptr;
     }
     
-    if (_currentState == pState)
+    if (pCurrentState == pState)
     {
         pState->OnExit();
-        _currentState = nullptr;
+        pCurrentState = nullptr;
     }
     
     pState->OnCleanup();
 
-    _states.erase(id);
+    mStates.erase(id);
     
     return true;
 }
@@ -163,30 +163,30 @@ bool FSM<TStateId, TState>::RemoveState(TStateId id)
 template <typename TStateId, typename TState>
 void FSM<TStateId, TState>::Update(double dt)
 {
-    if(_nextState)
+    if(pNextState)
     {
-        if(_currentState)
+        if(pCurrentState)
         {
-            _currentState->OnExit();
+            pCurrentState->OnExit();
         }
         
-        std::swap(_currentState, _nextState);
+        std::swap(pCurrentState, pNextState);
         
-        _currentState->OnEnter();
+        pCurrentState->OnEnter();
         
-        _nextState = nullptr;
+        pNextState = nullptr;
     }
     
-    if(_currentState)
+    if(pCurrentState)
     {
-        _currentState->OnUpdate(dt);
+        pCurrentState->OnUpdate(dt);
     }
 }
 
 template <typename TStateId, typename TState>
 FSM<TStateId, TState>::~FSM()
 {
-    _states.clear();
+    mStates.clear();
 }
 
 #endif /* FSM_hpp */

@@ -18,7 +18,7 @@ typedef struct Position
     
     Position():Position(0,0) {}
 
-    Position(int _x, int _y):x(_x),y(_y) {}
+    Position(int X, int Y):x(X),y(Y) {}
 
 } Position;
 
