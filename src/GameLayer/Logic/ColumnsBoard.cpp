@@ -89,3 +89,83 @@ void ColumnsBoard::UpdateBoardStateWithPlayerBlockAtPosition(const TilePosition 
     
     _playerBlockPosition = newPos;
 }
+
+TilesSet ColumnsBoard::FindPiecesToDestroy() const
+{
+    _listPiecesToDestroy.clear();
+    
+    for(auto i = 0; i <_playerBlock.size(); ++i)
+    {
+        auto set = GetAllAdjacentTiles(_playerBlockPosition.row + i, _playerBlockPosition.col);
+        if (set.size() > (_numPiecesToDestroy -1) )
+        {
+            _listPiecesToDestroy.insert(set.begin(), set.end());   
+        }
+    }
+ 
+    return _listPiecesToDestroy;
+}
+
+void ColumnsBoard::DestroyPieces(TilesSet pieces)
+{
+    for(auto piece: pieces)
+    {
+        _boardTiles[piece.row][piece.col] = ESpecialBoardPieces::Empty;
+    }
+}
+
+TilesMovementSet ColumnsBoard::FindPiecesToMove(TilesSet destroyedPieces) const
+{
+    static std::vector<TilePosition> sortedDestroyedPieces;
+    _listPiecesToFall.from.clear();
+    _listPiecesToFall.to.clear();
+    
+    if (destroyedPieces.size() == 0) return _listPiecesToFall;
+    
+    std::copy(destroyedPieces.begin(), destroyedPieces.end(), std::back_inserter(sortedDestroyedPieces));
+    std::sort(sortedDestroyedPieces.begin(), sortedDestroyedPieces.end(), [](const TilePosition & a, const TilePosition & b) -> bool{
+        if (a.col == b.col) return a.row > b.row;
+        return a.col < b.col;
+    });
+    
+    
+    int currentCol = -1;
+    auto idxPlaceRow = sortedDestroyedPieces[0].row;
+    
+    for(int i = 0; i < sortedDestroyedPieces.size(); ++i)
+    {
+        auto pos =  sortedDestroyedPieces[i];
+        
+        if (currentCol == pos.col) continue;
+        
+        
+        currentCol = sortedDestroyedPieces[i].col;
+        idxPlaceRow = sortedDestroyedPieces[i].row;
+        
+        
+        for(int j = idxPlaceRow; j > 0; --j)
+        {
+            if(_boardTiles[j][currentCol] != ESpecialBoardPieces::Empty)
+            {
+                _listPiecesToFall.from.push_back(TilePosition(j, currentCol));
+                _listPiecesToFall.to.push_back(TilePosition(idxPlaceRow, currentCol));
+                idxPlaceRow--;
+            }
+        }
+    }
+
+    return _listPiecesToFall;
+}
+
+
+void ColumnsBoard::MovePieces(TilesMovementSet pieces)
+{
+
+    for(int i = 0; i < pieces.size(); ++i)
+    {
+        TileType valueToMove = _boardTiles[pieces.from[i].row][pieces.from[i].col];
+        _boardTiles[pieces.from[i].row][pieces.from[i].col] = ESpecialBoardPieces::Empty;
+        _boardTiles[pieces.to[i].row][pieces.to[i].col] = valueToMove;
+    }
+    
+}

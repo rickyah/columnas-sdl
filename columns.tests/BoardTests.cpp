@@ -103,7 +103,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     }
 
 
-    SECTION("Get alladjacent tiles in rows, columns and diagonals from a given position") {
+    SECTION("Get all adjacent tiles in rows, columns and diagonals from a given position") {
         auto result = board.GetAllAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 9);

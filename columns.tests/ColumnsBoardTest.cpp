@@ -163,5 +163,136 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
         REQUIRE(board[2][0] == 2);
         
     }
-    
 }
+
+bool CompareBoardStates(const BoardState &first, const BoardState &second)
+{
+    for(int i = 0; i < first.size(); ++i)
+    {
+        for(int j = 0; j < first[i].size(); ++j)
+        {
+            if (first[i][j] != second[i][j])
+            {
+                return false;
+            }
+        }
+    }
+    
+    return true;
+}
+
+
+TEST_CASE("Change board state") {
+    
+    SECTION("Destroy pieces") {
+        
+
+        // Start with a board that does not have any pieces to destroy
+        ColumnsBoard board({
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,2},
+            {0,0,0,1,1},
+            {0,0,1,2,1},
+            {0,2,1,2,2}
+        });
+        
+        board.SetNumEqualPiecesToDestroy(3);
+        
+        // supose we get a player block in board position [1,2] and the block contains the pieces [2,2,1]
+        board.SetPlayerBlockInitialPosition(TilePosition(1,2));
+        board.ResetPlayerBlock({2,2,1});
+        
+        // The new boardState should be like this
+        BoardState newBoardState = {
+            {0,0,0,0,0},
+            {0,0,2,0,0},
+            {0,0,2,0,2},
+            {0,0,1,1,1},
+            {0,0,1,2,1},
+            {0,2,1,2,2}
+        };
+       
+        REQUIRE(CompareBoardStates(newBoardState, board.boardState()));
+        
+        // Now we can search for adjacent pieces, but we only need to seach in the player block positions
+        // as it was the only parts that changed
+        auto pieces = board.FindPiecesToDestroy();
+        
+        REQUIRE(pieces.size() == 5);
+        
+        // Destroy the pieces
+        board.DestroyPieces(pieces);
+        
+        
+        // And the board should be like this
+        BoardState newBoardState2 = {
+            {0,0,0,0,0},
+            {0,0,2,0,0},
+            {0,0,2,0,2},
+            {0,0,0,0,0},
+            {0,0,0,2,1},
+            {0,2,0,2,2}
+        };
+        
+        REQUIRE(CompareBoardStates(newBoardState2, board.boardState()));
+    }
+    
+    SECTION("test")
+    {
+        std::vector<TilePosition> pos({ {0,1}, {0,2}, {0,4} });
+        std::vector<uint8_t> r(pos.size());
+        std::transform(pos.begin(), pos.end(), r.begin(), [](const TilePosition & p) {
+            return p.col;
+        });
+        
+        auto r2 = r;
+    }
+    
+    SECTION("Make pieces fall")
+    {
+        ColumnsBoard board( {
+            {0,0,0,0,0},
+            {0,0,2,0,0},
+            {0,0,2,0,2},
+            {2,0,0,0,0},
+            {0,0,0,2,1},
+            {2,2,0,2,2}
+        });
+        
+        /*
+         Destroyed positions:
+         
+         {0,0,0,0,0},
+         {0,0,2,0,0},
+         {0,0,2,0,2},
+         {2,0,*,*,*},
+         {*,*,*,2,1},
+         {2,2,*,2,2}
+         */
+        auto piecesToFall = board.FindPiecesToMove({
+            {3,4},{3,3},{3,2},
+            {4,0},{4,1},{4,2},
+            {5,2}
+        });
+        
+        REQUIRE(piecesToFall.from.size() == 4);
+        REQUIRE(piecesToFall.to.size() == 4);
+        
+        board.MovePieces(piecesToFall);
+        
+        BoardState newBoardState = {
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,2},
+            {2,0,2,2,1},
+            {2,2,2,2,2}
+        };
+        
+        REQUIRE(CompareBoardStates(board.boardState(), newBoardState));
+    }
+}
+
+
+

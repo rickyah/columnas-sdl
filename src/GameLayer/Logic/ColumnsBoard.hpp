@@ -75,6 +75,14 @@ private:
     PlayerBlock& operator=(const PlayerBlock &);
 };
 
+typedef std::unordered_set<TilePosition> TilesSet;
+struct TilesMovementSet
+{
+    std::vector<TilePosition> from;
+    std::vector<TilePosition> to;
+    
+    size_t size() { return from.size(); }
+};
 
 class ColumnsBoard : public GenericBoard
 {
@@ -83,6 +91,7 @@ public:
     explicit ColumnsBoard(uint8_t width, uint8_t height):GenericBoard(width, height){}
     
     void SetPlayerBlockInitialPosition(TilePosition pos) { _playerBlockInitialPosition = pos; }
+    void SetNumEqualPiecesToDestroy(uint8_t numPieces) { _numPiecesToDestroy = numPieces; }
     void ResetPlayerBlock(const std::vector<TileType> &pieces);
     bool MovePlayerBlockLeft();
     bool MovePlayerBlockRight();
@@ -92,12 +101,20 @@ public:
     
     void Update();
     
+    TilesSet FindPiecesToDestroy() const;
+    void DestroyPieces(TilesSet pieces);
+    TilesMovementSet FindPiecesToMove(TilesSet) const;
+    void MovePieces(TilesMovementSet pieces);
     
 private:
     PlayerBlock _playerBlock;
     TilePosition _playerBlockPosition;
     TilePosition _playerBlockInitialPosition;
     
+    mutable TilesSet _listPiecesToDestroy;
+    mutable TilesMovementSet _listPiecesToFall;
+    
+    uint8_t _numPiecesToDestroy;
     bool IsPositionInsidePlayerBlock(TilePosition pos) const;
     bool CanMovePlayerBlockTo(TilePosition newPos) const;
     bool MovePlayerBlockToPosition(const TilePosition &newPos);

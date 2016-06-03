@@ -65,6 +65,7 @@ public:
     explicit GenericBoard(uint8_t rows, uint8_t columns, TileType initialValue = 0);
 
     const BoardState& boardState() { return _boardTiles; };
+    void boardState(const BoardState& newState ) { _boardTiles = newState; };
     
     uint8_t rows() const { return _boardTiles.size(); }
     uint8_t columns() const { return _boardTiles[0].size(); }
