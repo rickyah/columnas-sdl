@@ -74,6 +74,7 @@
 		9C02B8241CF7B39400B01905 /* EventQueue.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventQueue.hpp; sourceTree = "<group>"; };
 		9C02B8251CF7B39400B01905 /* EventQueueTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = EventQueueTypes.hpp; sourceTree = "<group>"; };
 		9C02B8261CF7B39400B01905 /* IEventData.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = IEventData.hpp; sourceTree = "<group>"; };
+		9C0EDA521D018B51007BC4C7 /* PlayerBlock.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = PlayerBlock.hpp; sourceTree = "<group>"; };
 		9C18085C1CF70B9900C19900 /* libSDL2.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2.a; path = libs/SDL/simulator/libSDL2.a; sourceTree = "<group>"; };
 		9C18085D1CF70B9900C19900 /* libSDL2_image.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libSDL2_image.a; path = libs/SDL_Image/simulator/libSDL2_image.a; sourceTree = "<group>"; };
 		9C47A2DA1CF50A7700885640 /* Sprites */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sprites; sourceTree = "<group>"; };
@@ -267,6 +268,7 @@
 				9C68FB111CF744150058369A /* GenericBoard.hpp */,
 				9C68FB121CF744150058369A /* ColumnsBoard.cpp */,
 				9C68FB131CF744150058369A /* ColumnsBoard.hpp */,
+				9C0EDA521D018B51007BC4C7 /* PlayerBlock.hpp */,
 			);
 			name = Logic;
 			path = GameLayer/Logic;

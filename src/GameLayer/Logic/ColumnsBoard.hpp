@@ -12,6 +12,7 @@
 #include <vector>
 
 #include "GenericBoard.hpp"
+#include "PlayerBlock.hpp"
 
 
 enum ESpecialBoardPieces {
