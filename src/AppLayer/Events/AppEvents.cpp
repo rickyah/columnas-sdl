@@ -14,3 +14,10 @@ const EventType AppQuit_Event::sEventType(0x398625bc);
 const EventType AppTouch_Event::sEventType(0x17df1d3f);
 
 
+AppTouch_Event::AppTouch_Event(TouchEventArgs args):
+    IEventData(), mTouchEventArgs(args)
+{
+    
+};
+
+

@@ -22,8 +22,41 @@ public:
 class AppTouch_Event : public IEventData
 {
 public:
+    
+    enum ETouchType { Up, Down, Motion };
+    
+    struct TouchPosition
+    {
+        // Coordinates in the default screen
+        int x, y;
+        
+        // Normalized in range [0,1]
+        double nx, ny;
+    };
+    
+    struct TouchMotion
+    {
+        float dx, dy;
+    };
+    
+    struct TouchEventArgs
+    {
+        ETouchType type;
+        TouchPosition pos;
+        TouchMotion motion;
+    };
+    
+    typedef TouchEventArgs event_args;
+    
+    AppTouch_Event(AppTouch_Event::event_args args);
+    
+    TouchEventArgs args() const { return mTouchEventArgs; }
+    
     static const EventType sEventType;
-    AppTouch_Event():IEventData() {};
     virtual const EventType& type() const { return sEventType; }
+    
+protected:
+    TouchEventArgs mTouchEventArgs;
+    
 };
 #endif /* AppEvents_hpp */

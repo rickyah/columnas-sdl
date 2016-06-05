@@ -20,7 +20,7 @@ App::App()
     
     pGraphics = std::make_shared<Graphics>();
     pEventQueue = std::make_shared<EventQueue>();
-    pEventsManager = std::make_shared<EventsManager>(pEventQueue);
+    pEventsManager = std::make_shared<EventsManager>(pGraphics, pEventQueue);
     pResourceManager = std::make_shared<ResourceManager>(std::make_shared<SDLTextureLoader>());
 }
 
