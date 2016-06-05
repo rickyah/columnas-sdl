@@ -15,9 +15,11 @@ void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
     r.size.w -= 1;
     r.size.h -= 1;
     
-    for(auto & row : mState)
+    
+    for(int rowIdx = mSkipRenderingRowsWhenRendering ; rowIdx < mState.size(); ++rowIdx)
     {
-        for(TileType & tileType: row)
+        
+        for(TileType & tileType: mState[rowIdx])
         {
 
             pRenderer->SetColor(255,255,255);

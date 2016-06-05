@@ -29,9 +29,13 @@ public:
 
     void SetBoardState( const BoardState & initialState ) { mState = initialState; }
 
+    void skipFirstRowsWhenRendering(uint8_t value) { mSkipRenderingRowsWhenRendering = value; }
+    
     void Render(std::shared_ptr<Renderer> pRenderer);
 private:
 
+    
+    uint8_t mSkipRenderingRowsWhenRendering;
     TileTypeToTextureMapping mTile2TextureMapping;
     BoardState mState;
     Size mTileSizePixels;
