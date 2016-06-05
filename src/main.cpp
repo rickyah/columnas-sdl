@@ -1,31 +1,11 @@
-#include <algorithm>
 #include <string>
-#include "SDL.h"
-#include "SDL_image.h"
 #include "App.hpp"
+#include "DataTypes.hpp"
 #include "ColumnsGameController.hpp"
 
 #include "ColumnsBoardView.hpp"
 #include "ColumnsBoard.hpp"
 #include "ResourcesDefinitions.hpp"
-
-/*
- Produces a random int x, min <= x <= max
- following a uniform distribution
- */
-int randomInt(int min, int max)
-{
-    return min + rand() % (max - min + 1);
-}
-
-/*
- Produces a random float x, min <= x <= max
- following a uniform distribution
- */
-float randomFloat(float min, float max)
-{
-    return rand() / (float) RAND_MAX *(max - min) + min;
-}
 
 int main(int argc, char *argv[])
 {
@@ -53,7 +33,7 @@ int main(int argc, char *argv[])
     ColumnsBoardView view;
     
     
-    board.SetPlayerBlockInitialPosition(TilePosition(0,2));
+    board.InitPlayerBlockInitialPosition(TilePosition(0,2));
     
     board.ResetPlayerBlock({1,1,1});
 
@@ -75,14 +55,16 @@ int main(int argc, char *argv[])
     
     /* game loop */
     
-    app.SetLogicUpdateFunction([&view](App::TimeInfo time)  {
+    app.SetLogicUpdateFunction([&view](TimeInfo time)  {
         SDL_Log("[%d] Game UPDATE [%f ms]\n", time.frameCount, time.dt);
     });
     
-    app.SetRenderUpdateFunction([&app, &view, &board](App::TimeInfo time, std::shared_ptr<Renderer> renderer)  {
+    app.SetRenderUpdateFunction([&app, &view, &board](TimeInfo time, std::shared_ptr<Renderer> renderer)  {
         view.SetBoardState(board.boardState());
         view.Render(renderer);
         SDL_Log("[%d] RENDER [%f ms]\n", time.frameCount, time.dt);
+        
+        renderer->Present();
     });
         
     app.UpdateGameLoop();
