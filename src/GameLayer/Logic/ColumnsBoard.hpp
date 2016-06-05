@@ -21,8 +21,12 @@ public:
     explicit ColumnsBoard(BoardState state):GenericBoard(state){}
     explicit ColumnsBoard(uint8_t width, uint8_t height):GenericBoard(width, height){}
     
-    void SetPlayerBlockInitialPosition(TilePosition pos) { mPlayerBlockInitialPosition = pos; }
-    void SetNumEqualPiecesToDestroy(uint8_t numPieces) { mNumEqualPiecesToDestroy = numPieces; }
+    void InitPlayerBlockInitialPosition(TilePosition pos) { mPlayerBlockInitialPosition = pos; }
+    void InitNumEqualPiecesToDestroy(uint8_t numPieces = 3) { mNumEqualPiecesToDestroy = numPieces; }
+    void InitNumRowsGameOver(uint8_t numRows = 3) { mNumFirstRowsForGameOver = numRows; }
+    
+    uint8_t numFirstRowsForGameOver() const { return mNumFirstRowsForGameOver; }
+    
     void ResetPlayerBlock(const std::vector<TileType> &pieces);
     bool MovePlayerBlockLeft();
     bool MovePlayerBlockRight();
@@ -30,7 +34,7 @@ public:
     
     void MovePlayerBlockPieces();
     
-    void Update();
+    bool IsGameOverConditionFullfilled() const;
     
     TilesSet FindPiecesToDestroy() const;
 
@@ -40,6 +44,7 @@ public:
     
 private:
     uint8_t mNumEqualPiecesToDestroy;
+    uint8_t mNumFirstRowsForGameOver;
     PlayerBlock mPlayerBlock;
     TilePosition mPlayerBlockPosition;
     TilePosition mPlayerBlockInitialPosition;

@@ -56,7 +56,7 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
     
     SECTION("Board state updates when position player block") {
         
-        board.SetPlayerBlockInitialPosition(TilePosition(0,3));
+        board.InitPlayerBlockInitialPosition(TilePosition(0,3));
         
         board.ResetPlayerBlock({2,2,2});
         
@@ -74,7 +74,7 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
     }
     
     SECTION("Can move player down") {
-        board.SetPlayerBlockInitialPosition(TilePosition(0,0));
+        board.InitPlayerBlockInitialPosition(TilePosition(0,0));
         
         board.ResetPlayerBlock({2,2,2});
         
@@ -89,7 +89,7 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
     
     
     SECTION("Can't move player block to occupied tiles") {
-        board.SetPlayerBlockInitialPosition(TilePosition(0,0));
+        board.InitPlayerBlockInitialPosition(TilePosition(0,0));
         
         board.ResetPlayerBlock({2,2,2});
         
@@ -125,7 +125,7 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
     
     SECTION("Moving player block updates board state")
     {
-        board.SetPlayerBlockInitialPosition(TilePosition(0,0));
+        board.InitPlayerBlockInitialPosition(TilePosition(0,0));
         board.ResetPlayerBlock({2,2,2});
         
         REQUIRE(board[0][0] == 2);
@@ -148,7 +148,7 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
     
     SECTION("Moving pieces inside player block updates board state")
     {
-        board.SetPlayerBlockInitialPosition(TilePosition(0,0));
+        board.InitPlayerBlockInitialPosition(TilePosition(0,0));
         board.ResetPlayerBlock({2,3,4});
         
         REQUIRE(board[0][0] == 2);
@@ -197,10 +197,10 @@ TEST_CASE("Change board state") {
             {0,2,1,2,2}
         });
         
-        board.SetNumEqualPiecesToDestroy(3);
+        board.InitNumEqualPiecesToDestroy(3);
         
         // supose we get a player block in board position [1,2] and the block contains the pieces [2,2,1]
-        board.SetPlayerBlockInitialPosition(TilePosition(1,2));
+        board.InitPlayerBlockInitialPosition(TilePosition(1,2));
         board.ResetPlayerBlock({2,2,1});
         
         // The new boardState should be like this
@@ -258,8 +258,44 @@ TEST_CASE("Change board state") {
         REQUIRE(piecesToFall.size() == 4);
         
 
-        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({3,0},{3,4})) != piecesToFall.end());
+        // Column 0: 1 piece
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({3,0},{4,0})) != piecesToFall.end());
         
+        // Column 1: 0 pieces
+        
+        // Column 2: 2 pieces
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({2,2},{5,2})) != piecesToFall.end());
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({1,2},{4,2})) != piecesToFall.end());
+        
+        // Column 3: 0 pieces
+        
+        // Column 4: 1 pieces
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({2,4},{3,4})) != piecesToFall.end());
+    }
+    
+    SECTION("Game end condition is computed correctly")
+    {
+        ColumnsBoard board( {
+            
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            // board game, any piece above this row should end the game
+            {0,0,2,0,0},
+            {0,0,2,0,2},
+            {0,0,3,0,1},
+            {0,0,3,2,1},
+            {0,2,1,2,2}
+        });
+        
+        board.InitNumRowsGameOver(3);
+        
+        REQUIRE_FALSE(board.IsGameOverConditionFullfilled());
+        
+        //at position (0,0) by default
+        board.ResetPlayerBlock({1,1,2});
+        
+        REQUIRE(board.IsGameOverConditionFullfilled());
     }
 }
 

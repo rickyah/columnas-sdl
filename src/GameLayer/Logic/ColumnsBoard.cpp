@@ -171,7 +171,6 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_se
                 // But only if the TO index points to an empty tile
                 if (fromRowIdx != toRowIdx && mBoardTiles[toRowIdx][currentCol] == ESpecialBoardPieces::Empty)
                 {
-                    
                     mListPiecesToFall.push_back(TileMovement(TilePosition(fromRowIdx, currentCol), TilePosition(toRowIdx, currentCol)));
                     
                     fromRowIdx--;
@@ -184,5 +183,19 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_se
     }
     
     return mListPiecesToFall;
+}
+
+bool ColumnsBoard::IsGameOverConditionFullfilled() const
+{
+    for(int row = 0; row < mNumFirstRowsForGameOver; ++row)
+    {
+        auto currentRow = mBoardTiles[row];
+        if (std::find_if(currentRow.begin(), currentRow.end(), [](TileType t) { return t > 0;}) != currentRow.end())
+        {
+            return true;
+        }
+    }
+    
+    return false;
 }
 
