@@ -127,7 +127,7 @@ bool FSM<TStateId, TState>::ChangeTo(TStateId id)
     
     if (nextState == nullptr) return false;
     
-    if (_currentState != nextState)
+    if (pCurrentState != nextState)
     {
         pNextState = nextState;
     }
