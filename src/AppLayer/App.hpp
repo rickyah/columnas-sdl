@@ -11,6 +11,7 @@
 
 #include <memory>
 #include "SDL.h"
+#include "DataTypes.hpp"
 #include "Graphics.hpp"
 #include "EventQueue.hpp"
 #include "EventsManager.hpp"
@@ -41,13 +42,6 @@ public:
         FPS30 = 30,
         FPS60 = 60,
         FPS120 = 120
-    };
-    
-    struct TimeInfo
-    {
-        double dt;
-        int frameCount;
-        int elapsedMs;
     };
     
     App();

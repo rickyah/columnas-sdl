@@ -34,4 +34,11 @@ struct Rect
     Size size;
 };
 
+struct TimeInfo
+{
+    double dt;
+    int frameCount;
+    int elapsedMs;
+};
+
 #endif /* DataTypes_hpp */
