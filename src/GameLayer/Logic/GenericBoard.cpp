@@ -39,8 +39,8 @@ GenericBoard::GenericBoard(BoardState boardState):
 
 }
 
-GenericBoard::GenericBoard(uint8_t rows, uint8_t columns, TileType initialValue):
-    mBoardTiles(rows, std::vector<TileType>(columns, initialValue))
+GenericBoard::GenericBoard(uint8_t rows, uint8_t columns):
+    mBoardTiles(rows, std::vector<TileType>(columns, ESpecialBoardPieces::Empty))
 {
 
 }
@@ -54,7 +54,7 @@ bool GenericBoard::IsPositionInsideBoardBounds(const TilePosition &pos) const
 
 void GenericBoard::RemovePieces(const TilesSet &pieces)
 {
-    for(auto piece: pieces)
+    for(auto &piece: pieces)
     {
         mBoardTiles[piece.row][piece.col] = ESpecialBoardPieces::Empty;
     }
@@ -145,6 +145,25 @@ std::unordered_set<TilePosition> GenericBoard::GetDiagonalAdjacentTiles(uint8_t 
     result.insert(TilePosition(row, col));
 
     return result;
+}
+
+void GenericBoard::ResetBoardState()
+{
+    for(auto &row: mBoardTiles )
+    {
+        std::fill(row.begin(), row.end(), ESpecialBoardPieces::Empty);
+    }
+}
+
+void GenericBoard::ResetBoardState(uint8_t rows, uint8_t columns)
+{
+    mBoardTiles.resize(rows);
+
+    for(auto &row: mBoardTiles )
+    {
+        row.resize(columns, ESpecialBoardPieces::Empty);
+    }
+    
 }
 
 std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t,int8_t> increaser) const

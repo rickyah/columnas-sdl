@@ -93,10 +93,15 @@ public:
     // TODO: check if this should be changed to a Mememto pattern
     explicit GenericBoard(BoardState boardData);
 
-    // Sets up an board of a given rows and columns, and an initial tile value.
-    explicit GenericBoard(uint8_t rows, uint8_t columns, TileType initialValue = 0);
+    // Sets up an board of a given rows and columns with the Empty tile value
+    explicit GenericBoard(uint8_t rows, uint8_t columns);
 
     const BoardState& boardState() { return mBoardTiles; };
+    
+    void ResetBoardState();
+    void ResetBoardState(uint8_t rows, uint8_t columns);
+    
+    
     void boardState(const BoardState& newState ) { mBoardTiles = newState; };
     
     uint8_t rows() const { return mBoardTiles.size(); }

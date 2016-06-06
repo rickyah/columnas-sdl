@@ -18,14 +18,14 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     REQUIRE(board.rows() == 4);
     REQUIRE(board.columns() == 6);
 
-    SECTION("Init a board with a given initial value")
+    SECTION("Init a board ")
     {
-        GenericBoard b(3, 4, 11);
+        GenericBoard b(3, 4);
 
         REQUIRE(b.rows() == 3);
         REQUIRE(b.columns() == 4);
-        REQUIRE(b[0][0] == 11);
-        REQUIRE(b[2][3] == 11);
+        REQUIRE(b[0][0] == ESpecialBoardPieces::Empty);
+        REQUIRE(b[2][3] == ESpecialBoardPieces::Empty);
     }
 
     SECTION("You can get and set the values of a board using the subscript operator") {
@@ -34,6 +34,28 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
         board[2][3] = 10;
 
         REQUIRE(board[2][3] == 10);
+    }
+    
+    SECTION("You can reset the board state") {
+        board[2][3] = 1;
+        
+        REQUIRE(board[2][3] == 1);
+        
+        board.ResetBoardState();
+        
+        REQUIRE(board[2][3] == ESpecialBoardPieces::Empty);
+    }
+    
+    SECTION("You can reset the board state and resize it") {
+        GenericBoard b(3, 4);
+        
+        REQUIRE(b.rows() == 3);
+        REQUIRE(b.columns() == 4);
+        
+        b.ResetBoardState(4, 3);
+        
+        REQUIRE(b.rows() == 4);
+        REQUIRE(b.columns() == 3);
     }
 
     SECTION("Get equal adjacent tiles in a row from a given position") {
