@@ -110,8 +110,8 @@ public:
     
 private:
    
-    double mLogicRateMs = 1000/120.0;
-    double mRenderRateMs = 1000/60.0;
+    double mLogicRateMs = 1000/UpdateRate::FPS120;
+    double mRenderRateMs = 1000/UpdateRate::FPS60;
     int mLogicFrameCount = 0;
     int mRenderFrameCount = 0;
     

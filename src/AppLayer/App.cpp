@@ -55,7 +55,7 @@ void App::UpdateGameLoop()
     {
         double currentFrameStartTicks = ticksSinceStart();
         // Clamp frametime max value
-        double frameTimeMs = std::min(0.33, (currentFrameStartTicks - previousFrameStartTicks));
+        double frameTimeMs = std::min(30.0, (currentFrameStartTicks - previousFrameStartTicks));
         previousFrameStartTicks = currentFrameStartTicks;
         
         accumulatorMs += frameTimeMs;
@@ -81,8 +81,8 @@ void App::UpdateGameLoop()
         
         if (mRenderRateMs > 0)
         {
-            auto elapsedFrameMs =  ((ticksSinceStart() - previousFrameStartTicks));
-            double sleepTimeMs = mRenderRateMs - elapsedFrameMs;
+            auto elapsedFrameSecs =  ((ticksSinceStart() - previousFrameStartTicks));
+            double sleepTimeMs = mRenderRateMs - elapsedFrameSecs;
         
             Delay(sleepTimeMs);
         }
