@@ -50,16 +50,16 @@ public:
     void UpdateGameLoop();
     
     // Returns a reference to the graphics subsystem
-    std::shared_ptr<Graphics> graphics() { return pGraphics; }
+    Graphics & graphics() { return *pGraphics; }
     
     // Gets a reference to the global EventQueue to dispatch messages between systems
-    std::shared_ptr<EventQueue> eventQueue() { return pEventQueue; }
+    EventQueue & eventQueue() { return *pEventQueue; }
     
     // Gets a reference to the system's event processor
-    std::shared_ptr<EventsManager> eventsManager() { return pEventsManager; }
+    EventsManager & eventsManager() { return *pEventsManager; }
     
     // Gets a reference to the system's resource manager
-    std::shared_ptr<ResourceManager> resourceManager() { return pResourceManager; }
+    ResourceManager &resourceManager() { return *pResourceManager; }
     
     Uint32 ticksSinceStart() const;
     

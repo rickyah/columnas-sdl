@@ -19,7 +19,7 @@ class ColumnsBoard : public GenericBoard
 {
 public:
     explicit ColumnsBoard(BoardState state):GenericBoard(state){}
-    explicit ColumnsBoard(uint8_t width, uint8_t height):GenericBoard(width, height){}
+    explicit ColumnsBoard(uint8_t rows, uint8_t columns):GenericBoard(rows, columns){}
     
     void InitPlayerBlockInitialPosition(TilePosition pos) { mPlayerBlockInitialPosition = pos; }
     void InitNumEqualPiecesToDestroy(uint8_t numPieces = 3) { mNumEqualPiecesToDestroy = numPieces; }

@@ -12,48 +12,17 @@
 #include <memory>
 
 #include "FSM.hpp"
+#include "ColumnsGameFSMDefinitions.hpp"
+
 #include "ResourceManager.hpp"
+#include "ColumnsGameStates.hpp"
 #include "EventQueue.hpp"
 #include "AppEvents.hpp"
 
 #include "RandomDistribution.hpp"
+
 #include "ColumnsBoard.hpp"
 #include "ColumnsBoardView.hpp"
-
-
-class ColumnsGameState : IState
-{
-protected:
-    ColumnsGameState() {}
-    
-private:
-    ColumnsGameState(const ColumnsGameState &);
-    ColumnsGameState & operator=(const ColumnsGameState &);
-};
-
-class MovingPiecesState : ColumnsGameState
-{
-public:
-    MovingPiecesState(const EventQueue & eventQueue);
-    
-private:
-    
-};
-
-class RemovingPiecesState : ColumnsGameState
-{
-public:
-    
-};
-
-class DroppingPiecesState : ColumnsGameState
-{
-public:
-    DroppingPiecesState();
-    
-    DroppingPiecesState(const DroppingPiecesState &) = delete;
-    DroppingPiecesState & operator=(const DroppingPiecesState &) = delete;
-};
 
 class ColumnsGameController
 {
@@ -67,25 +36,26 @@ class ColumnsGameController
         Cookie      = 6
     };
     
-    enum EStates
-    {
-        Moving_Pieces,
-        Removing_Pieces,
-        Dropping_Pieces
-    };
-    
+   
 public:
-    ColumnsGameController(std::shared_ptr<EventQueue> eventQueue,
-                          std::shared_ptr<ResourceManager> resourceMng)
+    ColumnsGameController(EventQueue &eventQueue,
+                          ResourceManager &resourceMng)
                             :
-    mColumnsBoard(cDefaultBoardWidth, cDefaultBoardHeight),
-    pEventQueue(eventQueue),
-    pResourceManager(resourceMng)
+    mColumnsBoard(cDefaultBoardRows, cDefaultBoardColumns),
+    mEventQueueRef(eventQueue),
+    mResourceManagerRef(resourceMng)
     {}
     
     // TODO: use with a configuration POCO when we read configuration from files
     void Init();
     
+    void EndGame();
+    
+    bool MovePlayerDown();
+    void MovePlayerLeft();
+    void MovePlayerRight();
+    bool ResetPlayerBlock();
+    void MovePlayerBlockPieces();
     
     void Update(TimeInfo time);
     void Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer);
@@ -94,24 +64,22 @@ private:
     ColumnsGameController(const ColumnsGameController &);
     ColumnsGameController& operator=(const ColumnsGameController &);
     
-    
-    FSM<EStates, IState, EnumHasher> mFSM;
+    ColumnsGameFSM mFSM;
     
     // Creates a new player block with a random set of pieces and positions it at
     // the initial position in the board
-    bool ResetPlayerBlock();
-    void MovePlayerBlockPieces();
     
-    const uint8_t cDefaultBoardWidth = 6;
-    const uint8_t cDefaultBoardHeight = 17;
+    
+    const uint8_t cDefaultBoardColumns = 17;
+    const uint8_t cDefaultBoardRows = 6;
     
     ColumnsBoard mColumnsBoard;
     ColumnsBoardView mColumnsBoardView;
 
     std::shared_ptr<RandomDistribution> pRandomDistribution;
     
-    std::shared_ptr<ResourceManager> pResourceManager;
-    std::shared_ptr<EventQueue> pEventQueue;
+    ResourceManager &mResourceManagerRef;
+    EventQueue &mEventQueueRef;
 };
 
 #endif /* ColumnsGameController_hpp */

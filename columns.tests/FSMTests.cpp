@@ -244,7 +244,7 @@ TEST_CASE( "FSM", "[App Layer]" ) {
         
         REQUIRE_FALSE(m.RegisterState(StateIds::MyState, second));
     }
-    
+        
     SECTION("You can't remove an state that was not registered") {
         FSM<int, IState> m;
         

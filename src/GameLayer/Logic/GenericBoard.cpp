@@ -40,7 +40,7 @@ GenericBoard::GenericBoard(BoardState boardState):
 }
 
 GenericBoard::GenericBoard(uint8_t rows, uint8_t columns):
-    mBoardTiles(rows, std::vector<TileType>(columns, ESpecialBoardPieces::Empty))
+    mBoardTiles(columns, std::vector<TileType>(rows, ESpecialBoardPieces::Empty))
 {
 
 }

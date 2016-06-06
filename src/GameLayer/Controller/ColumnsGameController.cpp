@@ -8,6 +8,12 @@
 
 #include "ColumnsGameController.hpp"
 
+
+// Forward declaration
+class MovingPiecesState;
+class DroppingPiecesState;
+class RemovingPiecesState;
+
 void ColumnsGameController::Init()
 {
     mColumnsBoard.InitNumEqualPiecesToDestroy(3);
@@ -19,20 +25,20 @@ void ColumnsGameController::Init()
     
     mColumnsBoardView.SetPieceToTextureMapping(Size(24,24),
         {
-            {ESpecialBoardPieces::Empty,      pResourceManager->Register<Texture2dResource>(RESOURCE_ID("Sprites/Tile.png"))},
+            {ESpecialBoardPieces::Empty,      mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Tile.png"))},
 
-            {EPieces::Croissant, pResourceManager->Register<Texture2dResource>(RESOURCE_ID("Sprites/Croissant.png"))},
-            {EPieces::Cupcake,   pResourceManager->Register<Texture2dResource>(RESOURCE_ID("Sprites/Cupcake.png"))},
-            {EPieces::Danish,    pResourceManager->Register<Texture2dResource>(RESOURCE_ID("Sprites/Danish.png"))},
-            {EPieces::Donut,     pResourceManager->Register<Texture2dResource>(RESOURCE_ID("Sprites/Donut.png"))},
-            {EPieces::Macaroon,  pResourceManager->Register<Texture2dResource>(RESOURCE_ID("Sprites/Macaroon.png"))},
-            {EPieces::Cookie,    pResourceManager->Register<Texture2dResource>(RESOURCE_ID("Sprites/SugarCookie.png"))}
+            {EPieces::Croissant, mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Croissant.png"))},
+            {EPieces::Cupcake,   mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Cupcake.png"))},
+            {EPieces::Danish,    mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Danish.png"))},
+            {EPieces::Donut,     mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Donut.png"))},
+            {EPieces::Macaroon,  mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Macaroon.png"))},
+            {EPieces::Cookie,    mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/SugarCookie.png"))}
         });
     
     pRandomDistribution = std::make_shared<RandomDistribution>(1,6);
     
     
-    pEventQueue->AddListener(AppTouch_Event::sEventType, [this](std::shared_ptr<IEventData> event) {
+    mEventQueueRef.AddListener(AppTouch_Event::sEventType, [this](std::shared_ptr<IEventData> event) {
         auto ptr = std::static_pointer_cast<AppTouch_Event>(event);
         
         if (ptr->args().type == AppTouch_Event::ETouchType::Motion)
@@ -48,6 +54,12 @@ void ColumnsGameController::Init()
     });
     
     
+    // Init FSM
+    mFSM.RegisterState(EColumnsGameStatesIds::Moving_Pieces, std::make_shared<MovingPiecesState>(mFSM, *this, mEventQueueRef));
+    mFSM.RegisterState(EColumnsGameStatesIds::Dropping_Pieces, std::make_shared<DroppingPiecesState>(mFSM, *this));
+    mFSM.RegisterState(EColumnsGameStatesIds::Removing_Pieces, std::make_shared<RemovingPiecesState>(mFSM, *this));
+    
+    mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
     ResetPlayerBlock();
     
     mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
@@ -69,29 +81,33 @@ void ColumnsGameController::MovePlayerBlockPieces()
     mColumnsBoard.MovePlayerBlockPieces();
     mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
 }
+
+void ColumnsGameController::EndGame()
+{
+    mColumnsBoard.ResetBoardState();
+}
+
+bool ColumnsGameController::MovePlayerDown()
+{
+    return mColumnsBoard.MovePlayerBlockDown();
+}
+void ColumnsGameController::MovePlayerLeft()
+{
+    
+}
+
+void ColumnsGameController::MovePlayerRight()
+{
+    
+}
+
+
 void ColumnsGameController::Update(TimeInfo time)
 {
-    static int32_t passedTime = 0;
-    passedTime += time.dt;
     
-    bool endGame = false;
-    int timePerDropMs = 1000;
-    if (passedTime >= timePerDropMs)
-    {
-        SDL_Log("elapsed: %d, passed %d", time.elapsedMs, passedTime);
-        if(!mColumnsBoard.MovePlayerBlockDown())
-        {
-            if(!ResetPlayerBlock())
-            {
-                mColumnsBoard.ResetBoardState();
-            }
-        }
-       
-        
-        // update view
-        mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
-        passedTime = std::max(0, passedTime -timePerDropMs);
-    }
+    mFSM.Update(time.dt);
+
+    mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
 }
 
 void ColumnsGameController::Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer)

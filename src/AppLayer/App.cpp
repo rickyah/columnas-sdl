@@ -54,6 +54,7 @@ void App::UpdateGameLoop()
     while (pEventsManager->Update())
     {
         double currentFrameStartTicks = ticksSinceStart();
+        
         // Clamp frametime max value
         double frameTimeMs = std::min(30.0, (currentFrameStartTicks - previousFrameStartTicks));
         previousFrameStartTicks = currentFrameStartTicks;
@@ -71,13 +72,13 @@ void App::UpdateGameLoop()
             accumulatorMs -= mLogicRateMs;
         }
 
-        // render
 
+        // render frame
         mRenderTimeInfo.dt = accumulatorMs/mRenderRateMs;
         mRenderTimeInfo.frameCount = mRenderFrameCount++;
         mRenderTimeInfo.elapsedMs = ticksSinceStart();
         
-        if(mFuncRenderUpdate) mFuncRenderUpdate(mRenderTimeInfo, graphics()->renderer());
+        if(mFuncRenderUpdate) mFuncRenderUpdate(mRenderTimeInfo, graphics().renderer());
         
         if (mRenderRateMs > 0)
         {

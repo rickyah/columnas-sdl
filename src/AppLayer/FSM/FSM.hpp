@@ -14,6 +14,22 @@
 
 
 /*
+ * Use this hasher function if you want to used the FSM using enum as keys
+ *
+ * FSM<MyEnum, IState, EnumHasher> myFSM;
+ */
+struct EnumHasher
+{
+    template <typename T>
+    inline
+    typename std::enable_if<std::is_enum<T>::value, std::size_t>::type
+    operator ()(T const value) const
+    {
+        return static_cast<std::size_t>(value);
+    }
+};
+
+/*
  * Interface defining all the operations required for any state in this FSM
  */
 class IState
@@ -55,9 +71,10 @@ private:
  *           states using this FSM must expose a minimun set of operations (methods) for this to work
  *           Take a look at the IState interface above for an example implementation, or to use it as a base
  *           class for implementors.
+ *  THash:   Hash function to use, defaults to the default std::hash function defined for the TStateId type
  */
 
-template <typename TStateId, typename TState>
+template <typename TStateId, typename TState, typename THash = std::hash<TStateId> >
 class FSM
 {
     using TStatePtr = std::shared_ptr<IState>;
@@ -68,12 +85,16 @@ public:
     TStatePtr currentState() const { return pCurrentState; }
     
     /*
-     *  Changes to a new registered state what was previously registerd in the FSM
-     *  The actual state change won't be made until the next call to update.
+     * Changes to a new registered state what was previously registerd in the FSM
+     * The actual state change won't be made until the next call to update.
      *
-     *  @return false if the state was not registered in the FSM, otherwise returns true.
+     * Is marked as const because the internal state of the FSM does not really change, and this will allow states
+     * to get a const reference to the state machine and change to another state, but without accessing the rest
+     * of the non-const API.
+     *
+     * @return false if the state was not registered in the FSM, otherwise returns true.
      */
-    bool ChangeTo(TStateId id);
+    bool ChangeTo(TStateId id) const;
     
     /*
      * Register an state to be used by the FSM
@@ -99,9 +120,9 @@ public:
     ~FSM();
     
 private:
-    std::unordered_map<TStateId, TStatePtr> mStates;
+    std::unordered_map<TStateId, TStatePtr, THash> mStates;
     
-    TStatePtr pNextState;
+    mutable TStatePtr pNextState;
     TStatePtr pCurrentState;
     
 };
@@ -110,8 +131,8 @@ private:
 ////////////////////////////////////////////////////////////////////////
 // Implementation
 
-template <typename TStateId, typename TState>
-bool FSM<TStateId, TState>::RegisterState(TStateId id, TStatePtr pState)
+template <typename TStateId, typename TState, typename THash>
+bool FSM<TStateId, TState, THash>::RegisterState(TStateId id, TStatePtr pState)
 {
     pState->OnInit();
     
@@ -120,23 +141,23 @@ bool FSM<TStateId, TState>::RegisterState(TStateId id, TStatePtr pState)
     return mStates.insert(pair).second;
 }
 
-template <typename TStateId, typename TState>
-bool FSM<TStateId, TState>::ChangeTo(TStateId id)
+template <typename TStateId, typename TState, typename THash>
+bool FSM<TStateId, TState, THash>::ChangeTo(TStateId id) const
 {
-    auto nextState = mStates[id];
+    auto nextState = mStates.find(id);
     
-    if (nextState == nullptr) return false;
+    if (nextState == mStates.end()) return false;
     
-    if (pCurrentState != nextState)
+    if (pCurrentState != nextState->second)
     {
-        pNextState = nextState;
+        pNextState = nextState->second;
     }
     
     return true;
 }
 
-template <typename TStateId, typename TState>
-bool FSM<TStateId, TState>::RemoveState(TStateId id)
+template <typename TStateId, typename TState, typename THash>
+bool FSM<TStateId, TState, THash>::RemoveState(TStateId id)
 {
     auto pState = mStates[id];
     
@@ -160,8 +181,8 @@ bool FSM<TStateId, TState>::RemoveState(TStateId id)
     return true;
 }
 
-template <typename TStateId, typename TState>
-void FSM<TStateId, TState>::Update(double dt)
+template <typename TStateId, typename TState, typename THash>
+void FSM<TStateId, TState, THash>::Update(double dt)
 {
     if(pNextState)
     {
@@ -183,10 +204,12 @@ void FSM<TStateId, TState>::Update(double dt)
     }
 }
 
-template <typename TStateId, typename TState>
-FSM<TStateId, TState>::~FSM()
+template <typename TStateId, typename TState, typename THash>
+FSM<TStateId, TState, THash>::~FSM()
 {
     mStates.clear();
 }
+
+
 
 #endif /* FSM_hpp */
