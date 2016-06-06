@@ -41,7 +41,10 @@ void Renderer::CreateHardwareTexture(std::shared_ptr<Texture2d> texture) const
         textureData = std::shared_ptr<SDL_Texture>(
             SDL_CreateTextureFromSurface(pSDLRenderer.get(), texture->surfaceData().get()),
             SDL_DestroyTexture);
+        texture->textureData(textureData);
     }
+    
+
 }
 
 void Renderer::DrawTextureAt(std::shared_ptr<Texture2d> pTexture, Position pos)

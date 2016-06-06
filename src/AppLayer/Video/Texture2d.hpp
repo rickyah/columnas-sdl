@@ -29,11 +29,8 @@ public:
     const std::shared_ptr<SDL_Surface> surfaceData() const { return pSurfaceData; }
     const std::shared_ptr<SDL_Texture> textureData() const { return pTextureData; }
     
-    
-    std::shared_ptr<Texture2d> LoadTextureFromFile(const char* fileName);
-    std::shared_ptr<Texture2d> CreateTextureFromSurface(SDL_Surface * pSurface);
-    
 private:
+    void textureData(std::shared_ptr<SDL_Texture> pTexture) { return pTextureData = pTexture; }
     Size mDrawSize;
     Size mRealSize;
     std::shared_ptr<SDL_Surface> pSurfaceData;
