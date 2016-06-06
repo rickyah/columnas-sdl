@@ -45,7 +45,7 @@ bool ColumnsBoard::IsPositionInsidePlayerBlock(TilePosition pos) const
 bool ColumnsBoard::CanMovePlayerBlockTo(TilePosition newPos) const
 {
     // Check if we can move
-    for(auto i = 0; i < mPlayerBlock.size(); ++i)
+    for(int i = 0; i < mPlayerBlock.size(); ++i)
     {
         if (!GenericBoard::IsPositionInsideBoardBounds(newPos)) return false;
         
@@ -60,11 +60,24 @@ bool ColumnsBoard::CanMovePlayerBlockTo(TilePosition newPos) const
     return true;
 }
 
-void ColumnsBoard::ResetPlayerBlock(const std::vector<TileType> &pieces)
+bool ColumnsBoard::ResetPlayerBlock(const std::vector<TileType> &pieces)
 {
+    // check that where the new block should be positioned is empty
+    for(int i = 0; i < mPlayerBlock.size(); ++ i)
+    {
+        if (mBoardTiles[mPlayerBlockInitialPosition.row+i][mPlayerBlockInitialPosition.col] != ESpecialBoardPieces::Empty)
+        {
+            return false;
+        }
+    }
+
     mPlayerBlock.SetNewPieces(pieces);
     
+    mPlayerBlockPosition = mPlayerBlockInitialPosition;
+    
     UpdateBoardStateWithPlayerBlockAtPosition(mPlayerBlockInitialPosition);
+
+    return true;
 }
 
 void ColumnsBoard::MovePlayerBlockPieces()

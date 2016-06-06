@@ -88,13 +88,17 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
     }
     
     
-    SECTION("Can't move player block to occupied tiles") {
+    SECTION("Can't move player block to occupied tiles to the left") {
         board.InitPlayerBlockInitialPosition(TilePosition(0,0));
         
         board.ResetPlayerBlock({2,2,2});
         
         REQUIRE_FALSE(board.MovePlayerBlockLeft());
+    }
+    
+    SECTION("Can't move player block to occupied tiles to the right") {
         
+        board.InitPlayerBlockInitialPosition(TilePosition(0,0));
         
         board.ResetPlayerBlock({2,2,2});
         
@@ -102,31 +106,24 @@ TEST_CASE( "ColumnsBoard", "[GameModel]" ) {
         REQUIRE(board.MovePlayerBlockRight());
         REQUIRE(board.MovePlayerBlockRight());
         REQUIRE_FALSE(board.MovePlayerBlockRight());
+    }
+    
+    SECTION("Can't move player block to occupied tiles below it") {
         
-        
+        board.InitPlayerBlockInitialPosition(TilePosition(0,0));
         board.ResetPlayerBlock({2,2,2});
         
         REQUIRE(board.MovePlayerBlockDown());
         REQUIRE(board.MovePlayerBlockDown());
         REQUIRE(board.MovePlayerBlockDown());
         
-        REQUIRE_FALSE(board.MovePlayerBlockDown());
-      
-        board.ResetPlayerBlock({2,2,2});
-        
-        REQUIRE(board.MovePlayerBlockDown());
-        REQUIRE(board.MovePlayerBlockDown());
-        REQUIRE(board.MovePlayerBlockRight());
-        REQUIRE(board.MovePlayerBlockLeft());
-        REQUIRE(board.MovePlayerBlockRight());
-        REQUIRE_FALSE(board.MovePlayerBlockRight());
-        
+        REQUIRE_FALSE(board.MovePlayerBlockDown());        
     }
     
     SECTION("Moving player block updates board state")
     {
         board.InitPlayerBlockInitialPosition(TilePosition(0,0));
-        board.ResetPlayerBlock({2,2,2});
+        REQUIRE(board.ResetPlayerBlock({2,2,2}));
         
         REQUIRE(board[0][0] == 2);
         REQUIRE(board[1][0] == 2);
@@ -296,6 +293,23 @@ TEST_CASE("Change board state") {
         board.ResetPlayerBlock({1,1,2});
         
         REQUIRE(board.IsGameOverConditionFullfilled());
+    }
+    
+    SECTION("Can't reset the state of the player block if the board is not empty") {
+        ColumnsBoard board( {
+            {0,0,0,0,0},
+            {0,0,0,0,2},
+            {0,0,0,0,1},
+            {0,0,3,2,1},
+            {0,2,1,2,2}
+        });
+        
+        board.InitPlayerBlockInitialPosition({0,2});
+        
+        REQUIRE(board.ResetPlayerBlock({1,2,3}));
+        
+        REQUIRE_FALSE(board.ResetPlayerBlock({1,2,3}));
+
     }
 }
 

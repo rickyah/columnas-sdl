@@ -27,7 +27,7 @@ public:
     
     uint8_t numFirstRowsForGameOver() const { return mNumFirstRowsForGameOver; }
     
-    void ResetPlayerBlock(const std::vector<TileType> &pieces);
+    bool ResetPlayerBlock(const std::vector<TileType> &pieces);
     bool MovePlayerBlockLeft();
     bool MovePlayerBlockRight();
     bool MovePlayerBlockDown();
