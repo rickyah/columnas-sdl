@@ -46,13 +46,18 @@ class MovingPiecesState : public ColumnsGameState
 public:
     MovingPiecesState(const ColumnsGameFSM &fsm,
                       ColumnsGameController &controller,
-                      EventQueue & eventQueue)
-    :ColumnsGameState(fsm, controller),mEventQueueRef(eventQueue){}
+                      EventQueue & eventQueue);
     
+    
+    virtual void OnInit() override;
+    virtual void OnCleanup() override;
     virtual void OnUpdate(double dt) override;
     
 private:
     
+    void OnTouchEvent(std::shared_ptr<IEventData> event);
+    AppTouch_Event::TouchMotion FilterMotion(AppTouch_Event::TouchMotion motion) const;
+    EventListenerDelegate mOnTouchEventDlg;
     EventQueue &mEventQueueRef;
     
 };

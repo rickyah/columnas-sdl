@@ -38,22 +38,6 @@ void ColumnsGameController::Init()
     pRandomDistribution = std::make_shared<RandomDistribution>(1,6);
     
     
-    mEventQueueRef.AddListener(AppTouch_Event::sEventType, [this](std::shared_ptr<IEventData> event) {
-        auto ptr = std::static_pointer_cast<AppTouch_Event>(event);
-        
-        if (ptr->args().type == AppTouch_Event::ETouchType::Motion)
-        {
-            SDL_Log("motion (%f,%f)", ptr->args().motion.dx, ptr->args().motion.dy);
-        }
-        else if (ptr->args().type == AppTouch_Event::ETouchType::Up)
-        {
-            MovePlayerBlockPieces();
-            
-            SDL_Log("pos (%d,%d)", ptr->args().pos.x, ptr->args().pos.y);
-        }
-    });
-    
-    
     // Init FSM
     mFSM.RegisterState(EColumnsGameStatesIds::Moving_Pieces, std::make_shared<MovingPiecesState>(mFSM, *this, mEventQueueRef));
     mFSM.RegisterState(EColumnsGameStatesIds::Dropping_Pieces, std::make_shared<DroppingPiecesState>(mFSM, *this));
@@ -76,7 +60,7 @@ bool ColumnsGameController::ResetPlayerBlock()
 }
 
 
-void ColumnsGameController::MovePlayerBlockPieces()
+void ColumnsGameController::PermutePlayerBlockPieces()
 {
     mColumnsBoard.MovePlayerBlockPieces();
     mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
@@ -87,18 +71,18 @@ void ColumnsGameController::EndGame()
     mColumnsBoard.ResetBoardState();
 }
 
-bool ColumnsGameController::MovePlayerDown()
+bool ColumnsGameController::MoveDown()
 {
     return mColumnsBoard.MovePlayerBlockDown();
 }
-void ColumnsGameController::MovePlayerLeft()
+void ColumnsGameController::MoveLeft()
 {
-    
+    mColumnsBoard.MovePlayerBlockLeft();
 }
 
-void ColumnsGameController::MovePlayerRight()
+void ColumnsGameController::MoveRight()
 {
-    
+    mColumnsBoard.MovePlayerBlockRight();
 }
 
 

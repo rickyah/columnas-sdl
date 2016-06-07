@@ -51,11 +51,11 @@ public:
     
     void EndGame();
     
-    bool MovePlayerDown();
-    void MovePlayerLeft();
-    void MovePlayerRight();
+    bool MoveDown();
+    void MoveLeft();
+    void MoveRight();
     bool ResetPlayerBlock();
-    void MovePlayerBlockPieces();
+    void PermutePlayerBlockPieces();
     
     void Update(TimeInfo time);
     void Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer);

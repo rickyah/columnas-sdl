@@ -14,6 +14,8 @@
 
 #include "IEventData.hpp"
 
+typedef std::function<void (std::shared_ptr<IEventData>)> EventListenerFunc;
+
 /**
  * Functor defining the target function/method to be called in a listener for an event
  * Wraps the std::function with an unique Id that will allow to unregister the listener
@@ -23,13 +25,12 @@
  */
 class EventListenerDelegate
 {
-    
 public:
     // unique id for an event listener
     typedef uint_fast64_t AutoIncrementalIdType;
     const AutoIncrementalIdType id;
     
-    EventListenerDelegate(std::function<void (std::shared_ptr<IEventData>)> func):mFunction(func), id(sNextId++) { }
+    EventListenerDelegate(EventListenerFunc func):mFunction(func), id(sNextId++) { }
     
     void operator() (std::shared_ptr<IEventData> pEventData)
     {
