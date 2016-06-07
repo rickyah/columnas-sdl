@@ -16,7 +16,7 @@
 		9C1808611CF70C5700C19900 /* libSDL2_image.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 9C75CCAF1CF5028900114CA9 /* libSDL2_image.a */; };
 		9C2BE2FC1D04703000532AA8 /* RandomDistribution.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE2FA1D04703000532AA8 /* RandomDistribution.cpp */; };
 		9C2BE3001D0622BC00532AA8 /* ColumnsGameController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE2FE1D0622BC00532AA8 /* ColumnsGameController.cpp */; };
-		9C2BE3031D06230F00532AA8 /* ColumnsGameStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE3011D06230F00532AA8 /* ColumnsGameStates.cpp */; };
+		9C2BE3091D071FFE00532AA8 /* ColumnsGameStates.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE3071D071FFE00532AA8 /* ColumnsGameStates.cpp */; };
 		9C47A2DB1CF50A7700885640 /* Sprites in Resources */ = {isa = PBXBuildFile; fileRef = 9C47A2DA1CF50A7700885640 /* Sprites */; };
 		9C47A2F01CF6DA9800885640 /* BoardTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2EF1CF6DA9800885640 /* BoardTests.cpp */; };
 		9C47A2FB1CF6DC0100885640 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C47A2FA1CF6DC0100885640 /* main.cpp */; };
@@ -81,9 +81,9 @@
 		9C2BE2FB1D04703000532AA8 /* RandomDistribution.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RandomDistribution.hpp; sourceTree = "<group>"; };
 		9C2BE2FE1D0622BC00532AA8 /* ColumnsGameController.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColumnsGameController.cpp; sourceTree = "<group>"; };
 		9C2BE2FF1D0622BC00532AA8 /* ColumnsGameController.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColumnsGameController.hpp; sourceTree = "<group>"; };
-		9C2BE3011D06230F00532AA8 /* ColumnsGameStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColumnsGameStates.cpp; sourceTree = "<group>"; };
-		9C2BE3021D06230F00532AA8 /* ColumnsGameStates.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColumnsGameStates.hpp; sourceTree = "<group>"; };
-		9C2BE3041D06258E00532AA8 /* ColumnsGameFSMDefinitions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ColumnsGameFSMDefinitions.hpp; sourceTree = "<group>"; };
+		9C2BE3061D071FFE00532AA8 /* ColumnsGameFSMDefinitions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColumnsGameFSMDefinitions.hpp; sourceTree = "<group>"; };
+		9C2BE3071D071FFE00532AA8 /* ColumnsGameStates.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ColumnsGameStates.cpp; sourceTree = "<group>"; };
+		9C2BE3081D071FFE00532AA8 /* ColumnsGameStates.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColumnsGameStates.hpp; sourceTree = "<group>"; };
 		9C47A2DA1CF50A7700885640 /* Sprites */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sprites; sourceTree = "<group>"; };
 		9C47A2E31CF5A3A300885640 /* DataTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DataTypes.hpp; sourceTree = "<group>"; };
 		9C47A2ED1CF6DA9800885640 /* columns.tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = columns.tests; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -248,14 +248,22 @@
 		9C2BE2FD1D0622BC00532AA8 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				9C2BE3051D071FFE00532AA8 /* GameStates */,
 				9C2BE2FE1D0622BC00532AA8 /* ColumnsGameController.cpp */,
 				9C2BE2FF1D0622BC00532AA8 /* ColumnsGameController.hpp */,
-				9C2BE3011D06230F00532AA8 /* ColumnsGameStates.cpp */,
-				9C2BE3021D06230F00532AA8 /* ColumnsGameStates.hpp */,
-				9C2BE3041D06258E00532AA8 /* ColumnsGameFSMDefinitions.hpp */,
 			);
 			name = Controller;
 			path = GameLayer/Controller;
+			sourceTree = "<group>";
+		};
+		9C2BE3051D071FFE00532AA8 /* GameStates */ = {
+			isa = PBXGroup;
+			children = (
+				9C2BE3061D071FFE00532AA8 /* ColumnsGameFSMDefinitions.hpp */,
+				9C2BE3071D071FFE00532AA8 /* ColumnsGameStates.cpp */,
+				9C2BE3081D071FFE00532AA8 /* ColumnsGameStates.hpp */,
+			);
+			path = GameStates;
 			sourceTree = "<group>";
 		};
 		9C47A2E51CF5F15F00885640 /* GameLayer */ = {
@@ -500,13 +508,13 @@
 				9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */,
 				9C8A398A1CF7BC6600C2E236 /* AppEvents.cpp in Sources */,
 				9C68FB161CF744150058369A /* ColumnsBoard.cpp in Sources */,
+				9C2BE3091D071FFE00532AA8 /* ColumnsGameStates.cpp in Sources */,
 				9C68FB191CF744680058369A /* ColumnsBoardView.cpp in Sources */,
 				9C02B8271CF7B39400B01905 /* EventListenerDelegate.cpp in Sources */,
 				9C8A39851CF7B64F00C2E236 /* EventsManager.cpp in Sources */,
 				9C02B8281CF7B39400B01905 /* EventQueue.cpp in Sources */,
 				9C2BE3001D0622BC00532AA8 /* ColumnsGameController.cpp in Sources */,
 				9C8A397F1CF7B63B00C2E236 /* Graphics.cpp in Sources */,
-				9C2BE3031D06230F00532AA8 /* ColumnsGameStates.cpp in Sources */,
 				9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */,
 				9C8A39801CF7B63B00C2E236 /* Renderer.cpp in Sources */,
 				9C2BE2FC1D04703000532AA8 /* RandomDistribution.cpp in Sources */,

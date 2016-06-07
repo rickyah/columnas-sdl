@@ -43,6 +43,17 @@ private:
  */
 class MovingPiecesState : public ColumnsGameState
 {
+    
+    enum MovementState
+    {
+        Waiting,
+        Accept_Input,
+        Moving_Left,
+        Moving_Right,
+        Moving_Down,
+        Permuting
+    };
+    
 public:
     MovingPiecesState(const ColumnsGameFSM &fsm,
                       ColumnsGameController &controller,
@@ -54,8 +65,11 @@ public:
     virtual void OnUpdate(double dt) override;
     
 private:
+    MovementState mMovementState = MovementState::Waiting;
     
     void OnTouchEvent(std::shared_ptr<IEventData> event);
+    
+    bool HasMotion(AppTouch_Event::TouchMotion motion) const;
     AppTouch_Event::TouchMotion FilterMotion(AppTouch_Event::TouchMotion motion) const;
     EventListenerDelegate mOnTouchEventDlg;
     EventQueue &mEventQueueRef;
