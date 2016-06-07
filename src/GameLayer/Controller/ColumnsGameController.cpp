@@ -43,7 +43,7 @@ void ColumnsGameController::Init()
     mFSM.RegisterState(EColumnsGameStatesIds::Dropping_Pieces, std::make_shared<DroppingPiecesState>(mFSM, *this));
     mFSM.RegisterState(EColumnsGameStatesIds::Removing_Pieces, std::make_shared<RemovingPiecesState>(mFSM, *this));
     
-    mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
+    
     ResetPlayerBlock();
     
     mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());

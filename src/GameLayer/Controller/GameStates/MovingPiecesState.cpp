@@ -1,27 +1,26 @@
 //
-//  ColumnsGameStates.cpp
+//  MovingBlockState.cpp
 //  Columns
 //
-//  Created by Ricardo Amores Hernández on 6/6/16.
+//  Created by Ricardo Amores Hernández on 7/6/16.
 //
 //
 
-#include "ColumnsGameStates.hpp"
+#include "MovingPiecesState.hpp"
 #include <cmath>
 
 MovingPiecesState::MovingPiecesState(const ColumnsGameFSM &fsm,
                                      ColumnsGameController &controller,
                                      EventQueue & eventQueue)
-    :ColumnsGameState(fsm, controller),
-    mEventQueueRef(eventQueue),
-    mOnTouchEventDlg(EventListenerDelegate(std::bind(&MovingPiecesState::OnTouchEvent, this, std::placeholders::_1)))
+:BaseColumnsGameState(fsm, controller),
+mEventQueueRef(eventQueue),
+mOnTouchEventDlg(EventListenerDelegate(std::bind(&MovingPiecesState::OnTouchEvent, this, std::placeholders::_1)))
 {
     
 }
 
 void MovingPiecesState::OnUpdate(double dt)
 {
-    SDL_Log("Logic frame");
     static int32_t passedTime = 0;
     passedTime += dt;
     
@@ -42,7 +41,7 @@ void MovingPiecesState::OnUpdate(double dt)
         // update view
         passedTime = std::max(0, passedTime -timePerDropMs);
     }
-
+    
 }
 
 void MovingPiecesState::OnInit()
@@ -133,28 +132,28 @@ void MovingPiecesState::OnTouchEvent(std::shared_ptr<IEventData> event)
             break;
     }
     
-//    if (args.type == AppTouch_Event::ETouchType::Motion)
-//    {
-//        motion = FilterMotion(args.motion);
-//        
-//        if(motion.dx > 0)
-//        {
-//            mControllerRef.MoveRight();
-//        }
-//        else if(motion.dx < 0)
-//        {
-//            mControllerRef.MoveLeft();
-//        }
-//        else if (motion.dy > 0)
-//        {
-//            mControllerRef.MoveDown();
-//        }
-//    }
-//    else if (args.type == AppTouch_Event::ETouchType::Up)
-//    {
-//        mControllerRef.PermutePlayerBlockPieces();
-//    }
-
+    //    if (args.type == AppTouch_Event::ETouchType::Motion)
+    //    {
+    //        motion = FilterMotion(args.motion);
+    //
+    //        if(motion.dx > 0)
+    //        {
+    //            mControllerRef.MoveRight();
+    //        }
+    //        else if(motion.dx < 0)
+    //        {
+    //            mControllerRef.MoveLeft();
+    //        }
+    //        else if (motion.dy > 0)
+    //        {
+    //            mControllerRef.MoveDown();
+    //        }
+    //    }
+    //    else if (args.type == AppTouch_Event::ETouchType::Up)
+    //    {
+    //        mControllerRef.PermutePlayerBlockPieces();
+    //    }
+    
 }
 
 bool MovingPiecesState::HasMotion(AppTouch_Event::TouchMotion motion) const

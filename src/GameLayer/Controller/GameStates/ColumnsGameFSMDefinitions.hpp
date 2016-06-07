@@ -9,6 +9,8 @@
 #ifndef ColumnsGameFSMDefinitions_hpp
 #define ColumnsGameFSMDefinitions_hpp
 
+#include "FSM.hpp"
+
 enum EColumnsGameStatesIds
 {
     Moving_Pieces,
@@ -16,7 +18,42 @@ enum EColumnsGameStatesIds
     Dropping_Pieces
 };
 
-
 typedef FSM<EColumnsGameStatesIds, IState, EnumHasher> ColumnsGameFSM;
+
+enum EMovementSubStateIds
+{
+    Waiting,
+    Received_Input,
+    Moving_Block,
+    Permuting_Pieces
+};
+
+ 
+typedef FSM<EMovementSubStateIds, IState, EnumHasher> MovimingSubstatesFSM;
+
+
+// Forward declaration: states need a reference to the controller to perform actions in the game
+class ColumnsGameController;
+
+/*
+ * Base class for all states in the Columns game
+ */
+class BaseColumnsGameState : public IState
+{
+protected:
+    BaseColumnsGameState(const ColumnsGameFSM &fsm, ColumnsGameController &controller):
+        mFSM(fsm),
+        mControllerRef(controller)
+    {}
+    
+    const ColumnsGameFSM &mFSM;
+    ColumnsGameController &mControllerRef;
+    
+private:
+    BaseColumnsGameState(const BaseColumnsGameState &);
+    BaseColumnsGameState & operator=(const BaseColumnsGameState &);
+};
+
+
 
 #endif /* ColumnsGameFSMDefinitions_hpp */

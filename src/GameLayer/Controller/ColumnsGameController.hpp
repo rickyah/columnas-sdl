@@ -11,11 +11,8 @@
 
 #include <memory>
 
-#include "FSM.hpp"
-#include "ColumnsGameFSMDefinitions.hpp"
 
 #include "ResourceManager.hpp"
-#include "ColumnsGameStates.hpp"
 #include "EventQueue.hpp"
 #include "AppEvents.hpp"
 
@@ -23,6 +20,11 @@
 
 #include "ColumnsBoard.hpp"
 #include "ColumnsBoardView.hpp"
+
+#include "ColumnsGameFSMDefinitions.hpp"
+#include "MovingPiecesState.hpp"
+#include "RemovingPiecesState.hpp"
+#include "DroppingPiecesState.hpp"
 
 class ColumnsGameController
 {
@@ -64,6 +66,7 @@ private:
     ColumnsGameController(const ColumnsGameController &);
     ColumnsGameController& operator=(const ColumnsGameController &);
     
+
     ColumnsGameFSM mFSM;
     
     // Creates a new player block with a random set of pieces and positions it at
