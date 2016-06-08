@@ -25,6 +25,11 @@ bool ColumnsBoard::MovePlayerBlockDown()
     return MovePlayerBlockToPosition(TilePosition(mPlayerBlockPosition.row+1, mPlayerBlockPosition.col));
 }
 
+bool ColumnsBoard::CanMovePlayerBlockDown() const
+{
+    return CanMovePlayerBlockTo(TilePosition(mPlayerBlockPosition.row+1, mPlayerBlockPosition.col));
+}
+
 
 bool ColumnsBoard::MovePlayerBlockToPosition(const TilePosition &newPos)
 {

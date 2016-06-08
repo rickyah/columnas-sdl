@@ -25,22 +25,21 @@ public:
     void InitNumEqualPiecesToDestroy(uint8_t numPieces = 3) { mNumEqualPiecesToDestroy = numPieces; }
     void InitNumRowsGameOver(uint8_t numRows = 3) { mNumFirstRowsForGameOver = numRows; }
     
-    uint8_t numFirstRowsForGameOver() const { return mNumFirstRowsForGameOver; }
     
     bool ResetPlayerBlock(const std::vector<TileType> &pieces);
+    
     bool MovePlayerBlockLeft();
     bool MovePlayerBlockRight();
     bool MovePlayerBlockDown();
-    
     void MovePlayerBlockPieces();
     
-    bool IsGameOverConditionFullfilled() const;
     
+    uint8_t numFirstRowsForGameOver() const { return mNumFirstRowsForGameOver; }
+    bool CanMovePlayerBlockDown() const;
+    bool IsGameOverConditionFullfilled() const;
     TilesSet FindPiecesToDestroy() const;
-
     TilesMovementSet FindAllPiecesToMove() const;
     TilesMovementSet FindPiecesToMoveInSubset(const TilesSet &) const;
-    
     
 private:
     uint8_t mNumEqualPiecesToDestroy;
@@ -58,6 +57,8 @@ private:
     bool CanMovePlayerBlockTo(TilePosition newPos) const;
     bool MovePlayerBlockToPosition(const TilePosition &newPos);
     void UpdateBoardStateWithPlayerBlockAtPosition(const TilePosition &newPos);
+    
+    
 };
 
 
