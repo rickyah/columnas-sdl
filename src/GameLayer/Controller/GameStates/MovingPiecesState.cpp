@@ -11,16 +11,44 @@
 
 MovingPiecesState::MovingPiecesState(const ColumnsGameFSM &fsm,
                                      ColumnsGameController &controller,
-                                     EventQueue & eventQueue)
-:BaseColumnsGameState(fsm, controller),
-mEventQueueRef(eventQueue),
-mOnTouchEventDlg(EventListenerDelegate(std::bind(&MovingPiecesState::OnTouchEvent, this, std::placeholders::_1)))
+                                     EventQueue & eventQueue):
+    BaseColumnsGameState(fsm, controller)
+    ,mEventQueueRef(eventQueue)
+    ,mOnTouchEventDlg(EventListenerDelegate(std::bind(&MovingPiecesState::OnTouchEvent, this, std::placeholders::_1)))
 {
+    mSubFSM.RegisterState(MovingPiecesState::MovementSubStateIds::Waiting,
+                          std::make_shared<WaitingInputState>(mSubFSM,
+                                                              mEventQueueRef));
     
+    mSubFSM.RegisterState(MovingPiecesState::MovementSubStateIds::Received_Input,
+                          std::make_shared<ReceivedInputState>(mSubFSM,
+                                                               mEventQueueRef,
+                                                               controller));
+    
+    mSubFSM.RegisterState(MovingPiecesState::MovementSubStateIds::Moving_Block,
+                          std::make_shared<MovingBlockPieceInputState>(mSubFSM,
+                                                                       mEventQueueRef,
+                                                                       controller));
+    
+    mSubFSM.RegisterState(MovingPiecesState::MovementSubStateIds::Droping_Block,
+                          std::make_shared<DroppingBlockPieceInputState>(mSubFSM,
+                                                                         mEventQueueRef,
+                                                                         controller));
+    
+    mSubFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
+}
+
+void MovingPiecesState::OnTouchEvent(std::shared_ptr<IEventData> event)
+{
+    auto ptr = std::static_pointer_cast<AppTouch_Event>(event);
+    
+    mSubFSM.currentState().ptr->OnTouchEvent(ptr);
 }
 
 void MovingPiecesState::OnUpdate(double dt)
 {
+    mSubFSM.Update(dt);
+    
     static int32_t passedTime = 0;
     passedTime += dt;
     
@@ -28,7 +56,7 @@ void MovingPiecesState::OnUpdate(double dt)
     int timePerDropMs = 1000;
     if (passedTime >= timePerDropMs)
     {
-        //        SDL_Log("elapsed: %d, passed %d", time.elapsedMs, passedTime);
+
         if(!mControllerRef.MoveDown())
         {
             if(! mControllerRef.ResetPlayerBlock())
@@ -36,8 +64,7 @@ void MovingPiecesState::OnUpdate(double dt)
                 
             }
         }
-        
-        
+
         // update view
         passedTime = std::max(0, passedTime -timePerDropMs);
     }
@@ -54,108 +81,6 @@ void MovingPiecesState::OnCleanup()
     mEventQueueRef.RemoveListener(AppTouch_Event::sEventType, mOnTouchEventDlg);
 }
 
-void MovingPiecesState::OnTouchEvent(std::shared_ptr<IEventData> event)
-{
-    static AppTouch_Event::TouchMotion filteredMotion;
-    static double motionAcc;
-    static int frameCount;
-    static uint8_t moveDirection = 0;
-    
-    auto ptr = std::static_pointer_cast<AppTouch_Event>(event);
-    auto args = ptr->args();
-    filteredMotion = FilterMotion(args.motion);
-    
-    frameCount++;
-    
-    switch(mMovementState)
-    {
-        case MovementState::Waiting:
-            if (args.type == AppTouch_Event::ETouchType::Down)
-            {
-                mMovementState = MovementState::Accept_Input;
-                frameCount = 0;
-            }
-            break;
-            
-        case MovementState::Accept_Input:
-            if (args.type == AppTouch_Event::ETouchType::Up)
-            {
-                mMovementState = MovementState::Waiting;
-            }
-            
-            if (HasMotion(filteredMotion))
-            {
-                if (filteredMotion.dy > filteredMotion.dx)
-                {
-                    mMovementState = MovementState::Moving_Down;
-                    moveDirection = 0;
-                }
-                else if(filteredMotion.dx > 0)
-                {
-                    mMovementState = MovementState::Moving_Right;
-                    moveDirection = 1;
-                }
-                else if(filteredMotion.dx < 0)
-                {
-                    mMovementState = MovementState::Moving_Left;
-                    moveDirection = -1;
-                }
-            }
-            else if (frameCount > 5)
-            {
-                mMovementState = MovementState::Permuting;
-                mControllerRef.PermutePlayerBlockPieces();
-            }
-            break;
-            
-        case MovementState::Moving_Left:
-        case MovementState::Moving_Right:
-        case MovementState::Moving_Down:
-            if (args.type == AppTouch_Event::ETouchType::Up)
-            {
-                mMovementState = MovementState::Waiting;
-                motionAcc = 0;
-                moveDirection = 0;
-            }
-            
-            if (moveDirection == 0) mControllerRef.MoveDown();
-            else if(moveDirection < 0) mControllerRef.MoveLeft();
-            else if(moveDirection > 0) mControllerRef.MoveRight();
-            
-            break;
-            
-        case MovementState::Permuting:
-            if (args.type == AppTouch_Event::ETouchType::Up)
-            {
-                mMovementState = MovementState::Waiting;
-            }
-            break;
-    }
-    
-    //    if (args.type == AppTouch_Event::ETouchType::Motion)
-    //    {
-    //        motion = FilterMotion(args.motion);
-    //
-    //        if(motion.dx > 0)
-    //        {
-    //            mControllerRef.MoveRight();
-    //        }
-    //        else if(motion.dx < 0)
-    //        {
-    //            mControllerRef.MoveLeft();
-    //        }
-    //        else if (motion.dy > 0)
-    //        {
-    //            mControllerRef.MoveDown();
-    //        }
-    //    }
-    //    else if (args.type == AppTouch_Event::ETouchType::Up)
-    //    {
-    //        mControllerRef.PermutePlayerBlockPieces();
-    //    }
-    
-}
-
 bool MovingPiecesState::HasMotion(AppTouch_Event::TouchMotion motion) const
 {
     if (std::abs(motion.dx) > 0 || std::abs(motion.dy) > 0) return true;
@@ -163,17 +88,158 @@ bool MovingPiecesState::HasMotion(AppTouch_Event::TouchMotion motion) const
     return false;
 }
 
-AppTouch_Event::TouchMotion MovingPiecesState::FilterMotion(AppTouch_Event::TouchMotion motion) const
+
+//////////////////////////////////////////////////
+// Input sub-FSM States implementation
+
+AppTouch_Event::TouchMotion InputState::FilterMotion(AppTouch_Event::TouchMotion motion, float minValue) const
 {
-    static const float EPSILON = 0.02;
-    if (std::abs(motion.dx) < EPSILON)
+    if (std::abs(motion.dx) < minValue)
     {
         motion.dx = 0;
-    }
-    if (motion.dy < 0 || std::abs(motion.dy) < EPSILON)
-    {
-        motion.dy = 0;
     }
     
     return motion;
 }
+
+
+void WaitingInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
+{
+    if (event->args().type == AppTouch_Event::ETouchType::Down)
+    {
+        mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Received_Input);
+    }
+}
+
+
+void ReceivedInputState::OnEnter()
+{
+    mCurrentElapsedMs = 0;
+}
+
+void ReceivedInputState::OnUpdate(double dt)
+{
+    mCurrentElapsedMs += dt;
+    
+    if (mCurrentElapsedMs >= mControllerRef.waitForLongPressMs())
+    {
+        mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Droping_Block);
+    }
+}
+
+void ReceivedInputState::OnExit()
+{
+    if(mFSM.nextState().id == MovingPiecesState::MovementSubStateIds::Moving_Block)
+    {
+        return;
+    }
+    
+    if (mCurrentElapsedMs < mControllerRef.waitForLongPressMs())
+    {
+        mControllerRef.PermutePlayerBlockPieces();
+    }
+}
+
+void ReceivedInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
+{
+    if (mCurrentElapsedMs <= mControllerRef.waitForLongPressMs())
+    {
+        if (event->args().type == AppTouch_Event::ETouchType::Up)
+        {
+            mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
+            return;
+        }
+        
+        if (event->args().type == AppTouch_Event::ETouchType::Motion)
+        {
+            auto filteredMotion = FilterMotion(event->args().motion, mControllerRef.minValueXMotion());
+            
+            if ( filteredMotion.dx != 0)
+            {
+                // Save this initial motion
+                auto movingState = std::static_pointer_cast<MovingBlockPieceInputState>(mFSM.FindState(MovingPiecesState::MovementSubStateIds::Moving_Block));
+
+                if (movingState)
+                {
+                    movingState->initialMotion = filteredMotion;
+                }
+                
+                mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Moving_Block);
+            }
+        }
+    }
+}
+
+
+void MovingBlockPieceInputState::OnEnter()
+{
+    mMotionAccumulator = 0.0;
+}
+
+void MovingBlockPieceInputState::OnUpdate(double dt)
+{
+    // left or right movement accumulates up to a point
+    // and then we move the block. Keep the remainder instead of
+    // zeroing the accumulation
+    if(mMotionAccumulator > motionAccToMoveX)
+    {
+        mControllerRef.MoveRight();
+        mMotionAccumulator -= motionAccToMoveX;
+    }
+    else if(mMotionAccumulator < -motionAccToMoveX)
+    {
+        mControllerRef.MoveLeft();
+        mMotionAccumulator += motionAccToMoveX;
+    }
+}
+
+void MovingBlockPieceInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
+{
+    if (event->args().type == AppTouch_Event::ETouchType::Up)
+    {
+        mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
+        return;
+    }
+    
+    
+    if (event->args().type == AppTouch_Event::ETouchType::Motion)
+    {
+        AccumulateMotion(event->args().motion);
+    }
+}
+
+void MovingBlockPieceInputState::AccumulateMotion(const AppTouch_Event::TouchMotion &src)
+{
+    auto filteredMotion = FilterMotion(src, mControllerRef.minValueXMotion());
+    
+    // If the player changes direction quickly, we just override the
+    // accumulated motion with the new value
+    if (mMotionAccumulator * src.dx < 0)
+    {
+         mMotionAccumulator = filteredMotion.dx;
+    }
+    else
+    {
+        mMotionAccumulator += filteredMotion.dx;
+    }
+    
+}
+
+void DroppingBlockPieceInputState::OnUpdate(double dt)
+{
+    // TODO: Limit speed
+    if(!mControllerRef.MoveDown())
+    {
+        mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
+    }
+}
+
+void DroppingBlockPieceInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
+{
+    if(event->args().type == AppTouch_Event::ETouchType::Up)
+    {
+        mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
+    }
+}
+
+

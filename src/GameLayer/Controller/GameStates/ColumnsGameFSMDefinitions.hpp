@@ -20,17 +20,6 @@ enum EColumnsGameStatesIds
 
 typedef FSM<EColumnsGameStatesIds, IState, EnumHasher> ColumnsGameFSM;
 
-enum EMovementSubStateIds
-{
-    Waiting,
-    Received_Input,
-    Moving_Block,
-    Permuting_Pieces
-};
-
- 
-typedef FSM<EMovementSubStateIds, IState, EnumHasher> MovimingSubstatesFSM;
-
 
 // Forward declaration: states need a reference to the controller to perform actions in the game
 class ColumnsGameController;

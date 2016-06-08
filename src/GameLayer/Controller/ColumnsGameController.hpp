@@ -62,6 +62,9 @@ public:
     void Update(TimeInfo time);
     void Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer);
 
+    int waitForLongPressMs() const { return 250; }
+    float minValueXMotion() const { 0.02; }
+    
 private:
     ColumnsGameController(const ColumnsGameController &);
     ColumnsGameController& operator=(const ColumnsGameController &);
@@ -73,8 +76,8 @@ private:
     // the initial position in the board
     
     
-    const uint8_t cDefaultBoardColumns = 17;
-    const uint8_t cDefaultBoardRows = 6;
+    const uint8_t cDefaultBoardColumns = 6;
+    const uint8_t cDefaultBoardRows = 17;
     
     ColumnsBoard mColumnsBoard;
     ColumnsBoardView mColumnsBoardView;

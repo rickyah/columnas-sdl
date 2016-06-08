@@ -3,7 +3,6 @@
 #include "DataTypes.hpp"
 #include "ColumnsGameController.hpp"
 
-
 int main(int argc, char *argv[])
 {
     App app;

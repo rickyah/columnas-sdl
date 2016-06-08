@@ -72,7 +72,7 @@ TEST_CASE( "FSM", "[App Layer]" ) {
         m.RegisterState(StateIds::MyState, first);
         m.RegisterState(StateIds::MyState2, second);
         
-        REQUIRE(m.currentState() == nullptr);
+        REQUIRE(m.currentState().ptr == nullptr);
     }
     
     SECTION("Adding an state inits the method calling the OnInit method") {
@@ -123,7 +123,7 @@ TEST_CASE( "FSM", "[App Layer]" ) {
         REQUIRE((first->value & MyState::FlagOnExit) == MyState::FlagOnExit);
         REQUIRE((first->value & MyState::FlagOnCleanup) == MyState::FlagOnCleanup);
         
-        REQUIRE(m.currentState() == nullptr);
+        REQUIRE(m.currentState().ptr == nullptr);
     }
 
     SECTION("Changing to a state calls OnEnter") {
@@ -137,7 +137,7 @@ TEST_CASE( "FSM", "[App Layer]" ) {
         m.ChangeTo(StateIds::MyState);
         m.Update(0);
         
-        REQUIRE(m.currentState() == first);
+        REQUIRE(m.currentState().ptr == first);
         
         REQUIRE((first->value & MyState::FlagOnEnter) == MyState::FlagOnEnter);
     }
@@ -158,7 +158,7 @@ TEST_CASE( "FSM", "[App Layer]" ) {
         m.ChangeTo(StateIds::MyState2);
         m.Update(0);
         
-        REQUIRE(m.currentState() == second);
+        REQUIRE(m.currentState().ptr == second);
         REQUIRE((first->value & MyState::FlagOnEnter) == MyState::FlagOnEnter);
         REQUIRE((first->value & MyState::FlagOnExit) == MyState::FlagOnExit);
         REQUIRE((second->value & MyState::FlagOnEnter) == MyState::FlagOnEnter);
@@ -175,7 +175,7 @@ TEST_CASE( "FSM", "[App Layer]" ) {
         m.ChangeTo(StateIds::MyState);
         m.Update(0);
         
-        REQUIRE(m.currentState() == first);
+        REQUIRE(m.currentState().ptr == first);
         REQUIRE((first->value & MyState::FlagOnEnter) == MyState::FlagOnEnter);
     }
     
@@ -189,23 +189,23 @@ TEST_CASE( "FSM", "[App Layer]" ) {
         m.RegisterState(StateIds::MyState, first);
         m.RegisterState(StateIds::MyState2, second);
         
-        REQUIRE(m.currentState() == nullptr);
+        REQUIRE(m.currentState().ptr == nullptr);
         
         m.ChangeTo(StateIds::MyState);
         
-        REQUIRE(m.currentState() == nullptr);
+        REQUIRE(m.currentState().ptr == nullptr);
         
         m.Update(0);
         
-        REQUIRE(m.currentState() == first);
+        REQUIRE(m.currentState().ptr == first);
         
         m.ChangeTo(StateIds::MyState2);
 
-        REQUIRE(m.currentState() == first);
+        REQUIRE(m.currentState().ptr == first);
         
         m.Update(0);
         
-        REQUIRE(m.currentState() == second);
+        REQUIRE(m.currentState().ptr == second);
     }
     
     SECTION("Changing to the same current state does not call OnExit and OnEnter") {
@@ -270,6 +270,6 @@ TEST_CASE( "FSM", "[App Layer]" ) {
         m.RemoveState(StateIds::MyState2);
         m.Update(0);
         
-        REQUIRE(m.currentState() == first);
+        REQUIRE(m.currentState().ptr == first);
     }
 }

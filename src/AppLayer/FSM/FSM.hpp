@@ -29,14 +29,17 @@ struct EnumHasher
     }
 };
 
+
 /*
  * Interface defining all the operations required for any state in this FSM
  */
 class IState
 {
+
 public:
-    virtual ~IState() {}
     
+    virtual ~IState() {}
+
     virtual void OnUpdate(double dt) {}
     
     virtual void OnInit() {}
@@ -74,15 +77,27 @@ private:
  *  THash:   Hash function to use, defaults to the default std::hash function defined for the TStateId type
  */
 
-template <typename TStateId, typename TState, typename THash = std::hash<TStateId> >
+
+
+
+template <typename TStateId, typename TState, typename THash = std::hash<TStateId>>
 class FSM
 {
-    using TStatePtr = std::shared_ptr<IState>;
     
 public:
-
+    using TStatePtr = std::shared_ptr<TState>;
     
-    TStatePtr currentState() const { return pCurrentState; }
+    struct StateInfo
+    {
+        TStateId id = TStateId();
+        TStatePtr ptr = nullptr;
+    };
+    
+    StateInfo currentState() const { return mCurrentStateInfo; }
+    
+    StateInfo nextState() const { return mNextStateInfo; }
+    
+    TStatePtr FindState(TStateId id);
     
     /*
      * Changes to a new registered state what was previously registerd in the FSM
@@ -122,8 +137,10 @@ public:
 private:
     std::unordered_map<TStateId, TStatePtr, THash> mStates;
     
-    mutable TStatePtr pNextState;
-    TStatePtr pCurrentState;
+    // Made mutable to make the ChangeTo method const, as changing this element does not
+    // really change the behaviour of the class until a call to OnUpdate is made
+    mutable StateInfo mNextStateInfo;
+    StateInfo mCurrentStateInfo;
     
 };
 
@@ -148,9 +165,10 @@ bool FSM<TStateId, TState, THash>::ChangeTo(TStateId id) const
     
     if (nextState == mStates.end()) return false;
     
-    if (pCurrentState != nextState->second)
+    if (mCurrentStateInfo.ptr != nextState->second)
     {
-        pNextState = nextState->second;
+        mNextStateInfo.id = id;
+        mNextStateInfo.ptr = nextState->second;
     }
     
     return true;
@@ -163,15 +181,19 @@ bool FSM<TStateId, TState, THash>::RemoveState(TStateId id)
     
     if (pState == nullptr) return false;
     
-    if (pNextState == pState)
+    if (mNextStateInfo.ptr == pState)
     {
-        pNextState = nullptr;
+        mNextStateInfo.id = TStateId();
+        mNextStateInfo.ptr = nullptr;
     }
     
-    if (pCurrentState == pState)
+    if (mCurrentStateInfo.ptr == pState)
     {
         pState->OnExit();
-        pCurrentState = nullptr;
+        
+        
+        mCurrentStateInfo.id = TStateId();
+        mCurrentStateInfo.ptr = nullptr;
     }
     
     pState->OnCleanup();
@@ -184,24 +206,35 @@ bool FSM<TStateId, TState, THash>::RemoveState(TStateId id)
 template <typename TStateId, typename TState, typename THash>
 void FSM<TStateId, TState, THash>::Update(double dt)
 {
-    if(pNextState)
+    if(mNextStateInfo.ptr)
     {
-        if(pCurrentState)
+        if(mCurrentStateInfo.ptr)
         {
-            pCurrentState->OnExit();
+            mCurrentStateInfo.ptr->OnExit();
         }
         
-        std::swap(pCurrentState, pNextState);
+        std::swap(mCurrentStateInfo, mNextStateInfo);
         
-        pCurrentState->OnEnter();
+        mCurrentStateInfo.ptr->OnEnter();
         
-        pNextState = nullptr;
+        mNextStateInfo.id = TStateId();
+        mNextStateInfo.ptr = nullptr;
     }
     
-    if(pCurrentState)
+    if(mCurrentStateInfo.ptr)
     {
-        pCurrentState->OnUpdate(dt);
+        mCurrentStateInfo.ptr->OnUpdate(dt);
     }
+}
+
+template <typename TStateId, typename TState, typename THash>
+typename FSM<TStateId, TState, THash>::TStatePtr FSM<TStateId, TState, THash>::FindState(TStateId id)
+{
+    auto state = mStates.find(id);
+    
+    if (state == mStates.end()) return nullptr;
+    
+    return state->second;
 }
 
 template <typename TStateId, typename TState, typename THash>
@@ -209,7 +242,5 @@ FSM<TStateId, TState, THash>::~FSM()
 {
     mStates.clear();
 }
-
-
 
 #endif /* FSM_hpp */
