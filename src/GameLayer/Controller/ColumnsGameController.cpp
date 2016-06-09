@@ -72,10 +72,16 @@ void ColumnsGameController::EndGame()
     mColumnsBoard.ResetBoardState();
 }
 
+bool ColumnsGameController::CanMoveDown() const
+{
+    return mColumnsBoard.CanMovePlayerBlockDown();
+}
+
 bool ColumnsGameController::MoveDown()
 {
     return mColumnsBoard.MovePlayerBlockDown();
 }
+
 void ColumnsGameController::MoveLeft()
 {
     mColumnsBoard.MovePlayerBlockLeft();

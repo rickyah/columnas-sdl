@@ -53,6 +53,7 @@ public:
     
     void EndGame();
     
+    bool CanMoveDown() const;
     bool MoveDown();
     void MoveLeft();
     void MoveRight();
