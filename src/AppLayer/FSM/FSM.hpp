@@ -212,13 +212,13 @@ void FSM<TStateId, TState, THash>::Update(double dt)
         {
             mCurrentStateInfo.ptr->OnExit();
         }
+        auto nextPtr = mNextStateInfo.ptr;
         
         std::swap(mCurrentStateInfo, mNextStateInfo);
-        
-        mCurrentStateInfo.ptr->OnEnter();
-        
         mNextStateInfo.id = TStateId();
         mNextStateInfo.ptr = nullptr;
+        
+        nextPtr->OnEnter();
     }
     
     if(mCurrentStateInfo.ptr)
