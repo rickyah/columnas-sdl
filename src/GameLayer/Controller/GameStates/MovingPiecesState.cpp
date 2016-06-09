@@ -45,27 +45,27 @@ void MovingPiecesState::OnTouchEvent(std::shared_ptr<IEventData> event)
     mSubFSM.currentState().ptr->OnTouchEvent(ptr);
 }
 
+void MovingPiecesState::OnEnter()
+{
+    mPassedTime = 0;
+    mSubFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Moving_Block);
+    if(! mControllerRef.ResetPlayerBlock())
+    {
+        mControllerRef.EndGame();
+    }
+}
+
 void MovingPiecesState::OnUpdate(double dt)
 {
     mSubFSM.Update(dt);
     
-    static int32_t passedTime = 0;
-    passedTime += dt;
+    mPassedTime += dt;
     
-    bool endGame = false;
-    int timePerDropMs = 1000;
-    if (passedTime >= timePerDropMs)
+    if (mPassedTime >= mTimePerDropMs)
     {
+        mControllerRef.MoveDown();
 
-        if(!mControllerRef.MoveDown())
-        {
-            if(! mControllerRef.ResetPlayerBlock())
-            {
-                mControllerRef.EndGame();
-            }
-        }
-
-        passedTime = std::max(0, passedTime -timePerDropMs);
+        mPassedTime = std::max(0, mPassedTime - mTimePerDropMs);
     }
     
     if (!mControllerRef.CanMoveDown())

@@ -19,6 +19,7 @@ class ColumnsBoard : public GenericBoard
 {
 public:
     explicit ColumnsBoard(BoardState state):GenericBoard(state){}
+    
     explicit ColumnsBoard(uint8_t rows, uint8_t columns):GenericBoard(rows, columns){}
     
     void InitPlayerBlockInitialPosition(TilePosition pos) { mPlayerBlockInitialPosition = pos; }
@@ -50,9 +51,11 @@ private:
     
     mutable TilesSet mListPiecesToDestroy;
     mutable TilesMovementSet mListPiecesToFall;
-    mutable std::unordered_set<uint8_t> mTmpColumnsToCheck;
+    mutable std::unordered_set<TileCoordinate> mTmpColumnsToCheck;
     
-    TilesMovementSet FindPiecesToMoveInColumns(const std::unordered_set<uint8_t> &) const;
+    TilesMovementSet FindPiecesToMoveInColumns(const std::unordered_set<TileCoordinate> &) const;
+    bool FindAdjacentPiecesFilterFunc(std::unordered_set<TilePosition> positions) const;
+    
     bool IsPositionInsidePlayerBlock(TilePosition pos) const;
     bool CanMovePlayerBlockTo(TilePosition newPos) const;
     bool MovePlayerBlockToPosition(const TilePosition &newPos);

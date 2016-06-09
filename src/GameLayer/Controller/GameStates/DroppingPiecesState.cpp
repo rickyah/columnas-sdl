@@ -18,7 +18,14 @@ void FallingPiecesState::OnSetArgs(std::shared_ptr<IStateArgs> pArgs)
 
 void FallingPiecesState::OnEnter()
 {
-    if (!pAnimationState || pAnimationState->IsFinished())
+    SDL_Log(__PRETTY_FUNCTION__);
+    auto tuple = mControllerRef.StartFallingPieces(mDestroyedPieces);
+    
+    mPiecesToMove = std::get<ColumnsGameController::destroyedPieces>(tuple);
+    pAnimationState = std::get<ColumnsGameController::animationState>(tuple);
+    
+    
+    if (mPiecesToMove.size() <= 0)
     {
         mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
     }
@@ -27,13 +34,17 @@ void FallingPiecesState::OnEnter()
 
 void FallingPiecesState::OnUpdate(double dt)
 {
-    if (pAnimationState->IsFinished())
+    if (!pAnimationState || pAnimationState->IsFinished())
     {
         mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
+        return;
     }
 }
 
 void FallingPiecesState::OnExit()
 {
-    mControllerRef.UpdateBoard(mDestroyedPieces, mPiecesToMove);
+    SDL_Log(__PRETTY_FUNCTION__);
+    mControllerRef.UpdateBoardMakePiecesFall(mPiecesToMove);
+    mDestroyedPieces.clear();
+    mPiecesToMove.clear();
 }

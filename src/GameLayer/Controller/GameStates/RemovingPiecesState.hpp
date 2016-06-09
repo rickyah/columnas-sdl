@@ -25,6 +25,7 @@ public:
     
     virtual void OnEnter() override;
     virtual void OnUpdate(double dt) override;
+    virtual void OnExit() override;
 private:
     TilesSet mPiecesToDestroy;
     std::shared_ptr<ViewAnimationState> pAnimationState;

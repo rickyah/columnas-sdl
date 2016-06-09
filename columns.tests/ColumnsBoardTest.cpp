@@ -270,6 +270,31 @@ TEST_CASE("Change board state") {
         REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({2,4},{3,4})) != piecesToFall.end());
     }
     
+    SECTION("Find Pieces to fall") {
+        ColumnsBoard board( {
+            {0,0,0,0,0},        // {0,0,0,0,0}
+            {0,0,0,0,0},        // {0,0,0,0,0}
+            {0,0,0,0,0},        // {0,0,0,0,2}
+            {0,0,0,2,4},        // {0,0,0,3,4}
+            {0,0,3,2,1},        // {0,0,3,2,1}
+            {0,0,0,0,0}         // {0,0,*,*,*}
+        });
+        
+        auto piecesToFall = board.FindPiecesToMoveInSubset({
+            {5,2}, {5,3}, {5,4}
+        });
+        
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({4,2},{5,2})) != piecesToFall.end());
+        
+        
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({4,3},{5,3})) != piecesToFall.end());
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({3,3},{4,3})) != piecesToFall.end());
+        
+        
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({4,4},{5,4})) != piecesToFall.end());
+        REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({3,4},{4,4})) != piecesToFall.end());
+    }
+    
     SECTION("Game end condition is computed correctly")
     {
         ColumnsBoard board( {

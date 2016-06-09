@@ -114,7 +114,7 @@ TilesSet ColumnsBoard::FindPiecesToDestroy() const
     
     for(auto i = 0; i < mPlayerBlock.size(); ++i)
     {
-        auto set = GetAllAdjacentTiles(mPlayerBlockPosition.row + i, mPlayerBlockPosition.col);
+        auto set = GetAllAdjacentTiles(mPlayerBlockPosition.row + i, mPlayerBlockPosition.col, std::bind(&ColumnsBoard::FindAdjacentPiecesFilterFunc, this, std::placeholders::_1));
         
         // sustract 1 as the GetAllAdjacentTiles does not takes into account the piece in the position
         // you search
@@ -155,7 +155,7 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInSubset(const TilesSet &destroye
 
 }
 
-TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_set<uint8_t> &columnsToCheck) const
+TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_set<TileCoordinate> &columnsToCheck) const
 {
     mListPiecesToFall.clear();
     
@@ -187,7 +187,7 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_se
             {
                 // If the tile to move is not empty, we got a piece that can be moved FROM an index TO another index
                 // But only if the TO index points to an empty tile
-                if (fromRowIdx != toRowIdx && mBoardTiles[toRowIdx][currentCol] == ESpecialBoardPieces::Empty)
+                if (fromRowIdx != toRowIdx /*&& mBoardTiles[toRowIdx][currentCol] == ESpecialBoardPieces::Empty*/)
                 {
                     mListPiecesToFall.push_back(TileMovement(TilePosition(fromRowIdx, currentCol), TilePosition(toRowIdx, currentCol)));
                     
@@ -217,3 +217,8 @@ bool ColumnsBoard::IsGameOverConditionFullfilled() const
     return false;
 }
 
+
+bool ColumnsBoard::FindAdjacentPiecesFilterFunc(std::unordered_set<TilePosition> positions) const
+{
+    return positions.size() < (mNumEqualPiecesToDestroy -1);
+}

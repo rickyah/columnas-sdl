@@ -11,7 +11,7 @@
 
 #include <vector>
 #include <unordered_set>
-#include <ostream>
+
 
 enum ESpecialBoardPieces {
     Disabled = -1,
@@ -19,12 +19,14 @@ enum ESpecialBoardPieces {
 };
 
 typedef short TileType;
+typedef short TileCoordinate;
+
 struct TilePosition
 {
     TilePosition():TilePosition(0,0){};
-    TilePosition(uint8_t Row, uint8_t Col):row(Row),col(Col){};
-    uint8_t row;
-    uint8_t col;
+    TilePosition(TileCoordinate Row, TileCoordinate Col):row(Row),col(Col){};
+    TileCoordinate row;
+    TileCoordinate col;
     
     bool operator==(const TilePosition& other) const
     {
@@ -35,8 +37,7 @@ struct TilePosition
     {
         return !this->operator==(other);
     }
-    
-    friend std::ostream& operator<<(std::ostream& os, const TilePosition& pos);
+
 };
 
 
@@ -70,7 +71,7 @@ namespace std {
     {
         size_t operator()(const TilePosition & pos) const
         {
-            return (51 + std::hash<uint8_t>()(pos.row)) * 51 + std::hash<uint8_t>()(pos.col);
+            return (51 + std::hash<TileCoordinate>()(pos.row)) * 51 + std::hash<TileCoordinate>()(pos.col);
         }
     };
 }
@@ -89,35 +90,38 @@ class GenericBoard
 
 public:
 
+    typedef std::function<bool(std::unordered_set<TilePosition>)> FilterFunc;
+    
     // Allows using initialization_lists to set up a board, usefull for testing purposes
     // TODO: check if this should be changed to a Mememto pattern
     explicit GenericBoard(BoardState boardData);
 
     // Sets up an board of a given rows and columns with the Empty tile value
-    explicit GenericBoard(uint8_t rows, uint8_t columns);
+    explicit GenericBoard(TileCoordinate rows, TileCoordinate columns);
 
     const BoardState& boardState() { return mBoardTiles; };
     
     void ResetBoardState();
-    void ResetBoardState(uint8_t rows, uint8_t columns);
+    void ResetBoardState(TileCoordinate rows, TileCoordinate columns);
     
     
     void boardState(const BoardState& newState ) { mBoardTiles = newState; };
     
-    uint8_t rows() const { return mBoardTiles.size(); }
-    uint8_t columns() const { return mBoardTiles[0].size(); }
-
+    TileCoordinate rows() const { return mBoardTiles.size(); }
+    TileCoordinate columns() const { return mBoardTiles[0].size(); }
+    
+    
     bool IsPositionInsideBoardBounds(const TilePosition &IsPositionInsideBoardBoundspos) const;
     void RemovePieces(const TilesSet &pieces);
     void MovePieces(const TilesMovementSet &pieces);
     
-    std::unordered_set<TilePosition> GetRowAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::unordered_set<TilePosition> GetColAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::unordered_set<TilePosition> GetRowAndColAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::unordered_set<TilePosition> GetMainDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::unordered_set<TilePosition> GetSecondaryDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::unordered_set<TilePosition> GetDiagonalAdjacentTiles(uint8_t row, uint8_t col) const;
-    std::unordered_set<TilePosition> GetAllAdjacentTiles(uint8_t row, uint8_t col) const;
+    std::unordered_set<TilePosition> GetRowAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter = nullptr) const;
+    std::unordered_set<TilePosition> GetColAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter = nullptr) const;
+    std::unordered_set<TilePosition> GetRowAndColAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter = nullptr) const;
+    std::unordered_set<TilePosition> GetMainDiagonalAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter = nullptr) const;
+    std::unordered_set<TilePosition> GetSecondaryDiagonalAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter = nullptr) const;
+    std::unordered_set<TilePosition> GetDiagonalAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter = nullptr) const;
+    std::unordered_set<TilePosition> GetAllAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc func = nullptr) const;
     
 protected:
     /**
@@ -125,6 +129,7 @@ protected:
      */
     BoardState mBoardTiles;
 
+    
     /*
      * Search from a given position in the board for all the elements adjacent to that element with the same value
      *
@@ -142,13 +147,17 @@ protected:
      * advancing one position in each step, starting at (2,3) the sequence of elements iterated would be
      * (4,3) ... (M,3), (2,3), (1,3), (0,3)
      */
-    std::unordered_set<TilePosition> SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t,int8_t> increaser) const;
+    std::unordered_set<TilePosition> SearchAdjacentTilesAt(const BoardState &boardTiles,
+                                                           TileCoordinate row,
+                                                           TileCoordinate col,
+                                                           const std::pair<int8_t,int8_t> &increaser,
+                                                           FilterFunc filter) const;
 private:
     
-    const std::pair<int8_t, int8_t> kRowIncreaser;
-    const std::pair<int8_t, int8_t> kColIncreaser;
-    const std::pair<int8_t, int8_t> kMainDiagIncreaser;
-    const std::pair<int8_t, int8_t> kSecDiagIncreaser;
+    const std::pair<TileCoordinate, TileCoordinate> kRowIncreaser = std::make_pair<TileCoordinate, TileCoordinate>(0,1);
+    const std::pair<TileCoordinate, TileCoordinate> kColIncreaser = std::make_pair<TileCoordinate, TileCoordinate>(1,0);
+    const std::pair<TileCoordinate, TileCoordinate> kMainDiagIncreaser = std::make_pair<TileCoordinate, TileCoordinate>(1,1);
+    const std::pair<TileCoordinate, TileCoordinate> kSecDiagIncreaser = std::make_pair<TileCoordinate, TileCoordinate>(-1,1);
     
 
     /* This acts a proxy class to expose a double subscription syntax for CBoards without exposing all the inner data

@@ -59,6 +59,13 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
     }
 
     SECTION("Get equal adjacent tiles in a row from a given position") {
+        GenericBoard board({
+            {0,0,0,1,1,1},
+            {2,0,0,1,1,2},
+            {1,0,1,1,1,3},
+            {2,2,2,1,1,2},
+        });
+        
         auto result = board.GetRowAdjacentTiles(2, 3);
 
         REQUIRE(result.size() == 3);

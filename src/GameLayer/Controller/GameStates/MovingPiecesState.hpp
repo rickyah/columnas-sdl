@@ -42,12 +42,15 @@ public:
     
     
     virtual void OnInit() override;
+    virtual void OnEnter() override;
     virtual void OnCleanup() override;
     virtual void OnUpdate(double dt) override;
     
 private:
     MovingSubstatesFSM mSubFSM;
     
+    int32_t mPassedTime = 0;
+    int mTimePerDropMs = 1000;
     void OnTouchEvent(std::shared_ptr<IEventData> event);
     
     bool HasMotion(AppTouch_Event::TouchMotion motion) const;

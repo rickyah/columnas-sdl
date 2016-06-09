@@ -17,17 +17,32 @@ void RemovingPiecesState::OnEnter()
     mPiecesToDestroy = std::get<ColumnsGameController::destroyedPieces>(tuple);
     pAnimationState = std::get<ColumnsGameController::animationState>(tuple);
     
-    if (!pAnimationState || pAnimationState->IsFinished())
+    if (mPiecesToDestroy.size() <= 0)
     {
         mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
     }
+    
+    SDL_Log(__PRETTY_FUNCTION__);
 }
 
 void RemovingPiecesState::OnUpdate(double dt)
 {
-    if (pAnimationState->IsFinished())
+    if (mPiecesToDestroy.size() <= 0)
+    {
+        mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
+        return;
+    }
+    
+    if (!pAnimationState || pAnimationState->IsFinished())
     {
         mFSM.ChangeTo(EColumnsGameStatesIds::Falling_Pieces,
                       std::make_shared<DestroyPiecesStateArgs>(mPiecesToDestroy));
     }
+}
+
+void RemovingPiecesState::OnExit()
+{
+    mControllerRef.UpdateBoardDestroyPieces(mPiecesToDestroy);
+    mPiecesToDestroy.clear();
+    SDL_Log(__PRETTY_FUNCTION__);
 }

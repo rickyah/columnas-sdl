@@ -141,9 +141,16 @@ ColumnsGameController::FallingPiecesInfo ColumnsGameController::StartFallingPiec
 }
 
 
-void ColumnsGameController::UpdateBoard(TilesSet piecesToDestroy, TilesMovementSet piecesToMove)
+void ColumnsGameController::UpdateBoardDestroyPieces(TilesSet piecesToDestroy)
 {
     mColumnsBoard.RemovePieces(piecesToDestroy);
+
+    
+    mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
+}
+    
+void ColumnsGameController::UpdateBoardMakePiecesFall(TilesMovementSet piecesToMove)
+{
     mColumnsBoard.MovePieces(piecesToMove);
     
     mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());

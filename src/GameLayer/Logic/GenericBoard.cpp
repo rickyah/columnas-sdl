@@ -8,15 +8,6 @@
 
 #include "GenericBoard.hpp"
 
-std::ostream& operator<<(std::ostream& os, const TilePosition& pos)
-{
-    os << "[" << pos.row << ", " << pos.col << "]";
-    return os;
-}
-
-
-
-
 std::unordered_set<TilePosition> Merge(std::initializer_list< std::unordered_set<TilePosition> > srcList)
 {
     std::unordered_set<TilePosition> dest;
@@ -30,16 +21,12 @@ std::unordered_set<TilePosition> Merge(std::initializer_list< std::unordered_set
 }
 
 GenericBoard::GenericBoard(BoardState boardState):
-    mBoardTiles(boardState),
-    kRowIncreaser(std::make_pair<int8_t, int8_t>(0,1)),
-    kColIncreaser(std::make_pair<int8_t, int8_t>(1,0)),
-    kMainDiagIncreaser(std::make_pair<int8_t, int8_t>(1,1)),
-    kSecDiagIncreaser(std::make_pair<int8_t, int8_t>(-1,1))
+    mBoardTiles(boardState)
 {
 
 }
 
-GenericBoard::GenericBoard(uint8_t rows, uint8_t columns):
+GenericBoard::GenericBoard(TileCoordinate rows, TileCoordinate columns):
     mBoardTiles(rows, std::vector<TileType>(columns, ESpecialBoardPieces::Empty))
 {
 
@@ -79,13 +66,14 @@ GenericBoard::BoardIndexer& GenericBoard::operator[](std::size_t idx)
     return mBoardIndexer;
 }
 
-std::unordered_set<TilePosition> GenericBoard::GetAllAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetAllAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter) const
 {
-    auto result =  Merge({
-        SearchAdjacentTilesAt(row, col, kRowIncreaser),
-        SearchAdjacentTilesAt(row, col, kColIncreaser),
-        SearchAdjacentTilesAt(row, col, kMainDiagIncreaser),
-        SearchAdjacentTilesAt(row, col, kSecDiagIncreaser)
+    auto result =  Merge(
+    {
+        SearchAdjacentTilesAt(mBoardTiles, row, col, kRowIncreaser, filter),
+        SearchAdjacentTilesAt(mBoardTiles, row, col, kColIncreaser, filter),
+        SearchAdjacentTilesAt(mBoardTiles, row, col, kMainDiagIncreaser, filter),
+        SearchAdjacentTilesAt(mBoardTiles, row, col, kSecDiagIncreaser, filter)
     });
     
     result.insert(TilePosition(row,col));
@@ -94,53 +82,59 @@ std::unordered_set<TilePosition> GenericBoard::GetAllAdjacentTiles(uint8_t row, 
 
 }
 
-std::unordered_set<TilePosition> GenericBoard::GetRowAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetRowAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter) const
 {
-    auto result = SearchAdjacentTilesAt(row, col, kRowIncreaser);
+    auto result = SearchAdjacentTilesAt(mBoardTiles, row, col, kRowIncreaser, filter);
     result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::unordered_set<TilePosition> GenericBoard::GetColAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetColAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter) const
 {
-    auto result = SearchAdjacentTilesAt(row, col, kColIncreaser);
+    auto result = SearchAdjacentTilesAt(mBoardTiles, row, col, kColIncreaser, filter);
     result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::unordered_set<TilePosition> GenericBoard::GetRowAndColAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetRowAndColAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter) const
 {
-    auto result = Merge({SearchAdjacentTilesAt(row, col, kRowIncreaser),
-                         SearchAdjacentTilesAt(row, col, kColIncreaser)});
+    auto result = Merge(
+    {
+        SearchAdjacentTilesAt(mBoardTiles, row, col, kRowIncreaser, filter),
+        SearchAdjacentTilesAt(mBoardTiles, row, col, kColIncreaser,filter)
+    });
 
     result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::unordered_set<TilePosition> GenericBoard::GetMainDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetMainDiagonalAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter) const
 {
-    auto result = SearchAdjacentTilesAt(row, col, kMainDiagIncreaser);
+    auto result = SearchAdjacentTilesAt(mBoardTiles, row, col, kMainDiagIncreaser, filter);
     result.insert(TilePosition(row, col));
 
     return result;
 }
 
-std::unordered_set<TilePosition> GenericBoard::GetSecondaryDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetSecondaryDiagonalAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter) const
 {
-    auto result = SearchAdjacentTilesAt(row, col, kSecDiagIncreaser);
+    auto result = SearchAdjacentTilesAt(mBoardTiles, row, col, kSecDiagIncreaser, filter);
     result.insert(TilePosition(row, col));
 
     return result;
 }
 
 
-std::unordered_set<TilePosition> GenericBoard::GetDiagonalAdjacentTiles(uint8_t row, uint8_t col) const
+std::unordered_set<TilePosition> GenericBoard::GetDiagonalAdjacentTiles(TileCoordinate row, TileCoordinate col, FilterFunc filter) const
 {
-    auto result = Merge({SearchAdjacentTilesAt(row, col, kMainDiagIncreaser),
-                                              SearchAdjacentTilesAt(row, col, kSecDiagIncreaser)});
+    auto result = Merge(
+    {
+        SearchAdjacentTilesAt(mBoardTiles, row, col, kMainDiagIncreaser, filter),
+        SearchAdjacentTilesAt(mBoardTiles, row, col, kSecDiagIncreaser, filter)
+    });
 
     result.insert(TilePosition(row, col));
 
@@ -155,7 +149,7 @@ void GenericBoard::ResetBoardState()
     }
 }
 
-void GenericBoard::ResetBoardState(uint8_t rows, uint8_t columns)
+void GenericBoard::ResetBoardState(TileCoordinate rows, TileCoordinate columns)
 {
     mBoardTiles.resize(rows);
 
@@ -166,12 +160,21 @@ void GenericBoard::ResetBoardState(uint8_t rows, uint8_t columns)
     
 }
 
-std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row, uint8_t col, std::pair<int8_t,int8_t> increaser) const
+std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(const BoardState& boardTiles,
+                                                                     TileCoordinate row,
+                                                                     TileCoordinate col,
+                                                                     const std::pair<int8_t,int8_t> &increaser,
+                                                                     FilterFunc filter ) const
 {
     std::unordered_set<TilePosition> result;
 
-    TileType matchTileValue = mBoardTiles[row][col];
+    TileType matchTileValue = boardTiles[row][col];
 
+    if (matchTileValue <= ESpecialBoardPieces::Empty)
+    {
+        return result;
+    }
+    
     int rowItr = row, colItr = col;
 
     rowItr += increaser.first;
@@ -196,6 +199,11 @@ std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(uint8_t row
         rowItr -= increaser.first;
         colItr -= increaser.second;
     }
-
+    
+    if ( filter && filter(result) )
+    {
+        result.clear();
+    }
+    
     return result;
 }

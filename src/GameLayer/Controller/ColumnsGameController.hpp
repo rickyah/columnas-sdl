@@ -66,7 +66,8 @@ public:
     bool ResetPlayerBlock();
     void PermutePlayerBlockPieces();
     
-    void UpdateBoard(TilesSet piecesToDestroy, TilesMovementSet piecesToMove);
+    void UpdateBoardDestroyPieces(TilesSet piecesToDestroy);
+    void UpdateBoardMakePiecesFall(TilesMovementSet piecesToMove);
     DestroyPiecesInfo StartDestroyingPieces();
     FallingPiecesInfo StartFallingPieces(TilesSet piecesDestroyed);
     
