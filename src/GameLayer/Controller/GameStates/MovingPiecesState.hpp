@@ -10,13 +10,14 @@
 #define MovingPiecesState_h
 
 
-#include "ColumnsGameFSMDefinitions.hpp"
 #include "ColumnsGameController.hpp"
 #include "EventQueue.hpp"
 #include "AppEvents.hpp"
+#include "GameStateArgs.hpp"
 
 // Need this FD to typedef the FSM available when the player is in the MovingPiecesState 
 class InputState;
+
 
 /*
  * The player will able to control the block while this state is active
@@ -63,6 +64,7 @@ private:
 /*
  * InputState childs are used in the sub FSM available when the player is moving the block
  */
+
 
 class InputState : public IState
 {
@@ -180,12 +182,11 @@ public:
     :InputState(fsm, eventQueue), mControllerRef(controller)
     {}
     
-
     void OnUpdate(double dt) override;
     void OnTouchEvent(std::shared_ptr<AppTouch_Event> event) override;
     
     
-private:    
+private:
     ColumnsGameController &mControllerRef;
 };
 #endif /* MovingPiecesState_h */

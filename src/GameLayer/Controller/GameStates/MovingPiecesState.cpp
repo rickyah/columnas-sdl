@@ -61,14 +61,17 @@ void MovingPiecesState::OnUpdate(double dt)
         {
             if(! mControllerRef.ResetPlayerBlock())
             {
-                
+                mControllerRef.EndGame();
             }
         }
 
-        // update view
         passedTime = std::max(0, passedTime -timePerDropMs);
     }
     
+    if (!mControllerRef.CanMoveDown())
+    {
+        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
+    }
 }
 
 void MovingPiecesState::OnInit()
@@ -224,6 +227,7 @@ void MovingBlockPieceInputState::AccumulateMotion(const AppTouch_Event::TouchMot
     }
     
 }
+
 
 void DroppingBlockPieceInputState::OnUpdate(double dt)
 {

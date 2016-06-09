@@ -15,7 +15,7 @@ enum EColumnsGameStatesIds
 {
     Moving_Pieces,
     Removing_Pieces,
-    Dropping_Pieces
+    Falling_Pieces
 };
 
 typedef FSM<EColumnsGameStatesIds, IState, EnumHasher> ColumnsGameFSM;

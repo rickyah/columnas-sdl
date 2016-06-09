@@ -22,6 +22,12 @@ public:
                         ColumnsGameController &controller)
     :BaseColumnsGameState(fsm, controller)
     {}
+    
+    virtual void OnEnter() override;
+    virtual void OnUpdate(double dt) override;
+private:
+    TilesSet mPiecesToDestroy;
+    std::shared_ptr<ViewAnimationState> pAnimationState;
 };
 
 

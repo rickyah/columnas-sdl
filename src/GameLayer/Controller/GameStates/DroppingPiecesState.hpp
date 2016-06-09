@@ -1,27 +1,37 @@
 //
-//  ColumnsGameStates.hpp
+//  FallingPiecesState.hpp
 //  Columns
 //
 //  Created by Ricardo Amores Hernández on 6/6/16.
 //
 //
 
-#ifndef ColumnsGameStates_hpp
-#define ColumnsGameStates_hpp
+#ifndef FallingPiecesState_hpp
+#define FallingPiecesState_hpp
 
 #include "ColumnsGameFSMDefinitions.hpp"
 #include "ColumnsGameController.hpp"
+#include "GameStateArgs.hpp"
 
-class DroppingPiecesState : public BaseColumnsGameState
+class FallingPiecesState : public BaseColumnsGameState
 {
 public:
-    DroppingPiecesState(const ColumnsGameFSM &fsm,
+    FallingPiecesState(const ColumnsGameFSM &fsm,
                         ColumnsGameController &controller)
     :BaseColumnsGameState(fsm, controller)
     {}
     
-    DroppingPiecesState(const DroppingPiecesState &) = delete;
-    DroppingPiecesState & operator=(const DroppingPiecesState &) = delete;
+    void OnSetArgs(std::shared_ptr<IStateArgs> pArgs) override;
+    
+    void OnEnter() override;
+    void OnUpdate(double dt) override;
+    void OnExit() override;
+private:
+    TilesSet mDestroyedPieces;
+    TilesMovementSet mPiecesToMove;
+    std::shared_ptr<ViewAnimationState> pAnimationState;
+    FallingPiecesState(const FallingPiecesState &);
+    FallingPiecesState & operator=(const FallingPiecesState &);
 };
 
-#endif /* DroppingPiecesState_hpp */
+#endif /* FallingPiecesState_hpp */

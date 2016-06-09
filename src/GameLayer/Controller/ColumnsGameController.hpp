@@ -10,7 +10,7 @@
 #define ColumnsGameController_hpp
 
 #include <memory>
-
+#include <tuple>
 
 #include "ResourceManager.hpp"
 #include "EventQueue.hpp"
@@ -40,43 +40,52 @@ class ColumnsGameController
     
    
 public:
+    
+    // Use an unscoped enum to std::get fields from the DestroyPiecesInfo tuple instead of using numeric
+    // indexers (from Effective Modern C++, Item 10)
+    enum DestroyPiecesInfoFields{ destroyedPieces, animationState };
+    using DestroyPiecesInfo = std::tuple<TilesSet, std::shared_ptr<ViewAnimationState>>;
+    using FallingPiecesInfo = std::tuple<TilesMovementSet, std::shared_ptr<ViewAnimationState>>;
     ColumnsGameController(EventQueue &eventQueue,
-                          ResourceManager &resourceMng)
-                            :
+                          ResourceManager &resourceMng):
     mColumnsBoard(cDefaultBoardRows, cDefaultBoardColumns),
     mEventQueueRef(eventQueue),
     mResourceManagerRef(resourceMng)
     {}
     
-    // TODO: use with a configuration POCO when we read configuration from files
+    // TODO: use with a configuration when we read configuration from files
     void Init();
+    
+    bool CanMoveDown() const;
     
     void EndGame();
     
-    bool CanMoveDown() const;
     bool MoveDown();
     void MoveLeft();
     void MoveRight();
     bool ResetPlayerBlock();
     void PermutePlayerBlockPieces();
     
+    void UpdateBoard(TilesSet piecesToDestroy, TilesMovementSet piecesToMove);
+    DestroyPiecesInfo StartDestroyingPieces();
+    FallingPiecesInfo StartFallingPieces(TilesSet piecesDestroyed);
+    
     void Update(TimeInfo time);
     void Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer);
 
     int waitForLongPressMs() const { return 250; }
-    float minValueXMotion() const { 0.02; }
+    float minValueXMotion() const { return 0.02; }
     
 private:
     ColumnsGameController(const ColumnsGameController &);
     ColumnsGameController& operator=(const ColumnsGameController &);
     
-
     ColumnsGameFSM mFSM;
     
     // Creates a new player block with a random set of pieces and positions it at
     // the initial position in the board
-    
-    
+
+//    TilesSet mPiecesToDestroy;
     const uint8_t cDefaultBoardColumns = 6;
     const uint8_t cDefaultBoardRows = 17;
     

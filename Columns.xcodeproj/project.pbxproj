@@ -90,6 +90,7 @@
 		9C2BE30E1D0723AB00532AA8 /* DroppingPiecesState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DroppingPiecesState.hpp; sourceTree = "<group>"; };
 		9C2BE3101D07241D00532AA8 /* RemovingPiecesState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemovingPiecesState.cpp; sourceTree = "<group>"; };
 		9C2BE3111D07241D00532AA8 /* RemovingPiecesState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RemovingPiecesState.hpp; sourceTree = "<group>"; };
+		9C3123ED1D097E1B00DF21CA /* GameStateArgs.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameStateArgs.hpp; sourceTree = "<group>"; };
 		9C47A2DA1CF50A7700885640 /* Sprites */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Sprites; sourceTree = "<group>"; };
 		9C47A2E31CF5A3A300885640 /* DataTypes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DataTypes.hpp; sourceTree = "<group>"; };
 		9C47A2ED1CF6DA9800885640 /* columns.tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = columns.tests; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -272,6 +273,7 @@
 				9C2BE30E1D0723AB00532AA8 /* DroppingPiecesState.hpp */,
 				9C2BE3101D07241D00532AA8 /* RemovingPiecesState.cpp */,
 				9C2BE3111D07241D00532AA8 /* RemovingPiecesState.hpp */,
+				9C3123ED1D097E1B00DF21CA /* GameStateArgs.hpp */,
 			);
 			path = GameStates;
 			sourceTree = "<group>";

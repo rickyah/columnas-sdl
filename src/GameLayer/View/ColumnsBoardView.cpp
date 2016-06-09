@@ -8,7 +8,37 @@
 
 #include "ColumnsBoardView.hpp"
 
-void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
+ColumnsBoardView::ColumnsBoardView()
+:pDestroyPiecesAnimationState(std::make_shared<ViewAnimationState>()),
+pFallingPiecesAnimationState(std::make_shared<ViewAnimationState>())
+{}
+
+void ColumnsBoardView::InitDestroyPiecesAnimationTimeMs(double timeMs)
+{
+    pDestroyPiecesAnimationState->mTotalAnimationTimeMs = std::max(0.0, timeMs);
+}
+
+void ColumnsBoardView::InitFallingPiecesAnimationTimeMs(double timeMs)
+{
+    pFallingPiecesAnimationState->mTotalAnimationTimeMs = std::max(0.0, timeMs);
+}
+
+void ColumnsBoardView::Render(double dt, std::shared_ptr<Renderer> pRenderer)
+{
+    if (IsDestroyingPieces())
+    {
+        RenderDestroyAnimation(dt, pRenderer);
+    }
+    else if (IsMakingPiecesFall())
+    {
+        RenderFallingPiecesAnimation(dt, pRenderer);
+    }
+    else
+    {
+        RenderBoard(dt, pRenderer);
+    }
+}
+void ColumnsBoardView::RenderBoard(double dt, std::shared_ptr<Renderer> pRenderer)
 {
     Position offset(0,0);
     Rect r(offset,  mTileSizePixels);
@@ -42,7 +72,17 @@ void ColumnsBoardView::Render(std::shared_ptr<Renderer> pRenderer)
     }
 }
 
-void ColumnsBoardView::SetPieceToTextureMapping(Size tileSizePixels,
+void ColumnsBoardView::RenderDestroyAnimation(double dt, std::shared_ptr<Renderer> pRenderer)
+{
+    pDestroyPiecesAnimationState->mElapsedAnimationTimeMs += dt;
+}
+
+void ColumnsBoardView::RenderFallingPiecesAnimation(double dt, std::shared_ptr<Renderer> pRenderer)
+{
+    pFallingPiecesAnimationState->mElapsedAnimationTimeMs += dt;
+}
+
+void ColumnsBoardView::InitPieceToTextureMapping(Size tileSizePixels,
                                                 TileTypeToTextureMapping mappings)
 {
     mTileSizePixels = tileSizePixels;
@@ -51,3 +91,27 @@ void ColumnsBoardView::SetPieceToTextureMapping(Size tileSizePixels,
         kvp.second->texture()->drawSize(tileSizePixels);
     }
 }
+
+
+std::shared_ptr<ViewAnimationState> ColumnsBoardView::StartDestroyPiecesAnimation(TilesSet piecesToDestroy)
+{
+    // Can't start the same animation twice
+    if(pDestroyPiecesAnimationState->IsFinished())
+    {
+        pDestroyPiecesAnimationState->mElapsedAnimationTimeMs = 0;
+    }
+    
+    return pDestroyPiecesAnimationState;
+}
+
+std::shared_ptr<ViewAnimationState> ColumnsBoardView::StartFallingPiecesAnimation(TilesMovementSet piecesToMove)
+{
+    // Can't start the same animation twice
+    if(pFallingPiecesAnimationState->IsFinished())
+    {
+        pFallingPiecesAnimationState->mElapsedAnimationTimeMs = 0;
+    }
+        
+    return pFallingPiecesAnimationState;
+}
+
