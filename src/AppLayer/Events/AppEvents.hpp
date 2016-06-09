@@ -10,6 +10,11 @@
 
 #include "IEventData.hpp"
 
+/*
+ * Defines application-wide events
+ */
+
+
 class AppQuit_Event : public IEventData
 {
 public:
@@ -23,7 +28,7 @@ class AppTouch_Event : public IEventData
 {
 public:
     
-    enum ETouchType { Up, Down, Motion };
+    enum class TouchType { Up, Down, Motion };
     
     struct TouchPosition
     {
@@ -41,7 +46,7 @@ public:
     
     struct TouchEventArgs
     {
-        ETouchType type;
+        TouchType type;
         TouchPosition pos;
         TouchMotion motion;
     };

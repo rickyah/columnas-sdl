@@ -108,7 +108,7 @@ AppTouch_Event::TouchMotion InputState::FilterMotion(AppTouch_Event::TouchMotion
 
 void WaitingInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
 {
-    if (event->args().type == AppTouch_Event::ETouchType::Down)
+    if (event->args().type == AppTouch_Event::TouchType::Down)
     {
         mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Received_Input);
     }
@@ -147,13 +147,13 @@ void ReceivedInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
 {
     if (mCurrentElapsedMs <= mControllerRef.waitForLongPressMs())
     {
-        if (event->args().type == AppTouch_Event::ETouchType::Up)
+        if (event->args().type == AppTouch_Event::TouchType::Up)
         {
             mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
             return;
         }
         
-        if (event->args().type == AppTouch_Event::ETouchType::Motion)
+        if (event->args().type == AppTouch_Event::TouchType::Motion)
         {
             auto filteredMotion = FilterMotion(event->args().motion, mControllerRef.minValueXMotion());
             
@@ -198,14 +198,14 @@ void MovingBlockPieceInputState::OnUpdate(double dt)
 
 void MovingBlockPieceInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
 {
-    if (event->args().type == AppTouch_Event::ETouchType::Up)
+    if (event->args().type == AppTouch_Event::TouchType::Up)
     {
         mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
         return;
     }
     
     
-    if (event->args().type == AppTouch_Event::ETouchType::Motion)
+    if (event->args().type == AppTouch_Event::TouchType::Motion)
     {
         AccumulateMotion(event->args().motion);
     }
@@ -240,7 +240,7 @@ void DroppingBlockPieceInputState::OnUpdate(double dt)
 
 void DroppingBlockPieceInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
 {
-    if(event->args().type == AppTouch_Event::ETouchType::Up)
+    if(event->args().type == AppTouch_Event::TouchType::Up)
     {
         mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
     }

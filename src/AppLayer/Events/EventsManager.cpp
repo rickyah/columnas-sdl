@@ -43,15 +43,15 @@ std::shared_ptr<IEventData> EventsManager::CreateTouchEvent(const SDL_Event& eve
     switch(event.type)
     {
         case SDL_FINGERDOWN:
-            args.type = AppTouch_Event::ETouchType::Down;
+            args.type = AppTouch_Event::TouchType::Down;
             break;
             
         case SDL_FINGERUP:
-            args.type = AppTouch_Event::ETouchType::Up;
+            args.type = AppTouch_Event::TouchType::Up;
             break;
             
         case SDL_FINGERMOTION:
-            args.type = AppTouch_Event::ETouchType::Motion;
+            args.type = AppTouch_Event::TouchType::Motion;
             args.motion = {event.tfinger.dx, event.tfinger.dy};
             break;
     }
