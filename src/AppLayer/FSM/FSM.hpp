@@ -29,6 +29,8 @@ struct EnumHasher
     }
 };
 
+struct IStateArgs {};
+typedef std::shared_ptr<IStateArgs> IStateArgsPtr;
 
 /*
  * Interface defining all the operations required for any state in this FSM
@@ -43,6 +45,7 @@ public:
     virtual void OnUpdate(double dt) {}
     
     virtual void OnInit() {}
+    virtual void OnSetArgs(IStateArgsPtr pArgs) {}
     virtual void OnEnter() {}
     virtual void OnExit() {}
     virtual void OnCleanup() {}
@@ -87,10 +90,12 @@ class FSM
 public:
     using TStatePtr = std::shared_ptr<TState>;
     
+    
     struct StateInfo
     {
         TStateId id = TStateId();
         TStatePtr ptr = nullptr;
+        IStateArgsPtr pArgs = nullptr;
     };
     
     StateInfo currentState() const { return mCurrentStateInfo; }
@@ -109,8 +114,8 @@ public:
      *
      * @return false if the state was not registered in the FSM, otherwise returns true.
      */
+    bool ChangeTo(TStateId id, IStateArgsPtr pArgs) const;
     bool ChangeTo(TStateId id) const;
-    
     /*
      * Register an state to be used by the FSM
      *
@@ -159,7 +164,7 @@ bool FSM<TStateId, TState, THash>::RegisterState(TStateId id, TStatePtr pState)
 }
 
 template <typename TStateId, typename TState, typename THash>
-bool FSM<TStateId, TState, THash>::ChangeTo(TStateId id) const
+bool FSM<TStateId, TState, THash>::ChangeTo(TStateId id, IStateArgsPtr pArgs) const
 {
     auto nextState = mStates.find(id);
     
@@ -169,9 +174,16 @@ bool FSM<TStateId, TState, THash>::ChangeTo(TStateId id) const
     {
         mNextStateInfo.id = id;
         mNextStateInfo.ptr = nextState->second;
+        mNextStateInfo.pArgs = pArgs;
     }
     
     return true;
+}
+
+template <typename TStateId, typename TState, typename THash>
+bool FSM<TStateId, TState, THash>::ChangeTo(TStateId id) const
+{
+    return FSM<TStateId, TState, THash>::ChangeTo(id, nullptr);
 }
 
 template <typename TStateId, typename TState, typename THash>
@@ -212,13 +224,17 @@ void FSM<TStateId, TState, THash>::Update(double dt)
         {
             mCurrentStateInfo.ptr->OnExit();
         }
-        auto nextPtr = mNextStateInfo.ptr;
+        auto nextStateInfoCopy = mNextStateInfo;
         
         std::swap(mCurrentStateInfo, mNextStateInfo);
         mNextStateInfo.id = TStateId();
         mNextStateInfo.ptr = nullptr;
         
-        nextPtr->OnEnter();
+        if(nextStateInfoCopy.pArgs)
+        {
+            nextStateInfoCopy.ptr->OnSetArgs(nextStateInfoCopy.pArgs);
+        }
+        nextStateInfoCopy.ptr->OnEnter();
     }
     
     if(mCurrentStateInfo.ptr)
