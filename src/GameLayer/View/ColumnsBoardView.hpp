@@ -40,7 +40,7 @@ private:
 
 class ColumnsBoardView
 {
-    typedef std::unordered_map<TileType, std::shared_ptr<Texture2dResource>> TileTypeToTextureMapping;
+    typedef std::unordered_map<TileType, std::weak_ptr<Texture2dResource>> TileTypeToTextureMapping;
 
 public:
     explicit ColumnsBoardView();

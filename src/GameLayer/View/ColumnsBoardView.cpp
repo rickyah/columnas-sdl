@@ -26,7 +26,7 @@ ColumnsBoardView& ColumnsBoardView::InitPieceToTextureMapping(TileTypeToTextureM
     mTile2TextureMapping = mappings;
 
     for(auto const &kvp : mTile2TextureMapping) {
-        kvp.second->texture()->drawSize(mTileSizePixels);
+        kvp.second.lock()->texture()->drawSize(mTileSizePixels);
     }
     
     return *this;
@@ -37,7 +37,7 @@ ColumnsBoardView& ColumnsBoardView::InitTileSizeInPixels(Size tileSizePixels)
     mTileSizePixels = tileSizePixels;
     
     for(auto const &kvp : mTile2TextureMapping) {
-        kvp.second->texture()->drawSize(mTileSizePixels);
+        kvp.second.lock()->texture()->drawSize(mTileSizePixels);
     }
     
     return *this;
