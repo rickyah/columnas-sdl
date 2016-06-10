@@ -16,10 +16,12 @@ class RemovingPiecesState;
 
 void ColumnsGameController::Init()
 {
-    mColumnsBoard.InitNumEqualPiecesToDestroy(3);
-    mColumnsBoard.InitNumRowsGameOver(3);
-    mColumnsBoard.InitPlayerBlockInitialPosition(TilePosition(mColumnsBoard.numFirstRowsForGameOver(), mColumnsBoard.columns()/2));
+    
+    mPlayerBlockInitialPosition = PositionF(mColumnsBoard.numFirstRowsForGameOver(), static_cast<int>(mColumnsBoard.columns()/2));
 
+    // 
+    // mColumnsBoard.numEqualPiecesToDestroy(3);
+    
     mColumnsBoardView.InitFirstRowsToSkipWhenRendering(mColumnsBoard.numFirstRowsForGameOver())
         .InitTileSizeInPixels(Size(24,24))
         .InitPieceToTextureMapping({
@@ -44,25 +46,24 @@ void ColumnsGameController::Init()
     mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
     
     ResetPlayerBlock();
-    
-    mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
 }
 
 
 bool ColumnsGameController::ResetPlayerBlock()
 {
-    return mColumnsBoard.ResetPlayerBlock({
-        static_cast<short>(pRandomDistribution->next()),
-        static_cast<short>(pRandomDistribution->next()),
-        static_cast<short>(pRandomDistribution->next()),
-    });
+    mPlayerBlock.SetNewPieces(mNextPieces);
+    mPlayerBlock.position(mPlayerBlockInitialPosition);
+    mNextPieces = {
+        static_cast<TileType>(pRandomDistribution->next()),
+        static_cast<TileType>(pRandomDistribution->next()),
+        static_cast<TileType>(pRandomDistribution->next()),
+    };
 }
 
 
 void ColumnsGameController::PermutePlayerBlockPieces()
 {
-    mColumnsBoard.MovePlayerBlockPieces();
-    mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
+    mPlayerBlock.MovePieces();
 }
 
 void ColumnsGameController::EndGame()
@@ -74,29 +75,44 @@ void ColumnsGameController::EndGame()
 
 bool ColumnsGameController::CanMoveDown() const
 {
-    return mColumnsBoard.CanMovePlayerBlockDown();
+    return mColumnsBoard.CanMovePlayerBlockDown(mPlayerBlock);
+}
+
+void ColumnsGameController::ConsolidatePlayerBlock()
+{
+    mColumnsBoard.ConsolidatePlayerBlock(mPlayerBlock);
 }
 
 bool ColumnsGameController::MoveDown()
 {
-    return mColumnsBoard.MovePlayerBlockDown();
+    if (mColumnsBoard.CanMovePlayerBlockDown(mPlayerBlock))
+    {
+        mPlayerBlock.position().row += 0.5;
+    }
+    
 }
 
 void ColumnsGameController::MoveLeft()
 {
-    mColumnsBoard.MovePlayerBlockLeft();
+    if (mColumnsBoard.CanMovePlayerBlockLeft(mPlayerBlock))
+    {
+        mPlayerBlock.position().col -= 1;
+    }
+    
 }
 
 void ColumnsGameController::MoveRight()
 {
-    mColumnsBoard.MovePlayerBlockRight();
+    if (mColumnsBoard.CanMovePlayerBlockRight(mPlayerBlock))
+    {
+        mPlayerBlock.position().col += 1;
+    }
+    
 }
 
 void ColumnsGameController::Update(TimeInfo time)
 {
     mFSM.Update(time.dt);
-
-    mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
 }
 
 void ColumnsGameController::Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer)
@@ -107,7 +123,8 @@ void ColumnsGameController::Render(TimeInfo time, std::shared_ptr<Renderer> pRen
 
 ColumnsGameController::DestroyPiecesInfo ColumnsGameController::StartDestroyingPieces()
 {
-    auto piecesToDestroy = mColumnsBoard.FindPiecesToDestroy();
+    
+    auto piecesToDestroy = mColumnsBoard.FindPiecesToDestroy(mPlayerBlock.occupiedPositions());
     
     
     if(piecesToDestroy.size() >0)
@@ -143,13 +160,9 @@ void ColumnsGameController::UpdateBoardDestroyPieces(TilesSet piecesToDestroy)
 {
     mColumnsBoard.RemovePieces(piecesToDestroy);
 
-    
-    mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
 }
     
 void ColumnsGameController::UpdateBoardMakePiecesFall(TilesMovementSet piecesToMove)
 {
     mColumnsBoard.MovePieces(piecesToMove);
-    
-    mColumnsBoardView.SetBoardState(mColumnsBoard.boardState());
 }

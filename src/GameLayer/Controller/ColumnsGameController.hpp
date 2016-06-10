@@ -43,9 +43,10 @@ public:
     
     ColumnsGameController(EventQueue &eventQueue,
                           ResourceManager &resourceMng):
-    mColumnsBoard(cDefaultBoardRows, cDefaultBoardColumns),
+    mColumnsBoard(cDefaultBoardRows, cDefaultBoardColumns, cDefaultEqualPiecesToDestroy),
     mEventQueueRef(eventQueue),
-    mResourceManagerRef(resourceMng)
+    mResourceManagerRef(resourceMng),
+    mColumnsBoardView(&mColumnsBoard, &mPlayerBlock)
     {}
     
     // TODO: use with a configuration when we read configuration from files
@@ -83,6 +84,7 @@ public:
     void UpdateBoardDestroyPieces(TilesSet piecesToDestroy);
 
     FallingPiecesInfo StartFallingPieces(TilesSet piecesDestroyed);
+    void ConsolidatePlayerBlock();
     
     void Update(TimeInfo time);
     void Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer);
@@ -96,12 +98,13 @@ private:
     
     ColumnsGameFSM mFSM;
     
-    // Creates a new player block with a random set of pieces and positions it at
-    // the initial position in the board
-
-//    TilesSet mPiecesToDestroy;
+    const uint8_t cDefaultEqualPiecesToDestroy = 3;
     const uint8_t cDefaultBoardColumns = 6;
     const uint8_t cDefaultBoardRows = 17;
+    
+    PlayerBlock mPlayerBlock;
+    std::vector<TileType> mNextPieces;
+    PositionF mPlayerBlockInitialPosition;
     
     ColumnsBoard mColumnsBoard;
     ColumnsBoardView mColumnsBoardView;

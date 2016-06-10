@@ -8,123 +8,43 @@
 
 #include "ColumnsBoard.hpp"
 
-
-bool ColumnsBoard::MovePlayerBlockRight()
+bool ColumnsBoard::CanMovePlayerBlockDown(const PlayerBlock &playerBlock) const
 {
- 
-    return MovePlayerBlockToPosition(TilePosition(mPlayerBlockPosition.row, mPlayerBlockPosition.col+1));
-}
-
-bool ColumnsBoard::MovePlayerBlockLeft()
-{
-    return MovePlayerBlockToPosition(TilePosition(mPlayerBlockPosition.row, mPlayerBlockPosition.col-1));
-}
-
-bool ColumnsBoard::MovePlayerBlockDown()
-{
-    return MovePlayerBlockToPosition(TilePosition(mPlayerBlockPosition.row+1, mPlayerBlockPosition.col));
-}
-
-bool ColumnsBoard::CanMovePlayerBlockDown() const
-{
-    return CanMovePlayerBlockTo(TilePosition(mPlayerBlockPosition.row+1, mPlayerBlockPosition.col));
+    return CanMovePlayerBlockTo({1,0}, playerBlock);
 }
 
 
-bool ColumnsBoard::MovePlayerBlockToPosition(const TilePosition &newPos)
+bool ColumnsBoard::CanMovePlayerBlockLeft(const PlayerBlock &playerBlock) const
 {
-    if (!CanMovePlayerBlockTo(newPos)) return false;
-
-    UpdateBoardStateWithPlayerBlockAtPosition(newPos);
-    
-    return true;
+    return CanMovePlayerBlockTo({0,-1}, playerBlock);
 }
 
-bool ColumnsBoard::IsPositionInsidePlayerBlock(TilePosition pos) const
+bool ColumnsBoard::CanMovePlayerBlockRight(const PlayerBlock &playerBlock) const
 {
-    return pos.col == mPlayerBlockPosition.col
-        && pos.row >= mPlayerBlockPosition.row
-        && pos.row < mPlayerBlockPosition.row + mPlayerBlock.size();
+    return CanMovePlayerBlockTo({0,1}, playerBlock);
 }
 
-bool ColumnsBoard::CanMovePlayerBlockTo(TilePosition newPos) const
+bool ColumnsBoard::IsGameOverConditionFullfilled() const
 {
-    // Check if we can move
-    for(int i = 0; i < mPlayerBlock.size(); ++i)
+    for(int row = 0; row < mNumFirstRowsForGameOver; ++row)
     {
-        if (!GenericBoard::IsPositionInsideBoardBounds(newPos)) return false;
-        
-        if(!IsPositionInsidePlayerBlock(newPos) && mBoardTiles[newPos.row][newPos.col] != ESpecialBoardPieces::Empty)
+        auto currentRow = mBoardTiles[row];
+        if (std::find_if(currentRow.begin(), currentRow.end(), [](TileType t) { return t > 0;}) != currentRow.end())
         {
-            return false;
-        }
-        
-        newPos.row += 1;
-    }
-    
-    return true;
-}
-
-bool ColumnsBoard::ResetPlayerBlock(const std::vector<TileType> &pieces)
-{
-    // check that where the new block should be positioned is empty
-    for(int i = 0; i < mPlayerBlock.size(); ++ i)
-    {
-        if (mBoardTiles[mPlayerBlockInitialPosition.row+i][mPlayerBlockInitialPosition.col] != ESpecialBoardPieces::Empty)
-        {
-            return false;
+            return true;
         }
     }
-
-    mPlayerBlock.SetNewPieces(pieces);
     
-    mPlayerBlockPosition = mPlayerBlockInitialPosition;
-    
-    UpdateBoardStateWithPlayerBlockAtPosition(mPlayerBlockInitialPosition);
-
-    return true;
+    return false;
 }
 
-void ColumnsBoard::MovePlayerBlockPieces()
+void ColumnsBoard::ConsolidatePlayerBlock(const PlayerBlock &playerBlock)
 {
-    mPlayerBlock.MovePieces();
-    UpdateBoardStateWithPlayerBlockAtPosition(mPlayerBlockPosition);
-}
-
-void ColumnsBoard::UpdateBoardStateWithPlayerBlockAtPosition(const TilePosition &newPos)
-{
-    // Move block and update board state
-    for(auto i = 0; i < mPlayerBlock.size(); ++i)
+    auto position = playerBlock.position();
+    for(auto i = 0; i < playerBlock.size(); ++i)
     {
-        mBoardTiles[mPlayerBlockPosition.row + i][mPlayerBlockPosition.col] = ESpecialBoardPieces::Empty;
+        mBoardTiles[position.row + i][position.col] = playerBlock[i];
     }
-    
-    for(auto i = 0; i < mPlayerBlock.size(); ++i)
-    {        
-        mBoardTiles[newPos.row + i][newPos.col] = mPlayerBlock[i];
-    }
-    
-    
-    mPlayerBlockPosition = newPos;
-}
-
-TilesSet ColumnsBoard::FindPiecesToDestroy() const
-{
-    mListPiecesToDestroy.clear();
-    
-    for(auto i = 0; i < mPlayerBlock.size(); ++i)
-    {
-        auto set = GetAllAdjacentTiles(mPlayerBlockPosition.row + i, mPlayerBlockPosition.col, std::bind(&ColumnsBoard::FindAdjacentPiecesFilterFunc, this, std::placeholders::_1));
-        
-        // sustract 1 as the GetAllAdjacentTiles does not takes into account the piece in the position
-        // you search
-        if (set.size() > (mNumEqualPiecesToDestroy -1) )
-        {
-            mListPiecesToDestroy.insert(set.begin(), set.end());
-        }
-    }
- 
-    return mListPiecesToDestroy;
 }
 
 TilesMovementSet ColumnsBoard::FindAllPiecesToMove() const
@@ -137,6 +57,24 @@ TilesMovementSet ColumnsBoard::FindAllPiecesToMove() const
     return FindPiecesToMoveInColumns(mTmpColumnsToCheck);
 }
 
+TilesSet ColumnsBoard::FindPiecesToDestroy(TilesSet positionsToSearch) const
+{
+    mListPiecesToDestroy.clear();
+    
+    for(const auto& position: positionsToSearch)
+    {
+        auto set = GetAllAdjacentTiles(position.row, position.col, std::bind(&ColumnsBoard::FindAdjacentPiecesFilterFunc, this, std::placeholders::_1));
+        
+        // sustract 1 as the GetAllAdjacentTiles does not takes into account the piece in the position
+        // you search
+        if (set.size() > (mNumEqualPiecesToDestroy -1) )
+        {
+            mListPiecesToDestroy.insert(set.begin(), set.end());
+        }
+    }
+    
+    return mListPiecesToDestroy;
+}
 
 TilesMovementSet ColumnsBoard::FindPiecesToMoveInSubset(const TilesSet &destroyedPieces) const
 {
@@ -150,10 +88,51 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInSubset(const TilesSet &destroye
                    [](const TilePosition & p) {
                        return p.col;
                    });
-
+    
     return FindPiecesToMoveInColumns(mTmpColumnsToCheck);
-
+    
 }
+
+
+////////////////////////////////////////////////////////////////////////
+// Private Helpers
+
+
+bool ColumnsBoard::CanMovePlayerBlockTo(TileOffset offset, const PlayerBlock &playerBlock) const
+{
+    // Check if we can move
+    TileCoordinate firstRow = std::floor(playerBlock.position().row + offset.rowOffset);
+    TileCoordinate lastRow;
+    
+    // Special case: when moving to the side if we are in the middle of a tile we might collide to a
+    // non-empty tile, so we need to check one tile down ahead
+    if (offset.rowOffset != 0)
+    {
+        lastRow = std::floor(playerBlock.position().row + playerBlock.size() + offset.rowOffset);
+    }
+    else
+    {
+        lastRow = std::ceil(playerBlock.position().row + playerBlock.size() + offset.rowOffset);
+    }
+    
+    TileCoordinate newCol = playerBlock.position().col + offset.colOffset;
+    
+    for(unsigned short rowIdx = firstRow; rowIdx < lastRow; ++rowIdx)
+    {
+        if (!GenericBoard::IsPositionInsideBoardBounds({rowIdx, newCol}))
+        {
+             return false;
+        }
+        
+        if(mBoardTiles[rowIdx][newCol] != ESpecialBoardPieces::Empty)
+        {
+            return false;
+        }
+    }
+    
+    return true;
+}
+
 
 TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_set<TileCoordinate> &columnsToCheck) const
 {
@@ -203,19 +182,6 @@ TilesMovementSet ColumnsBoard::FindPiecesToMoveInColumns(const std::unordered_se
     return mListPiecesToFall;
 }
 
-bool ColumnsBoard::IsGameOverConditionFullfilled() const
-{
-    for(int row = 0; row < mNumFirstRowsForGameOver; ++row)
-    {
-        auto currentRow = mBoardTiles[row];
-        if (std::find_if(currentRow.begin(), currentRow.end(), [](TileType t) { return t > 0;}) != currentRow.end())
-        {
-            return true;
-        }
-    }
-    
-    return false;
-}
 
 
 bool ColumnsBoard::FindAdjacentPiecesFilterFunc(std::unordered_set<TilePosition> positions) const

@@ -12,6 +12,7 @@
 
 void RemovingPiecesState::OnEnter()
 {
+    
     auto tuple = mControllerRef.StartDestroyingPieces();
     
     mPiecesToDestroy = std::get<ColumnsGameController::destroyedPieces>(tuple);

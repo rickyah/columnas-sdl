@@ -61,6 +61,13 @@ void MovingPiecesState::OnUpdate(double dt)
     
     mPassedTime += dt;
     
+    if (!mControllerRef.CanMoveDown())
+    {
+        mControllerRef.ConsolidatePlayerBlock();
+        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
+        return;
+    }
+    
     if (mPassedTime >= mTimePerDropMs)
     {
         mControllerRef.MoveDown();
@@ -68,10 +75,7 @@ void MovingPiecesState::OnUpdate(double dt)
         mPassedTime = std::max(0, mPassedTime - mTimePerDropMs);
     }
     
-    if (!mControllerRef.CanMoveDown())
-    {
-        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
-    }
+    
 }
 
 void MovingPiecesState::OnInit()

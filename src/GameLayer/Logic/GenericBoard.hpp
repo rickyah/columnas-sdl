@@ -19,7 +19,13 @@ enum ESpecialBoardPieces {
 };
 
 typedef short TileType;
-typedef short TileCoordinate;
+typedef unsigned short TileCoordinate;
+
+struct TileOffset
+{
+    short rowOffset;
+    short colOffset;
+};
 
 struct TilePosition
 {
@@ -99,7 +105,7 @@ public:
     // Sets up an board of a given rows and columns with the Empty tile value
     explicit GenericBoard(TileCoordinate rows, TileCoordinate columns);
 
-    const BoardState& boardState() { return mBoardTiles; };
+    BoardState boardState() { return mBoardTiles; };
     
     void ResetBoardState();
     void ResetBoardState(TileCoordinate rows, TileCoordinate columns);
@@ -150,14 +156,14 @@ protected:
     std::unordered_set<TilePosition> SearchAdjacentTilesAt(const BoardState &boardTiles,
                                                            TileCoordinate row,
                                                            TileCoordinate col,
-                                                           const std::pair<int8_t,int8_t> &increaser,
+                                                           const TileOffset &increaser,
                                                            FilterFunc filter) const;
 private:
     
-    const std::pair<TileCoordinate, TileCoordinate> kRowIncreaser = std::make_pair<TileCoordinate, TileCoordinate>(0,1);
-    const std::pair<TileCoordinate, TileCoordinate> kColIncreaser = std::make_pair<TileCoordinate, TileCoordinate>(1,0);
-    const std::pair<TileCoordinate, TileCoordinate> kMainDiagIncreaser = std::make_pair<TileCoordinate, TileCoordinate>(1,1);
-    const std::pair<TileCoordinate, TileCoordinate> kSecDiagIncreaser = std::make_pair<TileCoordinate, TileCoordinate>(-1,1);
+    const TileOffset kRowIncreaser = {0,1};
+    const TileOffset kColIncreaser = {1,0};
+    const TileOffset kMainDiagIncreaser = {1,1};
+    const TileOffset kSecDiagIncreaser = {-1,1};
     
 
     /* This acts a proxy class to expose a double subscription syntax for CBoards without exposing all the inner data
@@ -191,15 +197,20 @@ private:
 
         BoardIndexer(){};
 
-        void SetRow(std::vector<TileType> *row)
+        void SetRow(const std::vector<TileType> &row) const
         {
-            pRowRef = row;
+            pRowRef = const_cast<std::vector<TileType>*>(&row);
+        }
+        
+        void SetRow(std::vector<TileType> &row)
+        {
+            pRowRef = &row;
         }
 
 
 
     private:
-        std::vector<TileType> *pRowRef;
+        mutable std::vector<TileType> *pRowRef;
     };
 
     GenericBoard::BoardIndexer mBoardIndexer;

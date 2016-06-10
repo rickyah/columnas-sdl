@@ -41,6 +41,7 @@
 		9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB101CF744150058369A /* GenericBoard.cpp */; };
 		9C8FD4911CFE0F3B00293A51 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD48F1CFE0F3B00293A51 /* ResourceManager.cpp */; };
 		9C8FD49F1CFF389200293A51 /* FSMTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD49E1CFF389200293A51 /* FSMTests.cpp */; };
+		9CAF9C0E1D0B77230041BDB0 /* PlayerBlockMovement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CAF9C0C1D0B77230041BDB0 /* PlayerBlockMovement.cpp */; };
 		FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */; };
 		FAE0E96A1BAF96A00098DFA4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE0E9691BAF96A00098DFA4 /* GameController.framework */; };
 		FD77A0160E26BC0500F39101 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = FD77A00A0E26BC0500F39101 /* main.cpp */; };
@@ -135,6 +136,7 @@
 		9C8FD49D1CFE4F1400293A51 /* ResourceManagerImpl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManagerImpl.hpp; sourceTree = "<group>"; };
 		9C8FD49E1CFF389200293A51 /* FSMTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FSMTests.cpp; sourceTree = "<group>"; };
 		9C8FD4A51CFF3EFF00293A51 /* FSM.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FSM.hpp; sourceTree = "<group>"; };
+		9CAF9C0C1D0B77230041BDB0 /* PlayerBlockMovement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerBlockMovement.cpp; sourceTree = "<group>"; };
 		FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		FAE0E9691BAF96A00098DFA4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		FD77A0050E26BC0500F39101 /* accelerometer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = accelerometer.c; sourceTree = "<group>"; };
@@ -296,6 +298,7 @@
 				9C8A398B1CF8833D00C2E236 /* ColumnsBoardTest.cpp */,
 				9C47A2FA1CF6DC0100885640 /* main.cpp */,
 				9C8FD49E1CFF389200293A51 /* FSMTests.cpp */,
+				9CAF9C0C1D0B77230041BDB0 /* PlayerBlockMovement.cpp */,
 			);
 			path = columns.tests;
 			sourceTree = "<group>";
@@ -544,6 +547,7 @@
 				9C8A39941CF88A6600C2E236 /* ColumnsBoard.cpp in Sources */,
 				9C8A39931CF88A5D00C2E236 /* GenericBoard.cpp in Sources */,
 				9C8FD49F1CFF389200293A51 /* FSMTests.cpp in Sources */,
+				9CAF9C0E1D0B77230041BDB0 /* PlayerBlockMovement.cpp in Sources */,
 				9C47A2FB1CF6DC0100885640 /* main.cpp in Sources */,
 				9C8A398C1CF8833D00C2E236 /* ColumnsBoardTest.cpp in Sources */,
 				9C47A2F01CF6DA9800885640 /* BoardTests.cpp in Sources */,
