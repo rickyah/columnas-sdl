@@ -13,14 +13,48 @@ ColumnsBoardView::ColumnsBoardView()
 pFallingPiecesAnimationState(std::make_shared<ViewAnimationState>())
 {}
 
-void ColumnsBoardView::InitDestroyPiecesAnimationTimeMs(double timeMs)
+ColumnsBoardView& ColumnsBoardView::InitDestroyPiecesAnimationTimeMs(double timeMs)
 {
     pDestroyPiecesAnimationState->mTotalAnimationTimeMs = std::max(0.0, timeMs);
+
+    return *this;
 }
 
-void ColumnsBoardView::InitFallingPiecesAnimationTimeMs(double timeMs)
+
+ColumnsBoardView& ColumnsBoardView::InitPieceToTextureMapping(TileTypeToTextureMapping mappings)
+{
+    mTile2TextureMapping = mappings;
+
+    for(auto const &kvp : mTile2TextureMapping) {
+        kvp.second->texture()->drawSize(mTileSizePixels);
+    }
+    
+    return *this;
+}
+
+ColumnsBoardView& ColumnsBoardView::InitTileSizeInPixels(Size tileSizePixels)
+{
+    mTileSizePixels = tileSizePixels;
+    
+    for(auto const &kvp : mTile2TextureMapping) {
+        kvp.second->texture()->drawSize(mTileSizePixels);
+    }
+    
+    return *this;
+}
+
+ColumnsBoardView& ColumnsBoardView::InitFallingPiecesAnimationTimeMs(double timeMs)
 {
     pFallingPiecesAnimationState->mTotalAnimationTimeMs = std::max(0.0, timeMs);
+    
+    return *this;
+}
+
+ColumnsBoardView& ColumnsBoardView::InitFirstRowsToSkipWhenRendering(TileCoordinate value)
+{
+    mSkipRenderingRowsWhenRendering = value;
+    
+    return *this;
 }
 
 void ColumnsBoardView::Render(double dt, std::shared_ptr<Renderer> pRenderer)
@@ -38,6 +72,13 @@ void ColumnsBoardView::Render(double dt, std::shared_ptr<Renderer> pRenderer)
         RenderBoard(dt, pRenderer);
     }
 }
+
+void ColumnsBoardView::RenderFallingPiecesAnimation(double dt, std::shared_ptr<Renderer> pRenderer)
+{
+    pFallingPiecesAnimationState->mElapsedAnimationTimeMs += dt;
+}
+
+
 void ColumnsBoardView::RenderBoard(double dt, std::shared_ptr<Renderer> pRenderer)
 {
     Position offset(0,0);
@@ -77,20 +118,6 @@ void ColumnsBoardView::RenderDestroyAnimation(double dt, std::shared_ptr<Rendere
     pDestroyPiecesAnimationState->mElapsedAnimationTimeMs += dt;
 }
 
-void ColumnsBoardView::RenderFallingPiecesAnimation(double dt, std::shared_ptr<Renderer> pRenderer)
-{
-    pFallingPiecesAnimationState->mElapsedAnimationTimeMs += dt;
-}
-
-void ColumnsBoardView::InitPieceToTextureMapping(Size tileSizePixels,
-                                                TileTypeToTextureMapping mappings)
-{
-    mTileSizePixels = tileSizePixels;
-    mTile2TextureMapping = mappings;
-    for(auto const &kvp : mappings) {
-        kvp.second->texture()->drawSize(tileSizePixels);
-    }
-}
 
 
 std::shared_ptr<ViewAnimationState> ColumnsBoardView::StartDestroyPiecesAnimation(TilesSet piecesToDestroy)

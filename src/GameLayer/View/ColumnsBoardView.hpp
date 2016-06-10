@@ -19,6 +19,12 @@
 #include "DataTypes.hpp"
 #include "ResourcesDefinitions.hpp"
 
+/*
+ * Structure that allows to check the state of a view animation.
+ * This is intended to be used as a ptr, so the View can actually change 
+ * the inner values, and the elements that hold a copy of the pointer to
+ * query its state
+ */
 struct ViewAnimationState
 {
     friend class ColumnsBoardView;
@@ -39,12 +45,13 @@ class ColumnsBoardView
 public:
     explicit ColumnsBoardView();
 
-    void InitPieceToTextureMapping(Size tileSizePixels, TileTypeToTextureMapping mappings);
-    void InitDestroyPiecesAnimationTimeMs(double timeMs);
-    void InitFallingPiecesAnimationTimeMs(double timeMs);
+    ColumnsBoardView& InitPieceToTextureMapping(TileTypeToTextureMapping mappings);
+    ColumnsBoardView& InitTileSizeInPixels(Size tileSizePixels);
+    ColumnsBoardView& InitDestroyPiecesAnimationTimeMs(double timeMs);
+    ColumnsBoardView& InitFallingPiecesAnimationTimeMs(double timeMs);
+    ColumnsBoardView& InitFirstRowsToSkipWhenRendering(TileCoordinate value);
     
     void SetBoardState( const BoardState & initialState ) { mState = initialState; }
-    void skipFirstRowsWhenRendering(uint8_t value) { mSkipRenderingRowsWhenRendering = value; }
 
     std::shared_ptr<ViewAnimationState> StartDestroyPiecesAnimation(TilesSet piecesToDestroy);
     

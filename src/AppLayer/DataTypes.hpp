@@ -11,6 +11,9 @@
 
 #include <initializer_list>
 
+/*
+ * represents a Position or a Size
+ */
 typedef struct Position
 {
     union { int x; int w; };
@@ -21,8 +24,8 @@ typedef struct Position
     Position(int X, int Y):x(X),y(Y) {}
 
 } Position;
-
 typedef Position Size;
+
 
 struct Rect
 {
@@ -34,6 +37,9 @@ struct Rect
     Size size;
 };
 
+/*
+ * Holds data about time: delta time for the current frame, framecount, and total elapsed ms
+ */
 struct TimeInfo
 {
     double dt;

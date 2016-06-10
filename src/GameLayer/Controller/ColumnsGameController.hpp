@@ -41,11 +41,6 @@ class ColumnsGameController
    
 public:
     
-    // Use an unscoped enum to std::get fields from the DestroyPiecesInfo tuple instead of using numeric
-    // indexers (from Effective Modern C++, Item 10)
-    enum DestroyPiecesInfoFields{ destroyedPieces, animationState };
-    using DestroyPiecesInfo = std::tuple<TilesSet, std::shared_ptr<ViewAnimationState>>;
-    using FallingPiecesInfo = std::tuple<TilesMovementSet, std::shared_ptr<ViewAnimationState>>;
     ColumnsGameController(EventQueue &eventQueue,
                           ResourceManager &resourceMng):
     mColumnsBoard(cDefaultBoardRows, cDefaultBoardColumns),
@@ -66,9 +61,27 @@ public:
     bool ResetPlayerBlock();
     void PermutePlayerBlockPieces();
     
-    void UpdateBoardDestroyPieces(TilesSet piecesToDestroy);
+    
     void UpdateBoardMakePiecesFall(TilesMovementSet piecesToMove);
+    
+    
+    // Use an unscoped enum to std::get fields from the DestroyPiecesInfo tuple instead of using numeric
+    // indexers (from Effective Modern C++, Item 10)
+    enum DestroyPiecesInfoFields{ destroyedPieces, animationState };
+    using DestroyPiecesInfo = std::tuple<TilesSet, std::shared_ptr<ViewAnimationState>>;
+    using FallingPiecesInfo = std::tuple<TilesMovementSet, std::shared_ptr<ViewAnimationState>>;
+    
+    /* 
+     * This checkes the pieces that need to be destroyed and commands the view 
+     * to start executing the destroy animation  with these set of pieces
+     * The board state is NOT modified by this method
+     *
+     * @returns a tuple<2> containing the set of pieces to destroy and a ViewAnimationState ptr
+     * that allows querying for the state of the animation
+     */
     DestroyPiecesInfo StartDestroyingPieces();
+    void UpdateBoardDestroyPieces(TilesSet piecesToDestroy);
+
     FallingPiecesInfo StartFallingPieces(TilesSet piecesDestroyed);
     
     void Update(TimeInfo time);

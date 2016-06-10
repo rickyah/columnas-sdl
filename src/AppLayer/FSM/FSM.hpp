@@ -29,7 +29,14 @@ struct EnumHasher
     }
 };
 
+/*
+ * Base class for passing arguments between states
+ * 
+ * Arguments are passed when the users changes the event, and are injected in the state class instance
+ * using the OnSetArgs(), that it is called just before the OnEnter method.
+ */
 struct IStateArgs {};
+
 typedef std::shared_ptr<IStateArgs> IStateArgsPtr;
 
 /*
@@ -79,8 +86,6 @@ private:
  *           class for implementors.
  *  THash:   Hash function to use, defaults to the default std::hash function defined for the TStateId type
  */
-
-
 
 
 template <typename TStateId, typename TState, typename THash = std::hash<TStateId>>
