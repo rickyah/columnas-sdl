@@ -53,11 +53,13 @@ bool ColumnsGameController::ResetPlayerBlock()
 {
     mPlayerBlock.SetNewPieces(mNextPieces);
     mPlayerBlock.position(mPlayerBlockInitialPosition);
+
     mNextPieces = {
         static_cast<TileType>(pRandomDistribution->next()),
         static_cast<TileType>(pRandomDistribution->next()),
         static_cast<TileType>(pRandomDistribution->next()),
     };
+    return mColumnsBoard.CanMovePlayerBlockTo(TileOffset(), mPlayerBlock);
 }
 
 
@@ -88,8 +90,10 @@ bool ColumnsGameController::MoveDown()
     if (mColumnsBoard.CanMovePlayerBlockDown(mPlayerBlock))
     {
         mPlayerBlock.position().row += 0.5;
+        return true;
     }
     
+    return false;
 }
 
 void ColumnsGameController::MoveLeft()

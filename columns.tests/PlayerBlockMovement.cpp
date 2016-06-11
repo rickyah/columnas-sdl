@@ -131,5 +131,22 @@ TEST_CASE( "PlayerBlock", "[GameModel]" ) {
         REQUIRE_FALSE(board.CanMovePlayerBlockRight(block));
         
     }
+    
+    SECTION("Can set player block in invalid position") {
+        ColumnsBoard board({
+            {0,0,0},
+            {0,0,0},
+            {0,0,1},
+            {0,1,1},
+            {1,1,1},
+            {1,1,1}
+        }, 0);
+        
+        PlayerBlock block;
+        block.SetNewPieces({1,2,3});
+        block.position(PositionF(0,2));
+        REQUIRE_FALSE(board.CanMovePlayerBlockTo(TileOffset(), block));
+    }
+
 
 }

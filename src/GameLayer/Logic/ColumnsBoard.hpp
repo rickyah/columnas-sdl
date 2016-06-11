@@ -44,7 +44,7 @@ public:
     TilesSet FindPiecesToDestroy(TilesSet positionsToSearch) const;
     TilesMovementSet FindPiecesToMoveInSubset(const TilesSet &) const;
 
-    
+    bool CanMovePlayerBlockTo(TileOffset offset, const PlayerBlock &playerBlock) const;
     
 private:
     uint8_t mNumEqualPiecesToDestroy;
@@ -54,7 +54,6 @@ private:
     mutable TilesMovementSet mListPiecesToFall;
     mutable std::unordered_set<TileCoordinate> mTmpColumnsToCheck;
     
-    bool CanMovePlayerBlockTo(TileOffset offset, const PlayerBlock &playerBlock) const;
     TilesMovementSet FindPiecesToMoveInColumns(const std::unordered_set<TileCoordinate> &) const;
     bool FindAdjacentPiecesFilterFunc(std::unordered_set<TilePosition> positions) const;
 };
