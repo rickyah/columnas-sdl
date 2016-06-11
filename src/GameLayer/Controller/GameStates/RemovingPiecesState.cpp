@@ -9,21 +9,27 @@
 #include "RemovingPiecesState.hpp"
 
 
+void RemovingPiecesState::OnSetArgs(std::shared_ptr<IStateArgs> pArgs)
+{
+    if (pArgs)
+    {
+        mPiecesToDestroy = std::static_pointer_cast<DestroyPiecesStateArgs>(pArgs)->destroyedPieces;
+    }
+}
+
 
 void RemovingPiecesState::OnEnter()
 {
-    
-    auto tuple = mControllerRef.StartDestroyingPieces();
+    auto tuple = mControllerRef.StartDestroyingPieces(mPiecesToDestroy);
     
     mPiecesToDestroy = std::get<ColumnsGameController::destroyedPieces>(tuple);
     pAnimationState = std::get<ColumnsGameController::animationState>(tuple);
+    
     
     if (mPiecesToDestroy.size() <= 0)
     {
         mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
     }
-    
-    SDL_Log(__PRETTY_FUNCTION__);
 }
 
 void RemovingPiecesState::OnUpdate(double dt)
@@ -38,6 +44,8 @@ void RemovingPiecesState::OnUpdate(double dt)
     {
         mFSM.ChangeTo(EColumnsGameStatesIds::Falling_Pieces,
                       std::make_shared<DestroyPiecesStateArgs>(mPiecesToDestroy));
+        
+        pAnimationState = nullptr;
     }
 }
 
@@ -45,5 +53,4 @@ void RemovingPiecesState::OnExit()
 {
     mControllerRef.UpdateBoardDestroyPieces(mPiecesToDestroy);
     mPiecesToDestroy.clear();
-    SDL_Log(__PRETTY_FUNCTION__);
 }

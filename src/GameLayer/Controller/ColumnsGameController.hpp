@@ -77,10 +77,12 @@ public:
      * to start executing the destroy animation  with these set of pieces
      * The board state is NOT modified by this method
      *
+     * @param piecesToDestroy: set of tiles to start searching
+     *
      * @returns a tuple<2> containing the set of pieces to destroy and a ViewAnimationState ptr
      * that allows querying for the state of the animation
      */
-    DestroyPiecesInfo StartDestroyingPieces();
+    DestroyPiecesInfo StartDestroyingPieces(const TilesSet &piecesToDestroy);
     void UpdateBoardDestroyPieces(TilesSet piecesToDestroy);
 
     FallingPiecesInfo StartFallingPieces(TilesSet piecesDestroyed);

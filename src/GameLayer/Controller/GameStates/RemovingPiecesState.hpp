@@ -23,6 +23,7 @@ public:
     :BaseColumnsGameState(fsm, controller)
     {}
     
+    void OnSetArgs(std::shared_ptr<IStateArgs> pArgs) override;
     virtual void OnEnter() override;
     virtual void OnUpdate(double dt) override;
     virtual void OnExit() override;

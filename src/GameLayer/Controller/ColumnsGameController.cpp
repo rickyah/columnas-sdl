@@ -53,7 +53,7 @@ bool ColumnsGameController::ResetPlayerBlock()
 {
     mPlayerBlock.SetNewPieces(mNextPieces);
     mPlayerBlock.position(mPlayerBlockInitialPosition);
-
+    
     mNextPieces = {
         static_cast<TileType>(pRandomDistribution->next()),
         static_cast<TileType>(pRandomDistribution->next()),
@@ -125,22 +125,22 @@ void ColumnsGameController::Render(TimeInfo time, std::shared_ptr<Renderer> pRen
     pRenderer->Present();
 }
 
-ColumnsGameController::DestroyPiecesInfo ColumnsGameController::StartDestroyingPieces()
+ColumnsGameController::DestroyPiecesInfo ColumnsGameController::StartDestroyingPieces(const TilesSet &piecesToSearch)
 {
-    
+    if (piecesToSearch.size() > 0)
+    {
+        return std::make_tuple(mColumnsBoard.FindPiecesToDestroy(piecesToSearch),
+                               mColumnsBoardView.StartDestroyPiecesAnimation(piecesToSearch));
+    }
+
     auto piecesToDestroy = mColumnsBoard.FindPiecesToDestroy(mPlayerBlock.occupiedPositions());
-    
-    
-    if(piecesToDestroy.size() >0)
+    if (piecesToDestroy.size() > 0)
     {
         return std::make_tuple(piecesToDestroy,
-                             mColumnsBoardView.StartDestroyPiecesAnimation(piecesToDestroy));
-    
+                               mColumnsBoardView.StartDestroyPiecesAnimation(piecesToDestroy));
     }
-    
-    return std::make_tuple(piecesToDestroy,
-                           nullptr);
-
+   
+    return std::make_tuple(piecesToDestroy, nullptr);
 }
 
 ColumnsGameController::FallingPiecesInfo ColumnsGameController::StartFallingPieces(TilesSet piecesDestroyed)

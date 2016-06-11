@@ -9,7 +9,6 @@
 #include "catch.hpp"
 #include "ColumnsBoard.hpp"
 
-
 bool CompareBoardStates(const BoardState &first, const BoardState &second)
 {
     for(int i = 0; i < first.size(); ++i)
@@ -136,8 +135,7 @@ TEST_CASE("Change board state", "[GameModel]") {
         REQUIRE(std::find(piecesToFall.begin(), piecesToFall.end(), TileMovement({3,4},{4,4})) != piecesToFall.end());
     }
     
-    SECTION("Game end condition is computed correctly")
-    {
+    SECTION("Game end condition is computed correctly") {
         ColumnsBoard board( {
             
             {0,0,0,0,0},
@@ -159,6 +157,62 @@ TEST_CASE("Change board state", "[GameModel]") {
         board[4][3] = 2;
         
         REQUIRE(board.IsGameOverConditionFullfilled());
+    }
+ 
+    SECTION("Multistreaks") {
+        ColumnsBoard board( {
+
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,1,0,0},
+            {0,0,3,0,0},
+            {0,0,3,0,2},
+            {0,0,3,0,1},
+            {0,0,1,2,1},
+            {0,2,1,2,2}
+        }, 3);
+        
+        
+        auto pieces = board.FindPiecesToDestroy({ TilePosition(3, 2) });
+        board.RemovePieces(pieces);
+        TilesMovementSet piecesToMove = board.FindAllPiecesToMove();
+        board.MovePieces( piecesToMove);
+        
+        BoardState newState ={
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,2},
+            {0,0,1,0,1},
+            {0,0,1,2,1},
+            {0,2,1,2,2}
+        };
+
+        REQUIRE(CompareBoardStates(board.boardState(), newState));
+        
+        pieces.clear();
+
+        std::transform(piecesToMove.begin(), piecesToMove.end(), std::inserter(pieces, pieces.begin()), [](const TileMovement &tileToMove) {
+            return tileToMove.to;
+        });
+        
+        board.RemovePieces(board.FindPiecesToDestroy(pieces));
+        board.MovePieces( board.FindAllPiecesToMove());
+        
+        newState = {
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,0},
+            {0,0,0,0,2},
+            {0,0,0,0,1},
+            {0,0,0,2,1},
+            {0,2,0,2,2}
+        };
+        
+        REQUIRE(CompareBoardStates(board.boardState(), newState));
+        
     }
     
 }
