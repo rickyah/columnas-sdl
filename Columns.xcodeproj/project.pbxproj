@@ -41,6 +41,21 @@
 		9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C68FB101CF744150058369A /* GenericBoard.cpp */; };
 		9C8FD4911CFE0F3B00293A51 /* ResourceManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD48F1CFE0F3B00293A51 /* ResourceManager.cpp */; };
 		9C8FD49F1CFF389200293A51 /* FSMTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C8FD49E1CFF389200293A51 /* FSMTests.cpp */; };
+		9C931AC21D0DD72A00ED363B /* Back.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AAA1D0DD72A00ED363B /* Back.cpp */; };
+		9C931AC31D0DD72A00ED363B /* Bounce.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AAC1D0DD72A00ED363B /* Bounce.cpp */; };
+		9C931AC41D0DD72A00ED363B /* Circ.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AAE1D0DD72A00ED363B /* Circ.cpp */; };
+		9C931AC51D0DD72A00ED363B /* Cubic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AB01D0DD72A00ED363B /* Cubic.cpp */; };
+		9C931AC61D0DD72A00ED363B /* Elastic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AB21D0DD72A00ED363B /* Elastic.cpp */; };
+		9C931AC71D0DD72A00ED363B /* Expo.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AB41D0DD72A00ED363B /* Expo.cpp */; };
+		9C931AC81D0DD72A00ED363B /* Linear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AB61D0DD72A00ED363B /* Linear.cpp */; };
+		9C931AC91D0DD72A00ED363B /* Quad.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AB81D0DD72A00ED363B /* Quad.cpp */; };
+		9C931ACA1D0DD72A00ED363B /* Quart.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931ABA1D0DD72A00ED363B /* Quart.cpp */; };
+		9C931ACB1D0DD72A00ED363B /* Quint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931ABC1D0DD72A00ED363B /* Quint.cpp */; };
+		9C931ACC1D0DD72A00ED363B /* Sine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931ABE1D0DD72A00ED363B /* Sine.cpp */; };
+		9C931ACD1D0DD72A00ED363B /* Tween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AC01D0DD72A00ED363B /* Tween.cpp */; };
+		9C931ACF1D0DD80500ED363B /* TweenerTests.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931ACE1D0DD80500ED363B /* TweenerTests.cpp */; };
+		9C931AD11D0DDA1700ED363B /* Tween.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AC01D0DD72A00ED363B /* Tween.cpp */; };
+		9C931AD31D0DDA2400ED363B /* Linear.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C931AB61D0DD72A00ED363B /* Linear.cpp */; };
 		9CAF9C0E1D0B77230041BDB0 /* PlayerBlockMovement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9CAF9C0C1D0B77230041BDB0 /* PlayerBlockMovement.cpp */; };
 		FA8B4BA31967070A00F8EB7C /* CoreMotion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */; };
 		FAE0E96A1BAF96A00098DFA4 /* GameController.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FAE0E9691BAF96A00098DFA4 /* GameController.framework */; };
@@ -136,7 +151,35 @@
 		9C8FD49D1CFE4F1400293A51 /* ResourceManagerImpl.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = ResourceManagerImpl.hpp; sourceTree = "<group>"; };
 		9C8FD49E1CFF389200293A51 /* FSMTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FSMTests.cpp; sourceTree = "<group>"; };
 		9C8FD4A51CFF3EFF00293A51 /* FSM.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FSM.hpp; sourceTree = "<group>"; };
+		9C931AAA1D0DD72A00ED363B /* Back.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Back.cpp; sourceTree = "<group>"; };
+		9C931AAB1D0DD72A00ED363B /* Back.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Back.h; sourceTree = "<group>"; };
+		9C931AAC1D0DD72A00ED363B /* Bounce.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Bounce.cpp; sourceTree = "<group>"; };
+		9C931AAD1D0DD72A00ED363B /* Bounce.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Bounce.h; sourceTree = "<group>"; };
+		9C931AAE1D0DD72A00ED363B /* Circ.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Circ.cpp; sourceTree = "<group>"; };
+		9C931AAF1D0DD72A00ED363B /* Circ.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Circ.h; sourceTree = "<group>"; };
+		9C931AB01D0DD72A00ED363B /* Cubic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cubic.cpp; sourceTree = "<group>"; };
+		9C931AB11D0DD72A00ED363B /* Cubic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cubic.h; sourceTree = "<group>"; };
+		9C931AB21D0DD72A00ED363B /* Elastic.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Elastic.cpp; sourceTree = "<group>"; };
+		9C931AB31D0DD72A00ED363B /* Elastic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Elastic.h; sourceTree = "<group>"; };
+		9C931AB41D0DD72A00ED363B /* Expo.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Expo.cpp; sourceTree = "<group>"; };
+		9C931AB51D0DD72A00ED363B /* Expo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Expo.h; sourceTree = "<group>"; };
+		9C931AB61D0DD72A00ED363B /* Linear.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Linear.cpp; sourceTree = "<group>"; };
+		9C931AB71D0DD72A00ED363B /* Linear.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Linear.h; sourceTree = "<group>"; };
+		9C931AB81D0DD72A00ED363B /* Quad.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quad.cpp; sourceTree = "<group>"; };
+		9C931AB91D0DD72A00ED363B /* Quad.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quad.h; sourceTree = "<group>"; };
+		9C931ABA1D0DD72A00ED363B /* Quart.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quart.cpp; sourceTree = "<group>"; };
+		9C931ABB1D0DD72A00ED363B /* Quart.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quart.h; sourceTree = "<group>"; };
+		9C931ABC1D0DD72A00ED363B /* Quint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Quint.cpp; sourceTree = "<group>"; };
+		9C931ABD1D0DD72A00ED363B /* Quint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Quint.h; sourceTree = "<group>"; };
+		9C931ABE1D0DD72A00ED363B /* Sine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sine.cpp; sourceTree = "<group>"; };
+		9C931ABF1D0DD72A00ED363B /* Sine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sine.h; sourceTree = "<group>"; };
+		9C931AC01D0DD72A00ED363B /* Tween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tween.cpp; sourceTree = "<group>"; };
+		9C931AC11D0DD72A00ED363B /* Tween.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tween.hpp; sourceTree = "<group>"; };
+		9C931ACE1D0DD80500ED363B /* TweenerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TweenerTests.cpp; sourceTree = "<group>"; };
+		9C931AD01D0DD83400ED363B /* TweenerFunctions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TweenerFunctions.hpp; sourceTree = "<group>"; };
 		9CAF9C0C1D0B77230041BDB0 /* PlayerBlockMovement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerBlockMovement.cpp; sourceTree = "<group>"; };
+		9CE43FAD1D0DA05A004ABC84 /* Tween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tween.cpp; sourceTree = "<group>"; };
+		9CE43FAE1D0DA05A004ABC84 /* Tween.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tween.hpp; sourceTree = "<group>"; };
 		FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		FAE0E9691BAF96A00098DFA4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		FD77A0050E26BC0500F39101 /* accelerometer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = accelerometer.c; sourceTree = "<group>"; };
@@ -286,6 +329,8 @@
 				9C2BE2FD1D0622BC00532AA8 /* Controller */,
 				9C68FB0F1CF744150058369A /* Model */,
 				9C68FB141CF744150058369A /* View */,
+				9CE43FAD1D0DA05A004ABC84 /* Tween.cpp */,
+				9CE43FAE1D0DA05A004ABC84 /* Tween.hpp */,
 			);
 			name = GameLayer;
 			sourceTree = "<group>";
@@ -299,6 +344,7 @@
 				9C47A2FA1CF6DC0100885640 /* main.cpp */,
 				9C8FD49E1CFF389200293A51 /* FSMTests.cpp */,
 				9CAF9C0C1D0B77230041BDB0 /* PlayerBlockMovement.cpp */,
+				9C931ACE1D0DD80500ED363B /* TweenerTests.cpp */,
 			);
 			path = columns.tests;
 			sourceTree = "<group>";
@@ -390,6 +436,46 @@
 			path = FSM;
 			sourceTree = "<group>";
 		};
+		9C931AA81D0DD72A00ED363B /* Tweener */ = {
+			isa = PBXGroup;
+			children = (
+				9C931AA91D0DD72A00ED363B /* PennerEasing */,
+				9C931AC01D0DD72A00ED363B /* Tween.cpp */,
+				9C931AC11D0DD72A00ED363B /* Tween.hpp */,
+				9C931AD01D0DD83400ED363B /* TweenerFunctions.hpp */,
+			);
+			path = Tweener;
+			sourceTree = "<group>";
+		};
+		9C931AA91D0DD72A00ED363B /* PennerEasing */ = {
+			isa = PBXGroup;
+			children = (
+				9C931AAA1D0DD72A00ED363B /* Back.cpp */,
+				9C931AAB1D0DD72A00ED363B /* Back.h */,
+				9C931AAC1D0DD72A00ED363B /* Bounce.cpp */,
+				9C931AAD1D0DD72A00ED363B /* Bounce.h */,
+				9C931AAE1D0DD72A00ED363B /* Circ.cpp */,
+				9C931AAF1D0DD72A00ED363B /* Circ.h */,
+				9C931AB01D0DD72A00ED363B /* Cubic.cpp */,
+				9C931AB11D0DD72A00ED363B /* Cubic.h */,
+				9C931AB21D0DD72A00ED363B /* Elastic.cpp */,
+				9C931AB31D0DD72A00ED363B /* Elastic.h */,
+				9C931AB41D0DD72A00ED363B /* Expo.cpp */,
+				9C931AB51D0DD72A00ED363B /* Expo.h */,
+				9C931AB61D0DD72A00ED363B /* Linear.cpp */,
+				9C931AB71D0DD72A00ED363B /* Linear.h */,
+				9C931AB81D0DD72A00ED363B /* Quad.cpp */,
+				9C931AB91D0DD72A00ED363B /* Quad.h */,
+				9C931ABA1D0DD72A00ED363B /* Quart.cpp */,
+				9C931ABB1D0DD72A00ED363B /* Quart.h */,
+				9C931ABC1D0DD72A00ED363B /* Quint.cpp */,
+				9C931ABD1D0DD72A00ED363B /* Quint.h */,
+				9C931ABE1D0DD72A00ED363B /* Sine.cpp */,
+				9C931ABF1D0DD72A00ED363B /* Sine.h */,
+			);
+			path = PennerEasing;
+			sourceTree = "<group>";
+		};
 		9CF4C8A21CF22FBB000151ED /* AppLayer */ = {
 			isa = PBXGroup;
 			children = (
@@ -412,6 +498,7 @@
 		FD77A0040E26BC0500F39101 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				9C931AA81D0DD72A00ED363B /* Tweener */,
 				9C47A2E51CF5F15F00885640 /* GameLayer */,
 				9CF4C8A21CF22FBB000151ED /* AppLayer */,
 				FD77A00A0E26BC0500F39101 /* main.cpp */,
@@ -518,22 +605,34 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9C931AC91D0DD72A00ED363B /* Quad.cpp in Sources */,
 				FD77A0160E26BC0500F39101 /* main.cpp in Sources */,
+				9C931AC61D0DD72A00ED363B /* Elastic.cpp in Sources */,
 				9C68FB1C1CF7A3B40058369A /* App.cpp in Sources */,
 				9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */,
+				9C931AC71D0DD72A00ED363B /* Expo.cpp in Sources */,
 				9C8A398A1CF7BC6600C2E236 /* AppEvents.cpp in Sources */,
 				9C68FB161CF744150058369A /* ColumnsBoard.cpp in Sources */,
 				9C2BE30F1D0723AB00532AA8 /* DroppingPiecesState.cpp in Sources */,
 				9C2BE30B1D0720CD00532AA8 /* MovingPiecesState.cpp in Sources */,
+				9C931AC31D0DD72A00ED363B /* Bounce.cpp in Sources */,
 				9C68FB191CF744680058369A /* ColumnsBoardView.cpp in Sources */,
+				9C931ACD1D0DD72A00ED363B /* Tween.cpp in Sources */,
+				9C931AC51D0DD72A00ED363B /* Cubic.cpp in Sources */,
+				9C931AC81D0DD72A00ED363B /* Linear.cpp in Sources */,
 				9C02B8271CF7B39400B01905 /* EventListenerDelegate.cpp in Sources */,
 				9C8A39851CF7B64F00C2E236 /* EventsManager.cpp in Sources */,
 				9C02B8281CF7B39400B01905 /* EventQueue.cpp in Sources */,
 				9C2BE3121D07241D00532AA8 /* RemovingPiecesState.cpp in Sources */,
 				9C2BE3001D0622BC00532AA8 /* ColumnsGameController.cpp in Sources */,
 				9C8A397F1CF7B63B00C2E236 /* Graphics.cpp in Sources */,
+				9C931ACB1D0DD72A00ED363B /* Quint.cpp in Sources */,
+				9C931AC21D0DD72A00ED363B /* Back.cpp in Sources */,
 				9C75CCBB1CF5080A00114CA9 /* helpers.mm in Sources */,
 				9C8A39801CF7B63B00C2E236 /* Renderer.cpp in Sources */,
+				9C931ACC1D0DD72A00ED363B /* Sine.cpp in Sources */,
+				9C931ACA1D0DD72A00ED363B /* Quart.cpp in Sources */,
+				9C931AC41D0DD72A00ED363B /* Circ.cpp in Sources */,
 				9C2BE2FC1D04703000532AA8 /* RandomDistribution.cpp in Sources */,
 				9C8FD4911CFE0F3B00293A51 /* ResourceManager.cpp in Sources */,
 				9C8A39811CF7B63B00C2E236 /* Texture2d.cpp in Sources */,
@@ -550,7 +649,10 @@
 				9CAF9C0E1D0B77230041BDB0 /* PlayerBlockMovement.cpp in Sources */,
 				9C47A2FB1CF6DC0100885640 /* main.cpp in Sources */,
 				9C8A398C1CF8833D00C2E236 /* ColumnsBoardTest.cpp in Sources */,
+				9C931ACF1D0DD80500ED363B /* TweenerTests.cpp in Sources */,
 				9C47A2F01CF6DA9800885640 /* BoardTests.cpp in Sources */,
+				9C931AD11D0DDA1700ED363B /* Tween.cpp in Sources */,
+				9C931AD31D0DDA2400ED363B /* Linear.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -570,6 +672,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_WARN_PEDANTIC = YES;
 				GENERATE_PROFILING_CODE = YES;
 				HEADER_SEARCH_PATHS = (
 					libs/SDL/include,
@@ -602,6 +705,7 @@
 				GCC_C_LANGUAGE_STANDARD = "compiler-default";
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_WARN_PEDANTIC = YES;
 				GENERATE_PROFILING_CODE = NO;
 				HEADER_SEARCH_PATHS = (
 					libs/SDL/include,
