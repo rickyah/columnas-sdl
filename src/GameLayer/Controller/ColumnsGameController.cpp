@@ -114,14 +114,14 @@ void ColumnsGameController::MoveRight()
     
 }
 
-void ColumnsGameController::Update(TimeInfo time)
+void ColumnsGameController::Update(LogicFrameInfo time)
 {
     mFSM.Update(time.dt);
 }
 
-void ColumnsGameController::Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer)
+void ColumnsGameController::Render(RenderFrameInfo time, std::shared_ptr<Renderer> pRenderer)
 {
-    mColumnsBoardView.Render(time.dt, pRenderer);
+    mColumnsBoardView.Render(time.interpolation, pRenderer);
     pRenderer->Present();
 }
 

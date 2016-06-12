@@ -1,4 +1,4 @@
-//
+	//
 //  ColumnsBoardView.cpp
 //  Columns
 //
@@ -142,7 +142,7 @@ void ColumnsBoardView::RenderPlayerBlock(double dt, std::shared_ptr<Renderer> pR
 
 void ColumnsBoardView::RenderDestroyAnimation(double dt, std::shared_ptr<Renderer> pRenderer)
 {
-    pDestroyPiecesAnimationState->mElapsedAnimationTimeMs += dt;
+    
 }
 
 std::shared_ptr<ViewAnimationState> ColumnsBoardView::StartDestroyPiecesAnimation(TilesSet piecesToDestroy)
@@ -151,6 +151,7 @@ std::shared_ptr<ViewAnimationState> ColumnsBoardView::StartDestroyPiecesAnimatio
     if(pDestroyPiecesAnimationState->IsFinished())
     {
         pDestroyPiecesAnimationState->mElapsedAnimationTimeMs = 0;
+        pDestroyPiecesAnimationState->mTotalAnimationTimeMs = 100;
     }
     
     return pDestroyPiecesAnimationState;

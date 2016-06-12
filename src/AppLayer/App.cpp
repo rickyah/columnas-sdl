@@ -62,10 +62,10 @@ void App::UpdateGameLoop()
         accumulatorMs += frameTimeMs;
         
         // Simulate game
-        while (accumulatorMs >= mLogicRateMs )
+        while (accumulatorMs >= mLogicRateMs)
         {
             mLogicTimeInfo.dt = mLogicRateMs;
-            mLogicTimeInfo.frameCount = mLogicFrameCount++;
+            mLogicTimeInfo.frameCount++;
             mLogicTimeInfo.elapsedMs = ticksSinceStart();
             
             if(mFuncLogicUpdate) mFuncLogicUpdate(mLogicTimeInfo);
@@ -74,8 +74,8 @@ void App::UpdateGameLoop()
 
 
         // render frame
-        mRenderTimeInfo.dt = accumulatorMs/mRenderRateMs;
-        mRenderTimeInfo.frameCount = mRenderFrameCount++;
+        mRenderTimeInfo.interpolation = accumulatorMs/mRenderRateMs;
+        mRenderTimeInfo.frameCount++;
         mRenderTimeInfo.elapsedMs = ticksSinceStart();
         
         if(mFuncRenderUpdate) mFuncRenderUpdate(mRenderTimeInfo, graphics().renderer());

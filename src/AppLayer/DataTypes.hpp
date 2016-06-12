@@ -47,13 +47,24 @@ struct Rect
 };
 
 /*
- * Holds data about time: delta time for the current frame, framecount, and total elapsed ms
+ * Holds data about time:  framecount, and total elapsed ms
  */
 struct TimeInfo
 {
-    double dt;
     int frameCount;
     int elapsedMs;
+};
+
+struct LogicFrameInfo : public TimeInfo
+{
+    // delta time for the current game frame
+    double dt;
+};
+
+struct RenderFrameInfo : public TimeInfo
+{
+    // Percent of the current game frame we are rendering
+    double interpolation;
 };
 
 #endif /* DataTypes_hpp */

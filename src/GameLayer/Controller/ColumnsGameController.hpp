@@ -88,8 +88,8 @@ public:
     FallingPiecesInfo StartFallingPieces(TilesSet piecesDestroyed);
     void ConsolidatePlayerBlock();
     
-    void Update(TimeInfo time);
-    void Render(TimeInfo time, std::shared_ptr<Renderer> pRenderer);
+    void Update(LogicFrameInfo time);
+    void Render(RenderFrameInfo time, std::shared_ptr<Renderer> pRenderer);
 
     int waitForLongPressMs() const { return 250; }
     float minValueXMotion() const { return 0.02; }
