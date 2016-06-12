@@ -62,7 +62,13 @@ void GenericBoard::MovePieces(const TilesMovementSet &pieces)
 
 GenericBoard::BoardIndexer& GenericBoard::operator[](std::size_t idx)
 {
-    mBoardIndexer.SetRow(&mBoardTiles[idx]);
+    mBoardIndexer.SetRow(mBoardTiles[idx]);
+    return mBoardIndexer;
+}
+
+const GenericBoard::BoardIndexer& GenericBoard::operator[](std::size_t idx) const
+{
+    mBoardIndexer.SetRow(mBoardTiles[idx]);
     return mBoardIndexer;
 }
 
@@ -163,7 +169,7 @@ void GenericBoard::ResetBoardState(TileCoordinate rows, TileCoordinate columns)
 std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(const BoardState& boardTiles,
                                                                      TileCoordinate row,
                                                                      TileCoordinate col,
-                                                                     const std::pair<int8_t,int8_t> &increaser,
+                                                                     const TileOffset &increaser,
                                                                      FilterFunc filter ) const
 {
     std::unordered_set<TilePosition> result;
@@ -177,27 +183,27 @@ std::unordered_set<TilePosition> GenericBoard::SearchAdjacentTilesAt(const Board
     
     int rowItr = row, colItr = col;
 
-    rowItr += increaser.first;
-    colItr += increaser.second;
+    rowItr += increaser.rowOffset;
+    colItr += increaser.colOffset;
 
     while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && mBoardTiles[rowItr][colItr] == matchTileValue)
     {
         result.insert(TilePosition(rowItr, colItr));
 
-        rowItr += increaser.first;
-        colItr += increaser.second;
+        rowItr += increaser.rowOffset;
+        colItr += increaser.colOffset;
     }
 
     rowItr = row, colItr = col;
-    rowItr -= increaser.first;
-    colItr -= increaser.second;
+    rowItr -= increaser.rowOffset;
+    colItr -= increaser.colOffset;
 
     while(rowItr >= 0 && colItr >= 0 && rowItr < rows() && colItr < columns() && mBoardTiles[rowItr][colItr] == matchTileValue)
     {
         result.insert(TilePosition(rowItr, colItr));
 
-        rowItr -= increaser.first;
-        colItr -= increaser.second;
+        rowItr -= increaser.rowOffset;
+        colItr -= increaser.colOffset;
     }
     
     if ( filter && filter(result) )

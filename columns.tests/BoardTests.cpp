@@ -167,7 +167,7 @@ TEST_CASE( "Game Board", "[GameModel]" ) {
         
         b[0][0] = 1;
         
-        REQUIRE(state[0][0] == 1);
+        REQUIRE(state[0][0] == 0);
     }
 
 }

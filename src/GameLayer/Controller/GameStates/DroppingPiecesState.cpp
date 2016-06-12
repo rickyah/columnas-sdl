@@ -27,16 +27,17 @@ void FallingPiecesState::OnEnter()
     
     if (mPiecesToMove.size() <= 0)
     {
-        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
+        ExtractPositionOfDroppedPieces(mDestroyedPieces, mPiecesToMove);
+        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces, std::make_shared<DestroyPiecesStateArgs>(mDestroyedPieces));
     }
 }
-
 
 void FallingPiecesState::OnUpdate(double dt)
 {
     if (!pAnimationState || pAnimationState->IsFinished())
     {
-        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
+        ExtractPositionOfDroppedPieces(mDestroyedPieces, mPiecesToMove);
+        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces,std::make_shared<DestroyPiecesStateArgs>(mDestroyedPieces));
         return;
     }
 }
@@ -47,4 +48,13 @@ void FallingPiecesState::OnExit()
     mControllerRef.UpdateBoardMakePiecesFall(mPiecesToMove);
     mDestroyedPieces.clear();
     mPiecesToMove.clear();
+}
+
+void FallingPiecesState::ExtractPositionOfDroppedPieces(TilesSet &destroyedPieces, const TilesMovementSet &piecesMovedDown)
+{
+    destroyedPieces.clear();
+    std::transform(piecesMovedDown.begin(), piecesMovedDown.end(), std::inserter(destroyedPieces, destroyedPieces.begin()), [](const TileMovement &tileToMove) {
+        return tileToMove.to;
+    });
+    
 }

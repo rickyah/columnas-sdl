@@ -32,6 +32,7 @@ private:
     std::shared_ptr<ViewAnimationState> pAnimationState;
     FallingPiecesState(const FallingPiecesState &);
     FallingPiecesState & operator=(const FallingPiecesState &);
+    void ExtractPositionOfDroppedPieces(TilesSet &destroyedPieces, const TilesMovementSet &piecesMovedDown);
 };
 
 #endif /* FallingPiecesState_hpp */

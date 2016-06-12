@@ -14,18 +14,27 @@
 /*
  * represents a Position or a Size
  */
-typedef struct Position
+struct Position
 {
-    union { int x; int w; };
-    union { int y; int h; };
+  
+    int x;
+    int y;
     
     Position():Position(0,0) {}
 
     Position(int X, int Y):x(X),y(Y) {}
 
-} Position;
-typedef Position Size;
+};
 
+struct Size
+{
+    int w;
+    int h;
+    
+    Size():Size(0,0) {}
+    
+    Size(int W, int H):w(W),h(H) {}
+};
 
 struct Rect
 {

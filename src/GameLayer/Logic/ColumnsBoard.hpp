@@ -18,50 +18,44 @@
 class ColumnsBoard : public GenericBoard
 {
 public:
-    explicit ColumnsBoard(BoardState state):GenericBoard(state){}
+    explicit ColumnsBoard(BoardState state, uint8_t numFirstRowsForGameOver, uint8_t numEqualPiecesToDestroy = 3)
+        :GenericBoard(state),
+         mNumFirstRowsForGameOver(numFirstRowsForGameOver),
+         mNumEqualPiecesToDestroy(numEqualPiecesToDestroy)
+    {}
     
-    explicit ColumnsBoard(uint8_t rows, uint8_t columns):GenericBoard(rows, columns){}
+    explicit ColumnsBoard(uint8_t rows, uint8_t columns, uint8_t numFirstRowsForGameOver, uint8_t numEqualPiecesToDestroy = 3)
+        :GenericBoard(rows, columns),
+        mNumFirstRowsForGameOver(numFirstRowsForGameOver),
+        mNumEqualPiecesToDestroy(numEqualPiecesToDestroy)
+    {}
     
-    void InitPlayerBlockInitialPosition(TilePosition pos) { mPlayerBlockInitialPosition = pos; }
-    void InitNumEqualPiecesToDestroy(uint8_t numPieces = 3) { mNumEqualPiecesToDestroy = numPieces; }
-    void InitNumRowsGameOver(uint8_t numRows = 3) { mNumFirstRowsForGameOver = numRows; }
-    
-    
-    bool ResetPlayerBlock(const std::vector<TileType> &pieces);
-    
-    bool MovePlayerBlockLeft();
-    bool MovePlayerBlockRight();
-    bool MovePlayerBlockDown();
-    void MovePlayerBlockPieces();
-    
-    
+    void numEqualPiecesToDestroy(uint8_t numPieces) { mNumEqualPiecesToDestroy = numPieces; }
+    uint8_t numEqualPiecesToDestroy() { return mNumEqualPiecesToDestroy; }
     uint8_t numFirstRowsForGameOver() const { return mNumFirstRowsForGameOver; }
-    bool CanMovePlayerBlockDown() const;
+    
+    bool CanMovePlayerBlockDown(const PlayerBlock &playerBlock) const;
+    bool CanMovePlayerBlockLeft(const PlayerBlock &playerBlock) const;
+    bool CanMovePlayerBlockRight(const PlayerBlock &playerBlock) const;
     bool IsGameOverConditionFullfilled() const;
-    TilesSet FindPiecesToDestroy() const;
+    
+    void ConsolidatePlayerBlock(const PlayerBlock &playerBlock);
     TilesMovementSet FindAllPiecesToMove() const;
+    TilesSet FindPiecesToDestroy(TilesSet positionsToSearch) const;
     TilesMovementSet FindPiecesToMoveInSubset(const TilesSet &) const;
+
+    bool CanMovePlayerBlockTo(TileOffset offset, const PlayerBlock &playerBlock) const;
     
 private:
     uint8_t mNumEqualPiecesToDestroy;
     uint8_t mNumFirstRowsForGameOver;
-    PlayerBlock mPlayerBlock;
-    TilePosition mPlayerBlockPosition;
-    TilePosition mPlayerBlockInitialPosition;
-    
+    // these are mutable as they only serve as temp holders
     mutable TilesSet mListPiecesToDestroy;
     mutable TilesMovementSet mListPiecesToFall;
     mutable std::unordered_set<TileCoordinate> mTmpColumnsToCheck;
     
     TilesMovementSet FindPiecesToMoveInColumns(const std::unordered_set<TileCoordinate> &) const;
     bool FindAdjacentPiecesFilterFunc(std::unordered_set<TilePosition> positions) const;
-    
-    bool IsPositionInsidePlayerBlock(TilePosition pos) const;
-    bool CanMovePlayerBlockTo(TilePosition newPos) const;
-    bool MovePlayerBlockToPosition(const TilePosition &newPos);
-    void UpdateBoardStateWithPlayerBlockAtPosition(const TilePosition &newPos);
-    
-    
 };
 
 

@@ -9,8 +9,22 @@
 #ifndef PlayerBlock_h
 #define PlayerBlock_h
 
+#include "DataTypes.hpp"
+
 class ColumnsBoard;
 
+
+
+struct PositionF
+{
+    float row;
+    float col;
+    
+    PositionF():PositionF(0,0) {}
+    
+    PositionF(float row_, float col_):row(row_), col(col_) {}
+    
+};
 
 /*
  * Represents the block of the player that contains a set
@@ -30,6 +44,24 @@ public:
     {
         mPieces = newPieces;
         mFirstPieceIdx = 0;
+    }
+    
+    void position(TilePosition newPosition){mPosition.row = newPosition.row; mPosition.row = newPosition.col;}
+    void position(PositionF newPosition){mPosition = newPosition;}
+    PositionF& position() { return mPosition;}
+    PositionF position() const { return mPosition;}
+    
+    TilesSet occupiedPositions() const
+    
+    {
+        mOccupiedPositionsTmp.clear();
+        
+        for (int i = 0; i < size(); ++i)
+        {
+            mOccupiedPositionsTmp.insert(TilePosition(mPosition.row + i, mPosition.col));
+        }
+        
+        return mOccupiedPositionsTmp;
     }
     
     /*
@@ -58,11 +90,14 @@ public:
     size_t size() const { return mPieces.size(); }
     
 private:
+    PositionF mPosition;
     std::vector<TileType> mPieces;
     size_t mFirstPieceIdx = 0;
-    
+    mutable TilesSet mOccupiedPositionsTmp;
     PlayerBlock(const PlayerBlock &);
     PlayerBlock& operator=(const PlayerBlock &);
 };
+
+
 
 #endif /* PlayerBlock_h */

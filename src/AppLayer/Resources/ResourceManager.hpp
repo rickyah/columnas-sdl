@@ -22,9 +22,9 @@ class ResourceManager
 public:
     ResourceManager(std::shared_ptr<ITextureLoader> ptrTextureLoader);
     
-    template <class T> std::shared_ptr<T> Register(const ResourceId &res);
+    template <class T> std::weak_ptr<T> Register(const ResourceId &res);
     
-    template <class T> std::shared_ptr<T> Get(ResourceId res);
+    template <class T> std::weak_ptr<T> Get(ResourceId res);
     
 private:
     
@@ -47,7 +47,7 @@ private:
 
 // template method implementations must be in the header
 template <class T>
-std::shared_ptr<T> ResourceManager::Register(const ResourceId &res)
+std::weak_ptr<T> ResourceManager::Register(const ResourceId &res)
 {
     auto resource = CreateResource<T>(res);
     mIdToResourceMapping[res.id] = resource;
@@ -56,7 +56,7 @@ std::shared_ptr<T> ResourceManager::Register(const ResourceId &res)
 }
 
 template <class T>
-std::shared_ptr<T> ResourceManager::Get(ResourceId res)
+std::weak_ptr<T> ResourceManager::Get(ResourceId res)
 {
     return std::static_pointer_cast<T>(mIdToResourceMapping[res.id]);
 }

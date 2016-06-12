@@ -49,6 +49,7 @@ void MovingPiecesState::OnEnter()
 {
     mPassedTime = 0;
     mSubFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Moving_Block);
+    
     if(! mControllerRef.ResetPlayerBlock())
     {
         mControllerRef.EndGame();
@@ -61,6 +62,13 @@ void MovingPiecesState::OnUpdate(double dt)
     
     mPassedTime += dt;
     
+    if (!mControllerRef.CanMoveDown())
+    {
+        mControllerRef.ConsolidatePlayerBlock();
+        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
+        return;
+    }
+    
     if (mPassedTime >= mTimePerDropMs)
     {
         mControllerRef.MoveDown();
@@ -68,10 +76,7 @@ void MovingPiecesState::OnUpdate(double dt)
         mPassedTime = std::max(0, mPassedTime - mTimePerDropMs);
     }
     
-    if (!mControllerRef.CanMoveDown())
-    {
-        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces);
-    }
+    
 }
 
 void MovingPiecesState::OnInit()
@@ -213,17 +218,15 @@ void MovingBlockPieceInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> ev
 
 void MovingBlockPieceInputState::AccumulateMotion(const AppTouch_Event::TouchMotion &src)
 {
-    auto filteredMotion = FilterMotion(src, mControllerRef.minValueXMotion());
-    
     // If the player changes direction quickly, we just override the
     // accumulated motion with the new value
     if (mMotionAccumulator * src.dx < 0)
     {
-         mMotionAccumulator = filteredMotion.dx;
+         mMotionAccumulator = src.dx;
     }
     else
     {
-        mMotionAccumulator += filteredMotion.dx;
+        mMotionAccumulator += src.dx;
     }
     
 }

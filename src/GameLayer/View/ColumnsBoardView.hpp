@@ -16,6 +16,7 @@
 #include "Renderer.hpp"
 #include "Texture2d.hpp"
 #include "ColumnsBoard.hpp"
+#include "PlayerBlock.hpp"
 #include "DataTypes.hpp"
 #include "ResourcesDefinitions.hpp"
 
@@ -40,10 +41,11 @@ private:
 
 class ColumnsBoardView
 {
-    typedef std::unordered_map<TileType, std::shared_ptr<Texture2dResource>> TileTypeToTextureMapping;
+    typedef std::unordered_map<TileType, std::weak_ptr<Texture2dResource>> TileTypeToTextureMapping;
 
 public:
-    explicit ColumnsBoardView();
+    explicit ColumnsBoardView(const ColumnsBoard * const pColumnsBoardPtr,
+                              const PlayerBlock * const playerBlockPtr);
 
     ColumnsBoardView& InitPieceToTextureMapping(TileTypeToTextureMapping mappings);
     ColumnsBoardView& InitTileSizeInPixels(Size tileSizePixels);
@@ -51,12 +53,9 @@ public:
     ColumnsBoardView& InitFallingPiecesAnimationTimeMs(double timeMs);
     ColumnsBoardView& InitFirstRowsToSkipWhenRendering(TileCoordinate value);
     
-    void SetBoardState( const BoardState & initialState ) { mState = initialState; }
-
     std::shared_ptr<ViewAnimationState> StartDestroyPiecesAnimation(TilesSet piecesToDestroy);
     
     std::shared_ptr<ViewAnimationState> StartFallingPiecesAnimation(TilesMovementSet piecesToMove);
-    
     
     void Render(double dt, std::shared_ptr<Renderer> pRenderer);
 private:
@@ -65,6 +64,7 @@ private:
     bool IsMakingPiecesFall() { return !pFallingPiecesAnimationState->IsFinished(); }
     
     void RenderBoard(double dt, std::shared_ptr<Renderer> pRenderer);
+    void RenderPlayerBlock(double dt, std::shared_ptr<Renderer> pRenderer);
     void RenderDestroyAnimation(double dt, std::shared_ptr<Renderer> pRenderer);
     void RenderFallingPiecesAnimation(double dt, std::shared_ptr<Renderer> pRenderer);
     
@@ -73,7 +73,10 @@ private:
     
     uint8_t mSkipRenderingRowsWhenRendering;
     TileTypeToTextureMapping mTile2TextureMapping;
-    BoardState mState;
+    
+    const ColumnsBoard * const pColumnsBoard;
+    const PlayerBlock * const pPlayerBlock;
+    
     Size mTileSizePixels;
     ColumnsBoardView(const ColumnsBoardView &);
     ColumnsBoardView operator=(const ColumnsBoardView &);
