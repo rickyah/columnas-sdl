@@ -28,6 +28,8 @@ public:
     bool hasStarted() const { return mHasStarted; }
     bool hasFinished() const { return mElapsedTimeMs >= mDurationMs; }
     
+    float speedMultiplier() const { return mSpeedMultiplier; }
+    void speedMultiplier(float newSpeed) { mSpeedMultiplier = std::fmax(0, newSpeed); }
     void Start() { mHasStarted = true; }
     void Stop() { mHasStarted = false; }
     void Restart();
@@ -42,6 +44,7 @@ private:
     
     bool mHasStarted = false;
     
+    float mSpeedMultiplier = 1.0;
     float mElapsedTimeMs;
     float mValueSinceLastUpdate;
     float mInitialValue;

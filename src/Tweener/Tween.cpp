@@ -23,7 +23,7 @@ void Tween::Update(float dt)
 {
     if (!mHasStarted) return;
     
-    mElapsedTimeMs += dt;
+    mElapsedTimeMs += dt * mSpeedMultiplier;
     mValueSinceLastUpdate = mEasingFunc(mElapsedTimeMs, mInitialValue, mEndValue - mInitialValue, mDurationMs);
     
     mValueSinceLastUpdate = std::fmin(mValueSinceLastUpdate, mEndValue);
@@ -35,6 +35,7 @@ void Tween::Restart()
     mElapsedTimeMs = 0;
     Start();
 }
+
 void Tween::Reset()
 {
     Reset(mInitialValue, mEndValue, mDurationMs);
