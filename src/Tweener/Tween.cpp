@@ -11,7 +11,7 @@
 Tween::Tween(float initialValue, float endValue, float durationMs, EasingFunction func):
     mInitialValue(initialValue),
     mEndValue(endValue),
-    mDurationMs(durationMs),
+    mDurationMs(std::fmax(0.0, durationMs)),
     mEasingFunc(func),
     mValueSinceLastUpdate(initialValue),
     mElapsedTimeMs(0)
@@ -21,6 +21,8 @@ Tween::Tween(float initialValue, float endValue, float durationMs, EasingFunctio
 
 void Tween::Update(float dt)
 {
+    if (!mHasStarted) return;
+    
     mElapsedTimeMs += dt;
     mValueSinceLastUpdate = mEasingFunc(mElapsedTimeMs, mInitialValue, mEndValue - mInitialValue, mDurationMs);
     
@@ -29,14 +31,21 @@ void Tween::Update(float dt)
 
 void Tween::Restart()
 {
-    Restart(mInitialValue, mEndValue, mDurationMs);
+    mValueSinceLastUpdate = mInitialValue;
+    mElapsedTimeMs = 0;
+    Start();
+}
+void Tween::Reset()
+{
+    Reset(mInitialValue, mEndValue, mDurationMs);
 }
 
-void Tween::Restart(float initialValue, float endValue, float durationMs)
+void Tween::Reset(float initialValue, float endValue, float durationMs)
 {
     mElapsedTimeMs = 0;
     mInitialValue = initialValue;
     mEndValue = endValue;
-    mDurationMs = durationMs;
+    mDurationMs = std::fmax(0.0, durationMs);
     mValueSinceLastUpdate = mInitialValue;
+    Stop();
 }

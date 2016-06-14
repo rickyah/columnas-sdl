@@ -24,16 +24,23 @@ public:
     float endValue() const { return mEndValue; }
     float currentValue() const { return mValueSinceLastUpdate; }
     float durationMs() const { return mDurationMs; }
-    bool isFinished() const { return mElapsedTimeMs >= mDurationMs; }
-    void Update(float dt);
+    bool isRunning() const { return hasStarted() && !hasFinished(); }
+    bool hasStarted() const { return mHasStarted; }
+    bool hasFinished() const { return mElapsedTimeMs >= mDurationMs; }
     
+    void Start() { mHasStarted = true; }
+    void Stop() { mHasStarted = false; }
     void Restart();
-    void Restart(float initialValue, float endValue, float durationMs);
+    void Update(float dt);
+    void Reset();
+    void Reset(float initialValue, float endValue, float durationMs);
     
 private:
     Tween();
     Tween(const Tween &);
     Tween& operator=(const Tween &);
+    
+    bool mHasStarted = false;
     
     float mElapsedTimeMs;
     float mValueSinceLastUpdate;
