@@ -178,8 +178,6 @@
 		9C931ACE1D0DD80500ED363B /* TweenerTests.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TweenerTests.cpp; sourceTree = "<group>"; };
 		9C931AD01D0DD83400ED363B /* TweenerFunctions.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = TweenerFunctions.hpp; sourceTree = "<group>"; };
 		9CAF9C0C1D0B77230041BDB0 /* PlayerBlockMovement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerBlockMovement.cpp; sourceTree = "<group>"; };
-		9CE43FAD1D0DA05A004ABC84 /* Tween.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tween.cpp; sourceTree = "<group>"; };
-		9CE43FAE1D0DA05A004ABC84 /* Tween.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = Tween.hpp; sourceTree = "<group>"; };
 		FA8B4BA21967070A00F8EB7C /* CoreMotion.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMotion.framework; path = System/Library/Frameworks/CoreMotion.framework; sourceTree = SDKROOT; };
 		FAE0E9691BAF96A00098DFA4 /* GameController.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GameController.framework; path = System/Library/Frameworks/GameController.framework; sourceTree = SDKROOT; };
 		FD77A0050E26BC0500F39101 /* accelerometer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = accelerometer.c; sourceTree = "<group>"; };
@@ -329,8 +327,6 @@
 				9C2BE2FD1D0622BC00532AA8 /* Controller */,
 				9C68FB0F1CF744150058369A /* Model */,
 				9C68FB141CF744150058369A /* View */,
-				9CE43FAD1D0DA05A004ABC84 /* Tween.cpp */,
-				9CE43FAE1D0DA05A004ABC84 /* Tween.hpp */,
 			);
 			name = GameLayer;
 			sourceTree = "<group>";
