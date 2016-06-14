@@ -29,7 +29,7 @@ public:
 private:
     TilesSet mDestroyedPieces;
     TilesMovementSet mPiecesToMove;
-    std::shared_ptr<ViewAnimationState> pAnimationState;
+    std::shared_ptr<Tween> pAnimationState;
     FallingPiecesState(const FallingPiecesState &);
     FallingPiecesState & operator=(const FallingPiecesState &);
     void ExtractPositionOfDroppedPieces(TilesSet &destroyedPieces, const TilesMovementSet &piecesMovedDown);

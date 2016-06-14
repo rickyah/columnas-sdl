@@ -65,7 +65,9 @@ bool ColumnsGameController::ResetPlayerBlock()
 
 void ColumnsGameController::PermutePlayerBlockPieces()
 {
+    
     mPlayerBlock.MovePieces();
+    mColumnsBoardView.StartAnimatingPlayerBlock();
 }
 
 void ColumnsGameController::EndGame()
@@ -117,6 +119,7 @@ void ColumnsGameController::MoveRight()
 void ColumnsGameController::Update(LogicFrameInfo time)
 {
     mFSM.Update(time.dt);
+    mColumnsBoardView.UpdateAnimations(time.dt);
 }
 
 void ColumnsGameController::Render(RenderFrameInfo time, std::shared_ptr<Renderer> pRenderer)

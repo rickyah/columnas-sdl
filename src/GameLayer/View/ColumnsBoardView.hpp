@@ -19,6 +19,8 @@
 #include "PlayerBlock.hpp"
 #include "DataTypes.hpp"
 #include "ResourcesDefinitions.hpp"
+#include "Tween.hpp"
+
 
 /*
  * Structure that allows to check the state of a view animation.
@@ -26,18 +28,18 @@
  * the inner values, and the elements that hold a copy of the pointer to
  * query its state
  */
-struct ViewAnimationState
-{
-    friend class ColumnsBoardView;
-    
-    float AnimationTimeMs() { return mTotalAnimationTimeMs;}
-    float ElapsedAnimationTimeMS() { return mElapsedAnimationTimeMs;}
-    bool IsFinished() { return mElapsedAnimationTimeMs > mTotalAnimationTimeMs; }
-    
-private:
-    float mTotalAnimationTimeMs ;
-    float mElapsedAnimationTimeMs = 0;
-};
+//struct ViewAnimationState
+//{
+//    friend class ColumnsBoardView;
+//    
+//    float AnimationTimeMs() { return mTotalAnimationTimeMs;}
+//    float ElapsedAnimationTimeMS() { return mElapsedAnimationTimeMs;}
+//    bool IsFinished() { return mElapsedAnimationTimeMs > mTotalAnimationTimeMs; }
+//    
+//private:
+//    float mTotalAnimationTimeMs ;
+//    float mElapsedAnimationTimeMs = 0;
+//};
 
 class ColumnsBoardView
 {
@@ -53,23 +55,27 @@ public:
     ColumnsBoardView& InitFallingPiecesAnimationTimeMs(double timeMs);
     ColumnsBoardView& InitFirstRowsToSkipWhenRendering(TileCoordinate value);
     
-    std::shared_ptr<ViewAnimationState> StartDestroyPiecesAnimation(TilesSet piecesToDestroy);
+    void StartAnimatingPlayerBlock();
+    std::shared_ptr<Tween> StartDestroyPiecesAnimation(TilesSet piecesToDestroy);
+    std::shared_ptr<Tween> StartFallingPiecesAnimation(TilesMovementSet piecesToMove);
     
-    std::shared_ptr<ViewAnimationState> StartFallingPiecesAnimation(TilesMovementSet piecesToMove);
+    void UpdateAnimations(double dt);
+    void Render(double framePercent, std::shared_ptr<Renderer> pRenderer);
     
-    void Render(double dt, std::shared_ptr<Renderer> pRenderer);
 private:
 
-    bool IsDestroyingPieces() { return !pDestroyPiecesAnimationState->IsFinished(); }
-    bool IsMakingPiecesFall() { return !pFallingPiecesAnimationState->IsFinished(); }
+    bool isMovingPieces() { return pMovingPiecesAnimation->isRunning(); }
+    bool isDestroyingPieces() { return pDestroyPiecesAnimation->isRunning(); }
+    bool isMakingPiecesFall() { return pFallingPiecesAnimation->isRunning(); }
     
     void RenderBoard(double dt, std::shared_ptr<Renderer> pRenderer);
     void RenderPlayerBlock(double dt, std::shared_ptr<Renderer> pRenderer);
     void RenderDestroyAnimation(double dt, std::shared_ptr<Renderer> pRenderer);
     void RenderFallingPiecesAnimation(double dt, std::shared_ptr<Renderer> pRenderer);
     
-    std::shared_ptr<ViewAnimationState> pDestroyPiecesAnimationState;
-    std::shared_ptr<ViewAnimationState> pFallingPiecesAnimationState;
+    std::shared_ptr<Tween> pMovingPiecesAnimation;
+    std::shared_ptr<Tween> pDestroyPiecesAnimation;
+    std::shared_ptr<Tween> pFallingPiecesAnimation;
     
     uint8_t mSkipRenderingRowsWhenRendering;
     TileTypeToTextureMapping mTile2TextureMapping;

@@ -40,7 +40,7 @@ void RemovingPiecesState::OnUpdate(double dt)
         return;
     }
     
-    if (!pAnimationState || pAnimationState->IsFinished())
+    if (!pAnimationState || pAnimationState->hasFinished())
     {
         mFSM.ChangeTo(EColumnsGameStatesIds::Falling_Pieces,
                       std::make_shared<DestroyPiecesStateArgs>(mPiecesToDestroy));

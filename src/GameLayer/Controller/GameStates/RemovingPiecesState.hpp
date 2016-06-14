@@ -29,7 +29,7 @@ public:
     virtual void OnExit() override;
 private:
     TilesSet mPiecesToDestroy;
-    std::shared_ptr<ViewAnimationState> pAnimationState;
+    std::shared_ptr<Tween> pAnimationState;
 };
 
 

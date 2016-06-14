@@ -69,8 +69,8 @@ public:
     // Use an unscoped enum to std::get fields from the DestroyPiecesInfo tuple instead of using numeric
     // indexers (from Effective Modern C++, Item 10)
     enum DestroyPiecesInfoFields{ destroyedPieces, animationState };
-    using DestroyPiecesInfo = std::tuple<TilesSet, std::shared_ptr<ViewAnimationState>>;
-    using FallingPiecesInfo = std::tuple<TilesMovementSet, std::shared_ptr<ViewAnimationState>>;
+    using DestroyPiecesInfo = std::tuple<TilesSet, std::shared_ptr<Tween>>;
+    using FallingPiecesInfo = std::tuple<TilesMovementSet, std::shared_ptr<Tween>>;
     
     /* 
      * This checkes the pieces that need to be destroyed and commands the view 

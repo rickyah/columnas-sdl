@@ -34,7 +34,7 @@ void FallingPiecesState::OnEnter()
 
 void FallingPiecesState::OnUpdate(double dt)
 {
-    if (!pAnimationState || pAnimationState->IsFinished())
+    if (!pAnimationState || pAnimationState->hasFinished())
     {
         ExtractPositionOfDroppedPieces(mDestroyedPieces, mPiecesToMove);
         mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces,std::make_shared<DestroyPiecesStateArgs>(mDestroyedPieces));
