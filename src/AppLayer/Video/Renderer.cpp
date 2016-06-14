@@ -11,7 +11,7 @@
 
 Renderer::Renderer(const std::shared_ptr<SDL_Window> &pSDLWindow)
 {
-    pSDLRenderer = std::shared_ptr<SDL_Renderer>(SDL_CreateRenderer(pSDLWindow.get(), -1, 0),
+    pSDLRenderer = std::shared_ptr<SDL_Renderer>(SDL_CreateRenderer(pSDLWindow.get(), -1, SDL_RENDERER_ACCELERATED),
                                                   SDL_DestroyRenderer);
 }
 
@@ -47,12 +47,57 @@ void Renderer::CreateHardwareTexture(std::shared_ptr<Texture2d> texture) const
 
 }
 
-void Renderer::DrawTextureAt(std::shared_ptr<Texture2d> pTexture, Position pos)
+
+void Renderer::DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position& pos)
 {
     CreateHardwareTexture(pTexture);
     
-    SDL_Rect drawSize = {pos.x, pos.y, pTexture->drawSize().w, pTexture->drawSize().h};
-    SDL_RenderCopy(pSDLRenderer.get(), pTexture->textureData().get(), NULL, &drawSize);
+    DrawTexture(pTexture, pos, pTexture->drawSize());
+}
+
+void Renderer::DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos, const Size &drawSize)
+{
+    CreateHardwareTexture(pTexture);
+    
+    SDL_Rect drawSizeRect = {pos.x, pos.y, drawSize.w, drawSize.h};
+    SDL_RenderCopy(pSDLRenderer.get(), pTexture->textureData().get(), NULL, &drawSizeRect);
+}
+
+
+void Renderer::DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos, const Rect &clipRect)
+{
+    CreateHardwareTexture(pTexture);
+    
+    DrawTexture(pTexture, pos, pTexture->drawSize(), clipRect);
+}
+
+void Renderer::DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos, const Size &drawSize, const Rect &clipRect)
+{
+    CreateHardwareTexture(pTexture);
+    
+    auto realSize = pTexture->realSize();
+    
+    // The clip rect is based on the draw size of the texture, but SDL needs a rect with the coordinates and size
+    // of the real size of the texture, so we just multiply the clipRect by the relation beween the real size
+    // and the drawing size
+    float wFactor = static_cast<float>(realSize.w)/static_cast<float>(drawSize.w);
+    float hFactor = static_cast<float>(realSize.h)/static_cast<float>(drawSize.h);
+    
+    SDL_Rect drawSizeRectSDL = {
+        pos.x,
+        pos.y,
+        clipRect.size.w,
+        clipRect.size.h
+    };
+    
+    SDL_Rect clipRectSDL = {
+        static_cast<int>(clipRect.position.x * wFactor),
+        static_cast<int>(clipRect.position.y * hFactor),
+        static_cast<int>(clipRect.size.w * wFactor),
+        static_cast<int>(clipRect.size.h *wFactor)
+    };
+    
+    SDL_RenderCopy(pSDLRenderer.get(), pTexture->textureData().get(), &clipRectSDL, &drawSizeRectSDL);
 }
 
 void Renderer::FillRectangle(Rect rectangle)

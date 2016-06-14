@@ -22,7 +22,12 @@ public:
     void Clear();
     std::shared_ptr<Texture2d> CreateTextureFromSurface(SDL_Surface * pSurface);
     void CreateHardwareTexture(std::shared_ptr<Texture2d> texture) const;
-    void DrawTextureAt(std::shared_ptr<Texture2d> pTexture, Position pos);
+    void DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos);
+    void DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos, const Size &drawSize);
+    
+    // Clip rect is relative to the DRAW size, not the real size
+    void DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos, const Rect &clipRect);
+    void DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos, const Size &drawSize, const Rect &clipRect);
     void FillRectangle(Rect rectangle);
     void Present();
     void SetColor(int r, int g, int b, int a=255);
