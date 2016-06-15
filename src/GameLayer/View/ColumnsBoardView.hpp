@@ -84,6 +84,10 @@ private:
     const PlayerBlock * const pPlayerBlock;
     
     Size mTileSizePixels;
+
+    void RenderTileAt(TileType tileType, int row, int col, std::shared_ptr<Renderer> pRenderer);
+    void RenderEmptyTileAt(int row, int col, std::shared_ptr<Renderer> pRenderer);
+
     ColumnsBoardView(const ColumnsBoardView &);
     ColumnsBoardView operator=(const ColumnsBoardView &);
 };

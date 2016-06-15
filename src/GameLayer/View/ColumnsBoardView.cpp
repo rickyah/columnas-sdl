@@ -84,6 +84,44 @@ void ColumnsBoardView::Render(double framePercent, std::shared_ptr<Renderer> pRe
     }
 }
 
+void ColumnsBoardView::RenderTileAt(TileType tileType, int row, int col, std::shared_ptr<Renderer> pRenderer)
+{
+    static Position tilePosition;
+
+    tilePosition.y = (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w;
+    tilePosition.x = col * mTileSizePixels.h;
+
+    auto textureRes = mTile2TextureMapping[tileType];
+
+    if (!textureRes.expired())
+    {
+        auto texture = textureRes.lock()->texture();
+        pRenderer->DrawTexture(texture, tilePosition);
+    }
+}
+
+void ColumnsBoardView::RenderEmptyTileAt(int row, int col, std::shared_ptr<Renderer> pRenderer)
+{
+    static Rect r(Position(),  mTileSizePixels);
+
+    r.size.w = mTileSizePixels.w - 1;
+    r.size.h = mTileSizePixels.h - 1;
+
+    r.position.y = (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w;
+    r.position.x = col * mTileSizePixels.h;
+
+
+    pRenderer->SetColor(255,255,255);
+    pRenderer->FillRectangle(r);
+    auto textureRes = mTile2TextureMapping[ESpecialBoardPieces::Empty];
+
+    if (!textureRes.expired())
+    {
+        auto texture = textureRes.lock()->texture();
+        pRenderer->DrawTexture(texture, r.position);
+    }
+
+}
 
 void ColumnsBoardView::RenderBoard(double dt, std::shared_ptr<Renderer> pRenderer)
 {
@@ -95,34 +133,16 @@ void ColumnsBoardView::RenderBoard(double dt, std::shared_ptr<Renderer> pRendere
 
     for(std::size_t rowIdx = mSkipRenderingRowsWhenRendering ; rowIdx < board.rows(); ++rowIdx)
     {
-        r.position.y = (rowIdx - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w;
-        
         for(std::size_t colIdx = 0; colIdx < board.columns(); ++ colIdx)
         {
-            r.position.x = colIdx * mTileSizePixels.h;
+            // We use an empty tile as bg
+            RenderEmptyTileAt(rowIdx, colIdx, pRenderer);
             
-            // Draw bg
-            pRenderer->SetColor(255,255,255);
-            pRenderer->FillRectangle(r);
-            auto textureRes = mTile2TextureMapping[ESpecialBoardPieces::Empty];
-            if (!textureRes.expired())
-            {
-                auto texture = textureRes.lock()->texture();
-                pRenderer->DrawTexture(texture, r.position);
-            }
-            
-            // Draw piece only if the boards at this position is not empty
+            // Draw piece only if the tile at this position is not empty
             const TileType& tileType = board[rowIdx][colIdx];
             if (tileType == ESpecialBoardPieces::Empty) continue;
             
-            textureRes = mTile2TextureMapping[tileType];
-
-            if (!textureRes.expired())
-            {
-                auto texture = textureRes.lock()->texture();
-                pRenderer->DrawTexture(texture, r.position);
-            }
-
+            RenderTileAt(tileType, rowIdx, colIdx, pRenderer);
         }
         
     }
@@ -133,6 +153,7 @@ void ColumnsBoardView::RenderPlayerBlock(double dt, std::shared_ptr<Renderer> pR
     Position pos = Position(pPlayerBlock->position().col * mTileSizePixels.w,
                             (pPlayerBlock->position().row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.h);
     
+    Rect playerBlockRect(pos, Size(mTileSizePixels.w, mTileSizePixels.h * pPlayerBlock->size()));
 
     int idxPiecesEnd = pPlayerBlock->size();
     float offset = 0;
