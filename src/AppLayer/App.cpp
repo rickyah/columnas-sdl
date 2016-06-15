@@ -88,6 +88,4 @@ void App::UpdateGameLoop()
             Delay(sleepTimeMs);
         }
     }
-    
-    return 0;
 }
