@@ -55,7 +55,7 @@ bool EventQueue::RemoveListener(const EventType& type, const EventListenerDelega
     return false;
 }
     
-bool EventQueue::Raise(std::shared_ptr<IEventData> pEvent)
+void EventQueue::Raise(std::shared_ptr<IEventData> pEvent)
 {
     EventListenerList& list = mEventListeners[pEvent->type()];
     

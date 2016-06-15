@@ -38,7 +38,7 @@ public:
     
     bool RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate);
     
-    bool Raise(std::shared_ptr<IEventData> pEvent);
+    void Raise(std::shared_ptr<IEventData> pEvent);
 
     void RemoveAllListeners();
     
