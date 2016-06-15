@@ -63,7 +63,9 @@ TilesSet ColumnsBoard::FindPiecesToDestroy(TilesSet positionsToSearch) const
     
     for(const auto& position: positionsToSearch)
     {
-        auto set = GetAllAdjacentTiles(position.row, position.col, std::bind(&ColumnsBoard::FindAdjacentPiecesFilterFunc, this, std::placeholders::_1));
+        auto set = GetAllAdjacentTiles(position.row, position.col, [this](std::unordered_set<TilePosition> positions) {
+            return FindAdjacentPiecesFilterFunc(positions);
+        });
         
         // sustract 1 as the GetAllAdjacentTiles does not takes into account the piece in the position
         // you search
