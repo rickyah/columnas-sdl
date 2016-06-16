@@ -107,6 +107,14 @@ void Renderer::FillRectangle(Rect rectangle)
     SDL_RenderFillRect(pSDLRenderer.get(), &rect);
 }
 
+void Renderer::Rectangle(Rect rectangle)
+{
+    
+    SDL_Rect rect = {rectangle.position.x, rectangle.position.y, rectangle.size.w, rectangle.size.h};
+    
+    SDL_RenderDrawRect(pSDLRenderer.get(), &rect);
+}
+
 void Renderer::Present()
 {
     SDL_RenderPresent(pSDLRenderer.get());

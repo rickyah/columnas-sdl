@@ -56,8 +56,8 @@ public:
     ColumnsBoardView& InitFirstRowsToSkipWhenRendering(TileCoordinate value);
     
     void StartAnimatingPlayerBlock();
-    std::shared_ptr<Tween> StartDestroyPiecesAnimation(TilesSet piecesToDestroy);
-    std::shared_ptr<Tween> StartFallingPiecesAnimation(TilesMovementSet piecesToMove);
+    std::shared_ptr<Tween> StartDestroyPiecesAnimation(const TilesSet &piecesToDestroyPtr);
+    std::shared_ptr<Tween> StartFallingPiecesAnimation(const TilesMovementSet &piecesToMovePtr);
     
     void UpdateAnimations(double dt);
     void Render(double framePercent, std::shared_ptr<Renderer> pRenderer);
@@ -80,14 +80,17 @@ private:
     uint8_t mSkipRenderingRowsWhenRendering;
     TileTypeToTextureMapping mTile2TextureMapping;
     
+    // Pointers to the model for rendering only (const data);
     const ColumnsBoard * const pColumnsBoard;
     const PlayerBlock * const pPlayerBlock;
+    const TilesSet *pPiecesToDestroy;
+    const TilesMovementSet *pPiecesToMove;
     
     Size mTileSizePixels;
-
+    
     void RenderTileAt(TileType tileType, int row, int col, std::shared_ptr<Renderer> pRenderer);
     void RenderEmptyTileAt(int row, int col, std::shared_ptr<Renderer> pRenderer);
-
+    
     ColumnsBoardView(const ColumnsBoardView &);
     ColumnsBoardView operator=(const ColumnsBoardView &);
 };

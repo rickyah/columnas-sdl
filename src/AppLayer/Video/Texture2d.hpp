@@ -30,7 +30,7 @@ public:
     const std::shared_ptr<SDL_Texture> textureData() const { return pTextureData; }
     
 private:
-    void textureData(std::shared_ptr<SDL_Texture> pTexture) { return pTextureData = pTexture; }
+    void textureData(std::shared_ptr<SDL_Texture> pTexture) { pTextureData = pTexture; }
     Size mDrawSize;
     Size mRealSize;
     std::shared_ptr<SDL_Surface> pSurfaceData;

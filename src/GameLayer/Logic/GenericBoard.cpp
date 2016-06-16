@@ -50,7 +50,7 @@ void GenericBoard::RemovePieces(const TilesSet &pieces)
 void GenericBoard::MovePieces(const TilesMovementSet &pieces)
 {
     
-    for(int i = 0; i < pieces.size(); ++i)
+    for(size_t i = 0; i < pieces.size(); ++i)
     {
         TileMovement move = pieces[i];
         TileType valueToMove = mBoardTiles[move.from.row][move.from.col];

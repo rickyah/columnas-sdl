@@ -41,7 +41,7 @@ bool ColumnsBoard::IsGameOverConditionFullfilled() const
 void ColumnsBoard::ConsolidatePlayerBlock(const PlayerBlock &playerBlock)
 {
     auto position = playerBlock.position();
-    for(auto i = 0; i < playerBlock.size(); ++i)
+    for(size_t i = 0; i < playerBlock.size(); ++i)
     {
         mBoardTiles[position.row + i][position.col] = playerBlock[i];
     }
@@ -52,7 +52,7 @@ TilesMovementSet ColumnsBoard::FindAllPiecesToMove() const
     // Search in all columns
     mTmpColumnsToCheck.clear();
     
-    for(int r = 0; r < columns(); ++r) mTmpColumnsToCheck.insert(r);
+    for(auto r = 0; r < columns(); ++r) mTmpColumnsToCheck.insert(r);
     
     return FindPiecesToMoveInColumns(mTmpColumnsToCheck);
 }

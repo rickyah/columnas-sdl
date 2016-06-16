@@ -12,7 +12,7 @@ ColumnsBoardView::ColumnsBoardView(const ColumnsBoard * const pColumnsBoardPtr,
                                    const PlayerBlock * const playerBlockPtr)
 :pColumnsBoard(pColumnsBoardPtr),
 pPlayerBlock(playerBlockPtr),
-pMovingPiecesAnimation(std::make_shared<Tween>(0,1,100, Linear::easeIn)),
+pMovingPiecesAnimation(std::make_shared<Tween>(0,1,100, Sine::easeIn)),
 pDestroyPiecesAnimation(std::make_shared<Tween>(0,1,3000, Linear::easeIn)),
 pFallingPiecesAnimation(std::make_shared<Tween>(0,1,2000, Sine::easeIn))
 {}
@@ -87,12 +87,12 @@ void ColumnsBoardView::Render(double framePercent, std::shared_ptr<Renderer> pRe
 void ColumnsBoardView::RenderTileAt(TileType tileType, int row, int col, std::shared_ptr<Renderer> pRenderer)
 {
     static Position tilePosition;
-
+    
     tilePosition.y = (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w;
     tilePosition.x = col * mTileSizePixels.h;
-
+    
     auto textureRes = mTile2TextureMapping[tileType];
-
+    
     if (!textureRes.expired())
     {
         auto texture = textureRes.lock()->texture();
@@ -103,18 +103,18 @@ void ColumnsBoardView::RenderTileAt(TileType tileType, int row, int col, std::sh
 void ColumnsBoardView::RenderEmptyTileAt(int row, int col, std::shared_ptr<Renderer> pRenderer)
 {
     static Rect r(Position(),  mTileSizePixels);
-
+    
     r.size.w = mTileSizePixels.w - 1;
     r.size.h = mTileSizePixels.h - 1;
-
+    
     r.position.y = (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w;
     r.position.x = col * mTileSizePixels.h;
-
-
+    
+    
     pRenderer->SetColor(255,255,255);
     pRenderer->FillRectangle(r);
     auto textureRes = mTile2TextureMapping[ESpecialBoardPieces::Empty];
-
+    
     if (!textureRes.expired())
     {
         auto texture = textureRes.lock()->texture();
@@ -154,7 +154,7 @@ void ColumnsBoardView::RenderPlayerBlock(double dt, std::shared_ptr<Renderer> pR
                             (pPlayerBlock->position().row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.h);
     
     Rect playerBlockRect(pos, Size(mTileSizePixels.w, mTileSizePixels.h * pPlayerBlock->size()));
-
+    
     int idxPiecesEnd = pPlayerBlock->size();
     float offset = 0;
     
@@ -201,15 +201,17 @@ void ColumnsBoardView::RenderPlayerBlock(double dt, std::shared_ptr<Renderer> pR
         pos.y += mTileSizePixels.h;
     }
     
+    pRenderer->SetColor(255,0,255);
+    pRenderer->Rectangle(playerBlockRect);
 }
 
 
-void ColumnsBoardView::RenderDestroyAnimation(double dt, std::shared_ptr<Renderer> pRenderer)
+void ColumnsBoardView::RenderDestroyAnimation(double framePercent, std::shared_ptr<Renderer> pRenderer)
 {
-    
+//    pDestroyPiecesAnimation->currentValue()
 }
 
-void ColumnsBoardView::RenderFallingPiecesAnimation(double dt, std::shared_ptr<Renderer> pRenderer)
+void ColumnsBoardView::RenderFallingPiecesAnimation(double framePercent, std::shared_ptr<Renderer> pRenderer)
 {
     
 }
@@ -220,23 +222,25 @@ void ColumnsBoardView::StartAnimatingPlayerBlock()
     pMovingPiecesAnimation->Restart();
 }
 
-std::shared_ptr<Tween> ColumnsBoardView::StartDestroyPiecesAnimation(TilesSet piecesToDestroy)
+std::shared_ptr<Tween> ColumnsBoardView::StartDestroyPiecesAnimation(const TilesSet & piecesToDestroyPtr)
 {
     // Can't start the same animation twice
     if(pDestroyPiecesAnimation->hasFinished())
     {
         pDestroyPiecesAnimation->Restart();
+        pPiecesToDestroy = &piecesToDestroyPtr;
     }
     
     return pDestroyPiecesAnimation;
 }
 
-std::shared_ptr<Tween> ColumnsBoardView::StartFallingPiecesAnimation(TilesMovementSet piecesToMove)
+std::shared_ptr<Tween> ColumnsBoardView::StartFallingPiecesAnimation(const TilesMovementSet &piecesToMovePtr)
 {
     // Can't start the same animation twice
     if(pFallingPiecesAnimation->hasFinished())
     {
         pFallingPiecesAnimation->Restart();
+        pPiecesToMove = &piecesToMovePtr;
     }
         
     return pFallingPiecesAnimation;

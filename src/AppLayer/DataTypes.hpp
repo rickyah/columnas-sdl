@@ -38,7 +38,7 @@ struct Size
 
 struct Rect
 {
-    Rect(Position pos, Size size):position(pos), size(size) {}
+    Rect(Position position_, Size size_):position(position_), size(size_) {}
 
     Rect(int x, int y, int w, int h):position(Position(x,y)), size(Size(w,h)) {}
 

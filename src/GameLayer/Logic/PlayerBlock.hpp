@@ -56,9 +56,10 @@ public:
     {
         mOccupiedPositionsTmp.clear();
         
-        for (int i = 0; i < size(); ++i)
+        for (size_t i = 0; i < size(); ++i)
         {
-            mOccupiedPositionsTmp.insert(TilePosition(mPosition.row + i, mPosition.col));
+            mOccupiedPositionsTmp.insert(TilePosition(static_cast<TileCoordinate>(mPosition.row + i),
+                                                      static_cast<TileCoordinate>(mPosition.col)));
         }
         
         return mOccupiedPositionsTmp;

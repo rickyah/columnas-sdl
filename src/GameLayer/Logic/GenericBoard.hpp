@@ -113,8 +113,8 @@ public:
     
     void boardState(const BoardState& newState ) { mBoardTiles = newState; };
     
-    TileCoordinate rows() const { return mBoardTiles.size(); }
-    TileCoordinate columns() const { return mBoardTiles[0].size(); }
+    TileCoordinate rows() const { return static_cast<unsigned short>(mBoardTiles.size()); }
+    TileCoordinate columns() const { return static_cast<unsigned short>(mBoardTiles[0].size()); }
     
     
     bool IsPositionInsideBoardBounds(const TilePosition &IsPositionInsideBoardBoundspos) const;

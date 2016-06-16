@@ -29,6 +29,7 @@ public:
     void DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos, const Rect &clipRect);
     void DrawTexture(std::shared_ptr<Texture2d> pTexture, const Position &pos, const Size &drawSize, const Rect &clipRect);
     void FillRectangle(Rect rectangle);
+    void Rectangle(Rect rectangle);
     void Present();
     void SetColor(int r, int g, int b, int a=255);
     
