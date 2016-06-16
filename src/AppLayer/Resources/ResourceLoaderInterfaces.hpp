@@ -14,6 +14,7 @@
 class ITextureLoader
 {
 public:
+    virtual ~ITextureLoader(){};
     virtual std::shared_ptr<Texture2d> LoadResourceData(const std::string &resourcePath) = 0;
 };
 
