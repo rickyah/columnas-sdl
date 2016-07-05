@@ -1,6 +1,6 @@
 //
 //  RandomDistribution
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 5/6/16.
 //

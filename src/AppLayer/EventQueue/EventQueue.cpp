@@ -39,20 +39,25 @@ EventListenerDelegate EventQueue::AddListener(const EventType& type, const std::
     return dlg;
 }
 
-bool EventQueue::RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate)
+bool EventQueue::RemoveListener(const EventType& type, EventListenerDelegate::AutoIncrementalIdType eventId)
 {
     EventListenerList& list = mEventListeners[type];
     
     for (auto it = list.begin(); it != list.end(); ++it)
     {
-        if (eventDelegate.id == (*it).id)
+        if (eventId == it->id)
         {
             list.erase(it);
             return true;
         }
     }
-
+    
     return false;
+}
+
+bool EventQueue::RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate)
+{
+    return RemoveListener(type, eventDelegate.id);
 }
     
 void EventQueue::Raise(std::shared_ptr<IEventData> pEvent)

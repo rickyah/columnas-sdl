@@ -1,6 +1,6 @@
 //
 //  EventListenerDelegate.hpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 26/5/16.
 //

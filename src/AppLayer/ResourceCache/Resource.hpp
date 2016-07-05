@@ -1,6 +1,6 @@
 //
 //  Resource.hpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 31/5/16.
 //
@@ -12,6 +12,7 @@
 #include <string>
 
 #include "ResourceId.hpp"
+#include "Logger.hpp"
 
 /*
  * Base abstract class for all resources
@@ -21,11 +22,13 @@ class Resource
 public:
     uint32_t id() const { return mId; }
     std::string name() const {  return mName; };
-    virtual void Load() = 0;
     
 protected:
     Resource(ResourceId rId): mId(rId.id), mName(rId.name) {}
-    virtual ~Resource() {};
+    virtual ~Resource()
+    {
+        Logger::log.Info("Releasing resource %s", mName.c_str());
+    };
 private:
     Resource(const Resource &);
     Resource& operator=(const Resource &);

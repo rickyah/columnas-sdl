@@ -1,6 +1,6 @@
 //
 //  crc32.hpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 31/5/16.
 //

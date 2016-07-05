@@ -1,6 +1,6 @@
 //
 //  DataTypes.hpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 25/5/16.
 //
@@ -24,6 +24,9 @@ struct Position
 
     Position(int X, int Y):x(X),y(Y) {}
 
+    bool operator==(const Position &other) const { return other.x == x && other.y == y; }
+    bool operator!=(const Position &other) const { return !this->operator==(other); }
+    
 };
 
 struct Size
@@ -38,10 +41,20 @@ struct Size
 
 struct Rect
 {
+    Rect():Rect(0,0,0,0){}
+    
     Rect(Position position_, Size size_):position(position_), size(size_) {}
 
     Rect(int x, int y, int w, int h):position(Position(x,y)), size(Size(w,h)) {}
 
+    bool Contains(Position pos) const
+    {
+        return pos.x >= position.x
+            && pos.y >= position.y
+            && pos.x <= position.x + size.w
+            && pos.y <= position.y + size.h;
+    }
+    
     Position position;
     Size size;
 };
@@ -58,13 +71,21 @@ struct TimeInfo
 struct LogicFrameInfo : public TimeInfo
 {
     // delta time for the current game frame
-    double dt;
+    float dt;
 };
 
 struct RenderFrameInfo : public TimeInfo
 {
     // Percent of the current game frame we are rendering
-    double interpolation;
+    float interpolation;
 };
+
+
+
+struct Color
+{
+    unsigned short r, g, b;
+};
+
 
 #endif /* DataTypes_hpp */

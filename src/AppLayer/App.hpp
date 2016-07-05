@@ -1,6 +1,5 @@
 //
 //  CApp.hpp
-//  Columns
 //
 //  Created by Ricardo Amores Hernández on 26/5/16.
 //
@@ -10,9 +9,13 @@
 #define App_hpp
 
 #include <memory>
-#include "SDL.h"
+
+#include <SDL2/SDL.h>
+
 #include "DataTypes.hpp"
-#include "Graphics.hpp"
+#include "Logger.hpp"
+#include "Window.hpp"
+#include "AudioPlayer.hpp"
 #include "EventQueue.hpp"
 #include "EventsManager.hpp"
 #include "ResourceManager.hpp"
@@ -44,13 +47,16 @@ public:
         FPS120 = 120
     };
     
-    App();
+    App(): App(0,0, false){};
+    App(int width, int height, bool fullscreen);
     ~App();
     
     void UpdateGameLoop();
     
-    // Returns a reference to the graphics subsystem
-    Graphics & graphics() { return *pGraphics; }
+    // Returns a reference to the main window
+    Window & window() { return *pWindow; }
+    
+    AudioPlayer & audio() { return *pAudio; }
     
     // Gets a reference to the global EventQueue to dispatch messages between systems
     EventQueue & eventQueue() { return *pEventQueue; }
@@ -61,14 +67,16 @@ public:
     // Gets a reference to the system's resource manager
     ResourceManager &resourceManager() { return *pResourceManager; }
     
-    Uint32 ticksSinceStart() const;
+    void Quit() { mShouldQuit = true; }
+    
+    double msSinceStart() const;
     
     void Delay(int32_t msecs) const;
     /*
      * This sets the std::function to call on each logic update. 
      * 
      * The function receives the following parameters
-     * @param double delta time (in this case should be a fixed value)
+     * @param float delta time (in this case should be a fixed value)
      * @param int frameCount
      */
     void SetLogicUpdateFunction(std::function<void (LogicFrameInfo)> func) { mFuncLogicUpdate = func; }
@@ -77,30 +85,30 @@ public:
      * This sets the std::function to call on each render update.
      *
      * The function receives the following parameters
-     * @param double delta time
+     * @param float delta time
      * @param int frameCount
      */
-    void SetRenderUpdateFunction(std::function<void (RenderFrameInfo, std::shared_ptr<Renderer>)> func) { mFuncRenderUpdate = func; }
+    void SetRenderUpdateFunction(std::function<void (RenderFrameInfo, Renderer&)> func) { mFuncRenderUpdate = func; }
     
     /*
      * Get the update rate for the logic calls. Defaults to 120 per second
      */
-    double logicFPS() const { return mLogicRateMs * 1000.0; }
+    float logicFPS() const { return mLogicRateMs * 1000.0; }
     
     /*
      * Sets the update rate for the logic calls in miliseconds.
      */
-    void logicFPS(double fps) { mLogicRateMs = fps <= 0? UpdateRate::FPS120 : (1000.0/fps); }
+    void logicFPS(float fps) { mLogicRateMs = fps <= 0? UpdateRate::FPS120 : (1000.0/fps); }
     
     /*
      * Get the update rate for the render calls. Defaults to 1000/60 (60 per second)
      */
-    double renderFPS() const { return mRenderRateMs * 1000.0; }
+    float renderFPS() const { return mRenderRateMs * 1000.0; }
     
     /*
      * Sets the update rate for the logic calls in miliseconds.
      */
-    void renderFPS(double fps) { mRenderRateMs = fps <=0 ? UpdateRate::FPSUncapped : (1000.0/fps); }
+    void renderFPS(float fps) { mRenderRateMs = fps <=0 ? UpdateRate::FPSUncapped : (1000.0/fps); }
     
     // Count of current number of logic updates since the app started
     int logicFrameCount() const { return mLogicTimeInfo.frameCount; }
@@ -110,10 +118,13 @@ public:
     
 private:
    
-    double mLogicRateMs = 1000/UpdateRate::FPS120;
-    double mRenderRateMs = 1000/UpdateRate::FPS60;
+    bool mShouldQuit = false;
     
-    std::shared_ptr<Graphics> pGraphics;
+    float mLogicRateMs = 1000/UpdateRate::FPS120;
+    float mRenderRateMs = 1000/UpdateRate::FPS60;
+    
+    std::shared_ptr<Window> pWindow;
+    std::shared_ptr<AudioPlayer> pAudio;
     std::shared_ptr<EventQueue> pEventQueue;
     std::shared_ptr<EventsManager> pEventsManager;
     std::shared_ptr<ResourceManager> pResourceManager;
@@ -121,7 +132,7 @@ private:
     LogicFrameInfo mLogicTimeInfo;
     RenderFrameInfo mRenderTimeInfo;
     std::function<void (LogicFrameInfo)> mFuncLogicUpdate;
-    std::function<void (RenderFrameInfo, std::shared_ptr<Renderer>)> mFuncRenderUpdate;
+    std::function<void (RenderFrameInfo, Renderer &)> mFuncRenderUpdate;
 };
 
 #endif /* App_hpp */

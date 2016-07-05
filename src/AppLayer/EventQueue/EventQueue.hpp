@@ -1,6 +1,6 @@
 //
 //  EventQueue.hpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 23/5/16.
 //
@@ -37,6 +37,7 @@ public:
     EventListenerDelegate AddListener(const EventType& type, const std::function<void (std::shared_ptr<IEventData>)> &func);
     
     bool RemoveListener(const EventType& type, const EventListenerDelegate &eventDelegate);
+    bool RemoveListener(const EventType& type, EventListenerDelegate::AutoIncrementalIdType eventId);
     
     void Raise(std::shared_ptr<IEventData> pEvent);
 

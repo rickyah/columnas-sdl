@@ -1,6 +1,6 @@
 //
 //  Texture2d.cpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 25/5/16.
 //
@@ -9,31 +9,14 @@
 #include "Texture2d.hpp"
 
 
-Texture2d::~Texture2d()
+Texture2d::Texture2d(SDL_Texture *ptrTexture):
+    pSDLTexture(std::unique_ptr<SDL_Texture, void(*)(SDL_Texture*)>(ptrTexture, SDL_DestroyTexture))
 {
-    pTextureData.reset();
-    pSurfaceData.reset();
-}
-
-
-Texture2d::Texture2d(SDL_Surface *pSurface):
-    mRealSize(Size(pSurface->w, pSurface->h)),
-    mDrawSize(Size(pSurface->w, pSurface->h)),
-    pSurfaceData(std::shared_ptr<SDL_Surface>(pSurface, SDL_FreeSurface))
-{
-}
-
-Texture2d::Texture2d(SDL_Texture *pTexture, Size textureSize):
-    mRealSize(textureSize),
-    mDrawSize(textureSize),
-    pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
-{
-}
-
-
-Texture2d::Texture2d(SDL_Texture *pTexture):
-    pTextureData(std::shared_ptr<SDL_Texture>(pTexture, SDL_DestroyTexture))
-{
-    SDL_QueryTexture(pTexture, NULL, NULL, &mRealSize.w,  &mRealSize.h);
+    SDL_QueryTexture(pSDLTexture.get(), NULL, NULL, &mRealSize.w,  &mRealSize.h);
     mDrawSize = mRealSize;
+}
+
+void Texture2d::SetBlendMode(SDL_BlendMode mode)
+{
+    SDL_SetTextureBlendMode(pSDLTexture.get(), mode);
 }

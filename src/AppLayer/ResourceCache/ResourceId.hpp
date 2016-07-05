@@ -1,6 +1,6 @@
 //
 //  ResourceId.hpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 31/5/16.
 //
@@ -12,9 +12,11 @@
 #include "string"
 #include "crc32.hpp"
 
-// Defines a data type for a resource id. It contains
-// name: full path of the file
-// id:  crc32 hash of the name, used for lookup
+/* Defines a data type for a resource id. It contains
+ *
+ * name:    full path of the resource, including the extension
+ * id:      crc32 hash of the name, used for lookup
+ */
 struct ResourceId
 {
     constexpr ResourceId(const char* Name, uint32_t Id):name(Name),id(Id) {}
@@ -23,7 +25,7 @@ struct ResourceId
     const uint32_t id;
 };
 
-// Create a ResourceId structure given a name
+// Create a ResourceId structure given a string
 constexpr ResourceId RESOURCE_ID(const char* str) {
     return ResourceId(str, crc32(str));
 }

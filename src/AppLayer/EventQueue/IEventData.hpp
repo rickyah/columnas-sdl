@@ -1,6 +1,6 @@
 //
 //  IEventData.hpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 23/5/16.
 //

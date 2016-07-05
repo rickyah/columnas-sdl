@@ -1,6 +1,6 @@
 //
 //  FSM.hpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 1/6/16.
 //
@@ -11,6 +11,9 @@
 
 #include <unordered_map>
 #include <memory>
+
+#include <vector>
+#include <string>
 
 
 /*
@@ -49,7 +52,7 @@ public:
     
     virtual ~IState() {}
 
-    virtual void OnUpdate(double dt) {}
+    virtual void OnUpdate(float dt) {}
     
     virtual void OnInit() {}
     virtual void OnSetArgs(IStateArgsPtr pArgs) {}
@@ -135,11 +138,11 @@ public:
      */
     
     bool RemoveState(TStateId id);
-    
+        
     /*
      * Updates the state machine and performs the state changes
      */
-    void Update(double dt);
+    void Update(float dt = 0);
     
     
     ~FSM();
@@ -167,6 +170,7 @@ bool FSM<TStateId, TState, THash>::RegisterState(TStateId id, TStatePtr pState)
     
     return mStates.insert(pair).second;
 }
+
 
 template <typename TStateId, typename TState, typename THash>
 bool FSM<TStateId, TState, THash>::ChangeTo(TStateId id, IStateArgsPtr pArgs) const
@@ -221,7 +225,7 @@ bool FSM<TStateId, TState, THash>::RemoveState(TStateId id)
 }
 
 template <typename TStateId, typename TState, typename THash>
-void FSM<TStateId, TState, THash>::Update(double dt)
+void FSM<TStateId, TState, THash>::Update(float dt)
 {
     if(mNextStateInfo.ptr)
     {

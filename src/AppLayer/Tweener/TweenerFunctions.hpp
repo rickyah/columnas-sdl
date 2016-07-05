@@ -1,6 +1,6 @@
 //
 //  TweenerFunctions.h
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 12/6/16.
 //
