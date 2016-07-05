@@ -41,7 +41,7 @@ bool ColumnsBoard::IsGameOverConditionFullfilled() const
 void ColumnsBoard::ConsolidatePlayerBlock(const PlayerBlock &playerBlock)
 {
     auto position = playerBlock.position();
-    for(size_t i = 0; i < playerBlock.size(); ++i)
+    for(size_t  i = 0; i < playerBlock.size(); ++i)
     {
         mBoardTiles[position.row + i][position.col] = playerBlock[i];
     }

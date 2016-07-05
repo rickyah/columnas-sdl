@@ -1,6 +1,6 @@
 //
 //  TweenerTests.cpp
-//  Columns
+//
 //
 //  Created by Ricardo Amores Hernández on 12/6/16.
 //
@@ -36,7 +36,7 @@ TEST_CASE("Test Tween API", "[App]") {
         
         REQUIRE(t.currentValue() == 0);
     }
-
+    
     
     SECTION("Updating the Tween updates the inner values") {
         Tween t(0, 10.0, 20.0, Linear::easeIn);
@@ -44,8 +44,8 @@ TEST_CASE("Test Tween API", "[App]") {
         t.Start();
         
         REQUIRE(t.isRunning());
-        
         t.Update(10);
+        
         
         REQUIRE(t.isRunning());
         REQUIRE_FALSE(t.hasFinished());
@@ -80,22 +80,28 @@ TEST_CASE("Test Tween API", "[App]") {
         
         REQUIRE(t.hasFinished());
         REQUIRE(t.hasStarted());
+        REQUIRE(t.currentValue() == 10);
         
-        t.Restart();
+        // Starting an already started tween has no effect
+        t.Start();
         REQUIRE(t.hasStarted());
-        REQUIRE(t.currentValue() == 0);
+        REQUIRE(t.hasFinished());
+        REQUIRE(t.currentValue() == 10);
         
+        
+        // now we are talking ;)
+        t.Stop();
+        t.Start();
         t.Update(10);
-        
         REQUIRE(t.currentValue() == 5);
         
         REQUIRE(t.hasStarted());
         REQUIRE(t.isRunning());
         REQUIRE_FALSE(t.hasFinished());
     }
-
+    
     SECTION("Check Tween can be restarted with different values") {
-
+        
         Tween t(0, 10.0, 20.0, Linear::easeIn);
         
         t.Start();
@@ -103,8 +109,8 @@ TEST_CASE("Test Tween API", "[App]") {
         
         REQUIRE_FALSE(t.hasFinished());
         
-        t.Reset(5, 10, 30);
-        
+        t.Stop();
+        t.initialValue(5).endValue(10).durationMs(30);
         
         REQUIRE(t.initialValue() == 5);
         REQUIRE(t.endValue() == 10);
@@ -129,8 +135,7 @@ TEST_CASE("Test Tween API", "[App]") {
         REQUIRE(t.hasFinished());
     }
     
-    SECTION("Can be paused")
-    {
+    SECTION("Can be paused") {
         Tween t(0, 10, 20, Linear::easeIn);
         
         t.Start();
@@ -138,7 +143,7 @@ TEST_CASE("Test Tween API", "[App]") {
         
         REQUIRE(t.currentValue() == 5);
         
-        t.Stop();
+        t.Pause();
         
         REQUIRE(t.currentValue() == 5);
         REQUIRE_FALSE(t.isRunning());
@@ -146,7 +151,7 @@ TEST_CASE("Test Tween API", "[App]") {
         t.Update(5);
         
         REQUIRE(t.currentValue() == 5);
-        t.Start();
+        t.Resume();
         
         REQUIRE(t.isRunning());
         t.Update(5);
@@ -154,4 +159,118 @@ TEST_CASE("Test Tween API", "[App]") {
         REQUIRE(t.currentValue() == 7.5);
         
     }
+    
+    SECTION("Check we can add an initial delay for the animation") {
+        Tween t(0, 10, 20, Linear::easeIn);
+        
+        t.initialDelayMs(10);
+        
+        REQUIRE(t.durationMs() == 20);
+        
+        t.Start();
+        t.Update(5);
+        REQUIRE(t.currentValue() == 0);
+        
+        t.Update(2);
+        REQUIRE(t.currentValue() == 0);
+        
+        // Here we passed the initial delay for 2ms, so the current value should update
+        t.Update(5);
+        REQUIRE(t.currentValue() == 1);
+        
+        t.Update(10);
+        
+        REQUIRE(t.currentValue() == 6);
+    }
+    
+    SECTION("Check reverse animation") {
+        Tween t(0, 10, 20, Linear::easeIn);
+        
+        t.type(Tween::Type::Reverse);
+        
+        t.Start();
+        REQUIRE(t.currentValue() == 10);
+        
+        t.Update(2);
+        REQUIRE(t.currentValue() == 9);
+        
+        t.Update(8);
+        REQUIRE(t.currentValue() == 5);
+        
+        t.Update(100);
+        
+        REQUIRE(t.currentValue() == 0);
+        REQUIRE(t.hasFinished());
+    }
+    
+    SECTION("Check loop animation") {
+        Tween t(0, 10, 20, Linear::easeIn);
+        t.type(Tween::Type::Loop).Start();
+        
+        REQUIRE(t.currentValue() == 0);
+        
+        t.Update(30);
+        
+        REQUIRE_FALSE(t.hasFinished());
+        REQUIRE(t.currentValue() == 5);
+        
+        t.Update(1000);
+        REQUIRE_FALSE(t.hasFinished());
+    }
+    
+    SECTION("Check ping-pong animation") {
+        Tween t(0, 10, 20, Linear::easeIn);
+        t.type(Tween::Type::Pingpong).Start();
+        
+        REQUIRE(t.currentValue() == 0);
+        
+        t.Update(15);
+        
+        REQUIRE_FALSE(t.hasFinished());
+        REQUIRE(t.currentValue() == 7.5);
+        
+        t.Update(20);
+        REQUIRE_FALSE(t.hasFinished());
+        REQUIRE(t.currentValue() == 2.5);
+        
+        t.Update(10);
+        REQUIRE(t.hasFinished());
+    }
+    
+    SECTION("Check ping-pong loooping animation") {
+        Tween t(0, 10, 20, Linear::easeIn);
+        t.type(Tween::Type::PingpongLoop).Start();
+        
+        REQUIRE(t.currentValue() == 0);
+        
+        t.Update(22);
+        
+        REQUIRE_FALSE(t.hasFinished());
+        REQUIRE(t.currentValue() == 9);
+        
+        t.Update(20);
+        REQUIRE_FALSE(t.hasFinished());
+        REQUIRE(t.currentValue() == 1);
+        
+        t.Update(1000);
+        REQUIRE_FALSE(t.hasFinished());
+    }
+    
+    SECTION("Check end callback function is called") {
+        Tween t(0, 10, 20, Linear::easeIn);
+        t.type(Tween::Type::Pingpong);
+        bool hasFinishedVar = false;
+        
+        t.endCallback([&hasFinishedVar](const Tween & tween) {
+            hasFinishedVar = true;
+        });
+        
+        t.Start();
+        t.Update(40);
+        
+        REQUIRE(t.hasFinished());
+        REQUIRE(hasFinishedVar == true);
+    }
+    
+    
 }

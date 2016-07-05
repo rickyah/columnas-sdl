@@ -60,7 +60,7 @@ public:
     std::shared_ptr<Tween> StartFallingPiecesAnimation(const TilesMovementSet &piecesToMovePtr);
     
     void UpdateAnimations(double dt);
-    void Render(double framePercent, std::shared_ptr<Renderer> pRenderer);
+    void Render(double framePercent, Renderer &pRenderer);
     
 private:
 
@@ -68,10 +68,10 @@ private:
     bool isDestroyingPieces() { return pDestroyPiecesAnimation->isRunning(); }
     bool isMakingPiecesFall() { return pFallingPiecesAnimation->isRunning(); }
     
-    void RenderBoard(double dt, std::shared_ptr<Renderer> pRenderer);
-    void RenderPlayerBlock(double dt, std::shared_ptr<Renderer> pRenderer);
-    void RenderDestroyAnimation(double dt, std::shared_ptr<Renderer> pRenderer);
-    void RenderFallingPiecesAnimation(double dt, std::shared_ptr<Renderer> pRenderer);
+    void RenderBoard(double dt, Renderer &renderer);
+    void RenderPlayerBlock(double dt, Renderer &renderer);
+    void RenderDestroyAnimation(double dt, Renderer &renderer);
+    void RenderFallingPiecesAnimation(double dt, Renderer &renderer);
     
     std::shared_ptr<Tween> pMovingPiecesAnimation;
     std::shared_ptr<Tween> pDestroyPiecesAnimation;
@@ -88,8 +88,8 @@ private:
     
     Size mTileSizePixels;
     
-    void RenderTileAt(TileType tileType, int row, int col, std::shared_ptr<Renderer> pRenderer);
-    void RenderEmptyTileAt(int row, int col, std::shared_ptr<Renderer> pRenderer);
+    void RenderTileAt(TileType tileType, int row, int col, Renderer &renderer);
+    void RenderEmptyTileAt(int row, int col, Renderer &renderer);
     
     ColumnsBoardView(const ColumnsBoardView &);
     ColumnsBoardView operator=(const ColumnsBoardView &);

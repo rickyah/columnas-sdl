@@ -44,7 +44,7 @@ public:
     virtual void OnInit() override;
     virtual void OnEnter() override;
     virtual void OnCleanup() override;
-    virtual void OnUpdate(double dt) override;
+    virtual void OnUpdate(float     dt) override;
     
 private:
     MovingSubstatesFSM mSubFSM;
@@ -129,7 +129,7 @@ public:
     
     void OnEnter() override;
     void OnExit() override;
-    void OnUpdate(double dt) override;
+    void OnUpdate(float dt) override;
     
     void OnTouchEvent(std::shared_ptr<AppTouch_Event> event) override;
     
@@ -160,8 +160,9 @@ public:
     
     double motionAccToMoveX = 0.13;
     double motionAccToMoveY = 0.08;
+    
     void OnEnter() override;
-    void OnUpdate(double dt) override;
+    void OnUpdate(float dt) override;
     void OnTouchEvent(std::shared_ptr<AppTouch_Event> event) override;
     
     AppTouch_Event::TouchMotion initialMotion;
@@ -185,7 +186,7 @@ public:
     :InputState(fsm, eventQueue), mControllerRef(controller)
     {}
     
-    void OnUpdate(double dt) override;
+    void OnUpdate(float dt) override;
     void OnTouchEvent(std::shared_ptr<AppTouch_Event> event) override;
     
     

@@ -32,7 +32,7 @@ void FallingPiecesState::OnEnter()
     }
 }
 
-void FallingPiecesState::OnUpdate(double dt)
+void FallingPiecesState::OnUpdate(float dt)
 {
     if (!pAnimationState || pAnimationState->hasFinished())
     {

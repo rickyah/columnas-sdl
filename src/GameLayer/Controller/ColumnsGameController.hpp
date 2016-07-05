@@ -89,7 +89,7 @@ public:
     void ConsolidatePlayerBlock();
     
     void Update(LogicFrameInfo time);
-    void Render(RenderFrameInfo time, std::shared_ptr<Renderer> pRenderer);
+    void Render(RenderFrameInfo time, Renderer &renderer);
 
     int waitForLongPressMs() const { return 250; }
     float minValueXMotion() const { return 0.02; }
@@ -104,6 +104,7 @@ private:
     const uint8_t cDefaultBoardColumns = 6;
     const uint8_t cDefaultBoardRows = 17;
     
+    std::shared_ptr<BitmapFont> pBitmapFont;
     PlayerBlock mPlayerBlock;
     std::vector<TileType> mNextPieces;
     PositionF mPlayerBlockInitialPosition;

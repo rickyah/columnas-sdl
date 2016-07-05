@@ -24,7 +24,7 @@ public:
     void OnSetArgs(std::shared_ptr<IStateArgs> pArgs) override;
     
     void OnEnter() override;
-    void OnUpdate(double dt) override;
+    void OnUpdate(float dt) override;
     void OnExit() override;
 private:
     TilesSet mDestroyedPieces;

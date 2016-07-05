@@ -32,7 +32,7 @@ void RemovingPiecesState::OnEnter()
     }
 }
 
-void RemovingPiecesState::OnUpdate(double dt)
+void RemovingPiecesState::OnUpdate(float dt)
 {
     if (mPiecesToDestroy.size() <= 0)
     {

@@ -8,7 +8,6 @@
 
 #include "ColumnsGameController.hpp"
 
-
 // Forward declaration
 class MovingPiecesState;
 class DroppingPiecesState;
@@ -25,14 +24,15 @@ void ColumnsGameController::Init()
     mColumnsBoardView.InitFirstRowsToSkipWhenRendering(mColumnsBoard.numFirstRowsForGameOver())
         .InitTileSizeInPixels(Size(24,24))
         .InitPieceToTextureMapping({
+            
                 {ESpecialBoardPieces::Empty,      mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Tile.png"))},
 
-                {EPieces::Croissant, mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Croissant.png"))},
-                {EPieces::Cupcake,   mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Cupcake.png"))},
-                {EPieces::Danish,    mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Danish.png"))},
-                {EPieces::Donut,     mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Donut.png"))},
-                {EPieces::Macaroon,  mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Macaroon.png"))},
-                {EPieces::Cookie,    mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/SugarCookie.png"))}
+                {EPieces::Croissant,    mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Croissant.png"))},
+                {EPieces::Cupcake,      mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Cupcake.png"))},
+                {EPieces::Danish,       mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Danish.png"))},
+                {EPieces::Donut,        mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Donut.png"))},
+                {EPieces::Macaroon,     mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/Macaroon.png"))},
+                {EPieces::Cookie,       mResourceManagerRef.Register<Texture2dResource>(RESOURCE_ID("Sprites/SugarCookie.png"))}
             });
     
     pRandomDistribution = std::make_shared<RandomDistribution>(1,6);
@@ -122,10 +122,9 @@ void ColumnsGameController::Update(LogicFrameInfo time)
     mColumnsBoardView.UpdateAnimations(time.dt);
 }
 
-void ColumnsGameController::Render(RenderFrameInfo time, std::shared_ptr<Renderer> pRenderer)
+void ColumnsGameController::Render(RenderFrameInfo time, Renderer &renderer)
 {
-    mColumnsBoardView.Render(time.interpolation, pRenderer);
-    pRenderer->Present();
+    mColumnsBoardView.Render(time.interpolation, renderer);
 }
 
 ColumnsGameController::DestroyPiecesInfo ColumnsGameController::StartDestroyingPieces(const TilesSet &piecesToSearch)

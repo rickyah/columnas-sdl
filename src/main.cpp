@@ -11,9 +11,13 @@ int main(int argc, char *argv[])
 
     ctrl.Init();
     
-    app.SetLogicUpdateFunction(std::bind(&ColumnsGameController::Update, &ctrl, std::placeholders::_1));
+    app.SetLogicUpdateFunction([&ctrl](LogicFrameInfo time){
+        ctrl.Update(time);
+    });
     
-    app.SetRenderUpdateFunction(std::bind(&ColumnsGameController::Render, &ctrl, std::placeholders::_1, std::placeholders::_2));
+    app.SetRenderUpdateFunction([&ctrl](RenderFrameInfo time, Renderer &renderer){
+        ctrl.Render(time, renderer);
+    });
     
     app.UpdateGameLoop();
 

@@ -56,7 +56,7 @@ void MovingPiecesState::OnEnter()
     }
 }
 
-void MovingPiecesState::OnUpdate(double dt)
+void MovingPiecesState::OnUpdate(float dt)
 {
     mSubFSM.Update(dt);
     
@@ -113,7 +113,7 @@ AppTouch_Event::TouchMotion InputState::FilterMotion(AppTouch_Event::TouchMotion
 
 void WaitingInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
 {
-    if (event->args().type == AppTouch_Event::TouchType::Down)
+    if (event->args().type == PointerInputEventType::Down)
     {
         mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Received_Input);
     }
@@ -125,7 +125,7 @@ void ReceivedInputState::OnEnter()
     mCurrentElapsedMs = 0;
 }
 
-void ReceivedInputState::OnUpdate(double dt)
+void ReceivedInputState::OnUpdate(float dt)
 {
     mCurrentElapsedMs += dt;
     
@@ -152,13 +152,13 @@ void ReceivedInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
 {
     if (mCurrentElapsedMs <= mControllerRef.waitForLongPressMs())
     {
-        if (event->args().type == AppTouch_Event::TouchType::Up)
+        if (event->args().type == PointerInputEventType::Up)
         {
             mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
             return;
         }
         
-        if (event->args().type == AppTouch_Event::TouchType::Motion)
+        if (event->args().type == PointerInputEventType::Motion)
         {
             auto filteredMotion = FilterMotion(event->args().motion, mControllerRef.minValueXMotion());
             
@@ -184,7 +184,7 @@ void MovingBlockPieceInputState::OnEnter()
     mMotionAccumulator = 0.0;
 }
 
-void MovingBlockPieceInputState::OnUpdate(double dt)
+void MovingBlockPieceInputState::OnUpdate(float dt)
 {
     // left or right movement accumulates up to a point
     // and then we move the block. Keep the remainder instead of
@@ -203,14 +203,14 @@ void MovingBlockPieceInputState::OnUpdate(double dt)
 
 void MovingBlockPieceInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
 {
-    if (event->args().type == AppTouch_Event::TouchType::Up)
+    if (event->args().type == PointerInputEventType::Up)
     {
         mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
         return;
     }
     
     
-    if (event->args().type == AppTouch_Event::TouchType::Motion)
+    if (event->args().type == PointerInputEventType::Motion)
     {
         AccumulateMotion(event->args().motion);
     }
@@ -232,7 +232,7 @@ void MovingBlockPieceInputState::AccumulateMotion(const AppTouch_Event::TouchMot
 }
 
 
-void DroppingBlockPieceInputState::OnUpdate(double dt)
+void DroppingBlockPieceInputState::OnUpdate(float dt)
 {
     // TODO: Limit speed
     if(!mControllerRef.MoveDown())
@@ -243,7 +243,7 @@ void DroppingBlockPieceInputState::OnUpdate(double dt)
 
 void DroppingBlockPieceInputState::OnTouchEvent(std::shared_ptr<AppTouch_Event> event)
 {
-    if(event->args().type == AppTouch_Event::TouchType::Up)
+    if(event->args().type == PointerInputEventType::Up)
     {
         mFSM.ChangeTo(MovingPiecesState::MovementSubStateIds::Waiting);
     }
