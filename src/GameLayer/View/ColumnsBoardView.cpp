@@ -102,9 +102,10 @@ void ColumnsBoardView::RenderTileAt(TileType tileType, int row, int col, Rendere
 
 void ColumnsBoardView::RenderEmptyTileAt(int row, int col, Renderer &renderer)
 {
-    static Rect r(Position((row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w,
-                           col * mTileSizePixels.h),
-                  mTileSizePixels);
+    static Rect r;
+    
+    r.position.y = (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w;
+    r.position.x = col * mTileSizePixels.h;
     
     r.size.w = mTileSizePixels.w - 1;
     r.size.h = mTileSizePixels.h - 1;
@@ -131,7 +132,7 @@ void ColumnsBoardView::RenderBoard(double dt, Renderer &renderer)
 
     for(std::size_t rowIdx = mSkipRenderingRowsWhenRendering ; rowIdx < board.rows(); ++rowIdx)
     {
-        for(std::size_t colIdx = 0; colIdx < board.columns(); ++ colIdx)
+        for(std::size_t colIdx = 0; colIdx < board.columns(); ++colIdx)
         {
             // We use an empty tile as bg
             RenderEmptyTileAt(rowIdx, colIdx, renderer);
