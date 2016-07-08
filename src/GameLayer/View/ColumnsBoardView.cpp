@@ -84,12 +84,17 @@ void ColumnsBoardView::Render(double framePercent, Renderer &rendererRef)
     }
 }
 
+Position ColumnsBoardView::GetPositionForCoordinates(int row, int col)
+{
+    return {
+        mBoardRenderOffset.x + col * mTileSizePixels.w,
+        mBoardRenderOffset.y + (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.h
+    };
+}
+
 void ColumnsBoardView::RenderTileAt(TileType tileType, int row, int col, Renderer &renderer)
 {
-    static Position tilePosition;
-    
-    tilePosition.y = (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w;
-    tilePosition.x = col * mTileSizePixels.h;
+    Position tilePosition = GetPositionForCoordinates(row, col);
     
     auto textureRes = mTile2TextureMapping[tileType];
     
@@ -104,8 +109,7 @@ void ColumnsBoardView::RenderEmptyTileAt(int row, int col, Renderer &renderer)
 {
     static Rect r;
     
-    r.position.y = (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.w;
-    r.position.x = col * mTileSizePixels.h;
+    r.position = GetPositionForCoordinates(row, col);
     
     r.size.w = mTileSizePixels.w - 1;
     r.size.h = mTileSizePixels.h - 1;
@@ -147,16 +151,39 @@ void ColumnsBoardView::RenderBoard(double dt, Renderer &renderer)
     }
 }
 
+void ColumnsBoardView::RenderNextPieces(const std::vector<TileType> & tiles, Renderer& renderer)
+{
+    int boardRightEdge = pColumnsBoard->columns() * mTileSizePixels.w + mBoardRenderOffset.x;
+
+    Rect nextPiecesRect = Rect(Position(boardRightEdge, mBoardRenderOffset.y),
+                               Size(mTileSizePixels.w, mTileSizePixels.h * tiles.size()));
+
+    renderer.SetColor(0,0,0);
+    renderer.DrawFillRectangle(nextPiecesRect);
+    RenderPlayerTilesAtPos(tiles, nextPiecesRect.position, renderer, 0, tiles.size());
+}
+
+
 void ColumnsBoardView::RenderPlayerBlock(double dt, Renderer &renderer)
 {
-    Position pos = Position(pPlayerBlock->position().col * mTileSizePixels.w,
-                            (pPlayerBlock->position().row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.h);
+    if (pPlayerBlock->size() <= 0)
+    {
+        Logger::log.Warn("Trying to render an empty player block");
+        return;
+    }
+
+    // Don't use GetPositionForCoordinates because the block drops can be positioned at the half part of a column
+    Position pos = Position(
+        mBoardRenderOffset.x + pPlayerBlock->position().col * mTileSizePixels.w,
+        mBoardRenderOffset.y + (pPlayerBlock->position().row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.h);
     
     Rect playerBlockRect(pos, Size(mTileSizePixels.w, mTileSizePixels.h * pPlayerBlock->size()));
     
-    int idxPiecesEnd = pPlayerBlock->size();
     float offset = 0;
     
+    // If we are animating the movement of the pieces inside the player block
+    // then we must draw the last piece (the one at the bottom) partially in the
+    // bottom of the block and in the top of it
     if(pMovingPiecesAnimation->isRunning())
     {
         offset = pMovingPiecesAnimation->currentValue();
@@ -179,15 +206,25 @@ void ColumnsBoardView::RenderPlayerBlock(double dt, Renderer &renderer)
             pos.y -= (pPlayerBlock->size()) * mTileSizePixels.h - offset;
         }
         
-
-        idxPiecesEnd = pPlayerBlock->size()-1;
         pos.y += mTileSizePixels.h - offset;
+
+        // Don't draw the last piece
+        RenderPlayerTilesAtPos(pPlayerBlock->pieces(), pos, renderer, 0, pPlayerBlock->size()-1);
+    }
+    else
+    {
+        RenderPlayerTilesAtPos(pPlayerBlock->pieces(), pos, renderer, 0, pPlayerBlock->size());
     }
     
-    
-    for(int idxPieces = 0; idxPieces < idxPiecesEnd; ++idxPieces)
+    renderer.SetColor(255,0,255);
+    renderer.DrawRectangle(playerBlockRect);
+}
+
+void ColumnsBoardView::RenderPlayerTilesAtPos(const std::vector<TileType> &pieces, Position pos, Renderer &renderer, size_t from, size_t to)
+{
+    for(size_t idxPieces = from; idxPieces < to; ++idxPieces)
     {
-        const TileType& tileType = pPlayerBlock->operator[](idxPieces);
+        const TileType& tileType = pieces[idxPieces];
         auto textureRes = mTile2TextureMapping[tileType];
         
         if (!textureRes.expired())
@@ -199,9 +236,6 @@ void ColumnsBoardView::RenderPlayerBlock(double dt, Renderer &renderer)
         
         pos.y += mTileSizePixels.h;
     }
-    
-    renderer.SetColor(255,0,255);
-    renderer.DrawRectangle(playerBlockRect);
 }
 
 
@@ -218,30 +252,24 @@ void ColumnsBoardView::RenderFallingPiecesAnimation(double framePercent, Rendere
 
 void ColumnsBoardView::StartAnimatingPlayerBlock()
 {
-    pMovingPiecesAnimation->Start();
+    pMovingPiecesAnimation->Restart();
 }
 
-std::shared_ptr<Tween> ColumnsBoardView::StartDestroyPiecesAnimation(const TilesSet & piecesToDestroyPtr)
+void ColumnsBoardView::StartDestroyPiecesAnimation(const TilesSet & piecesToDestroyPtr, std::function<void()> endCallback)
 {
     // Can't start the same animation twice
-    if(pDestroyPiecesAnimation->hasFinished())
-    {
-        pDestroyPiecesAnimation->Start();
-        pPiecesToDestroy = &piecesToDestroyPtr;
-    }
-    
-    return pDestroyPiecesAnimation;
+    pDestroyPiecesAnimation->Restart();
+    pDestroyPiecesAnimation->endCallback([endCallback](const Tween&) { if(endCallback) endCallback(); });
+    pPiecesToDestroy = &piecesToDestroyPtr;
+
 }
 
-std::shared_ptr<Tween> ColumnsBoardView::StartFallingPiecesAnimation(const TilesMovementSet &piecesToMovePtr)
+void ColumnsBoardView::StartFallingPiecesAnimation(const TilesMovementSet &piecesToMovePtr, std::function<void()> endCallback)
 {
     // Can't start the same animation twice
-    if(pFallingPiecesAnimation->hasFinished())
-    {
-        pFallingPiecesAnimation->Start();
-        pPiecesToMove = &piecesToMovePtr;
-    }
-        
-    return pFallingPiecesAnimation;
+    pFallingPiecesAnimation->Restart();
+    pFallingPiecesAnimation->endCallback([endCallback](const Tween&) { if(endCallback) endCallback(); });
+
+    pPiecesToMove = &piecesToMovePtr;
 }
 

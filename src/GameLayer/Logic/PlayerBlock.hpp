@@ -40,11 +40,12 @@ public:
     /*
      * define a new set of pieces to use
      */
-    void SetNewPieces(const std::vector<TileType> &newPieces)
+    void pieces(const std::vector<TileType> &newPieces)
     {
         mPieces = newPieces;
-        mFirstPieceIdx = 0;
     }
+    
+    const std::vector<TileType> & pieces() const {return mPieces;}
     
     void position(TilePosition newPosition){mPosition.row = newPosition.row; mPosition.row = newPosition.col;}
     void position(PositionF newPosition){mPosition = newPosition;}
@@ -71,7 +72,7 @@ public:
      */
     const TileType& operator[](std::size_t idx) const
     {
-        return mPieces[(mFirstPieceIdx + idx) % size()];
+        return mPieces[idx];
     }
     
     /*
@@ -84,8 +85,7 @@ public:
      */
     void MovePieces()
     {
-        ++mFirstPieceIdx;
-        mFirstPieceIdx = mFirstPieceIdx % size();
+        std::rotate(mPieces.begin(), mPieces.begin() + 1, mPieces.end());
     }
     
     size_t size() const { return mPieces.size(); }
@@ -93,7 +93,6 @@ public:
 private:
     PositionF mPosition;
     std::vector<TileType> mPieces;
-    size_t mFirstPieceIdx = 0;
     mutable TilesSet mOccupiedPositionsTmp;
     PlayerBlock(const PlayerBlock &);
     PlayerBlock& operator=(const PlayerBlock &);

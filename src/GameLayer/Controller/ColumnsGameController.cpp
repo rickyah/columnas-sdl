@@ -51,7 +51,7 @@ void ColumnsGameController::Init()
 
 bool ColumnsGameController::ResetPlayerBlock()
 {
-    mPlayerBlock.SetNewPieces(mNextPieces);
+    mPlayerBlock.pieces(mNextPieces);
     mPlayerBlock.position(mPlayerBlockInitialPosition);
     
     mNextPieces = {
@@ -125,6 +125,7 @@ void ColumnsGameController::Update(LogicFrameInfo time)
 void ColumnsGameController::Render(RenderFrameInfo time, Renderer &renderer)
 {
     mColumnsBoardView.Render(time.interpolation, renderer);
+    mColumnsBoardView.RenderNextPieces(this->mNextPieces, renderer);
 }
 
 ColumnsGameController::DestroyPiecesInfo ColumnsGameController::StartDestroyingPieces(const TilesSet &piecesToSearch)
