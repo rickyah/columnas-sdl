@@ -54,6 +54,9 @@ public:
     // Starts the tween. If the tween is not started calls to Update methods does not take effect
     Tween& Start();
     
+    // Equivalent to calling Stop() and inmediatley Start() in the tween
+    Tween& Restart();
+    
     // Stops the tween. An stopped tween keeps the state it had when stop was called but can't be resumed, you need to
     // call Start to restart the Tween.
     Tween& Stop();

@@ -101,6 +101,14 @@ Tween& Tween::Start()
     return *this;
 }
 
+Tween& Tween::Restart()
+{
+    Stop();
+    Start();
+    
+    return *this;
+}
+
 Tween& Tween::Resume()
 {
     mIsPaused = false;
