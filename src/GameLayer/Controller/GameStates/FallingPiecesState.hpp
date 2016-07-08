@@ -21,20 +21,20 @@ public:
     :BaseColumnsGameState(fsm, controller)
     {}
     
+    // Receives a PiecesSetStateArgs with the pieces that had moved in the last turn
+    // We use that set to search for matches and create the set of pieces that should be destroyed
     void OnSetArgs(std::shared_ptr<IStateArgs> pArgs) override;
     
     void OnEnter() override;
-    void OnUpdate(float dt) override;
     void OnExit() override;
 private:
     
     TilesSet mDestroyedPieces;
-    TilesMovementSet * pPiecesToMove;
-    std::weak_ptr<Tween> pAnimationState;
     
-    FallingPiecesState(const FallingPiecesState &);
-    FallingPiecesState & operator=(const FallingPiecesState &);
     void ExtractPositionOfDroppedPieces(TilesSet &destroyedPieces, const TilesMovementSet &piecesMovedDown);
+    
+    FallingPiecesState(const FallingPiecesState &) = delete;
+    FallingPiecesState & operator=(const FallingPiecesState &) = delete;
 };
 
 #endif /* FallingPiecesState_hpp */

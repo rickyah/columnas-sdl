@@ -13,8 +13,8 @@ ColumnsBoardView::ColumnsBoardView(const ColumnsBoard * const pColumnsBoardPtr,
 :pColumnsBoard(pColumnsBoardPtr),
 pPlayerBlock(playerBlockPtr),
 pMovingPiecesAnimation(std::make_shared<Tween>(0,1,100, Sine::easeIn)),
-pDestroyPiecesAnimation(std::make_shared<Tween>(0,1,3000, Linear::easeIn)),
-pFallingPiecesAnimation(std::make_shared<Tween>(0,1,2000, Sine::easeIn))
+pDestroyPiecesAnimation(std::make_shared<Tween>(0,1,1000, Linear::easeIn)),
+pFallingPiecesAnimation(std::make_shared<Tween>(0,1,1000, Sine::easeIn))
 {}
 
 ColumnsBoardView& ColumnsBoardView::InitPieceToTextureMapping(TileTypeToTextureMapping mappings)
@@ -255,20 +255,27 @@ void ColumnsBoardView::StartAnimatingPlayerBlock()
     pMovingPiecesAnimation->Restart();
 }
 
-void ColumnsBoardView::StartDestroyPiecesAnimation(const TilesSet & piecesToDestroyPtr, std::function<void()> endCallback)
+void ColumnsBoardView::StartDestroyPiecesAnimation(const TilesSet &piecesToDestroy, std::function<void()> endCallback)
 {
-    // Can't start the same animation twice
-    pDestroyPiecesAnimation->Restart();
-    pDestroyPiecesAnimation->endCallback([endCallback](const Tween&) { if(endCallback) endCallback(); });
-    pPiecesToDestroy = &piecesToDestroyPtr;
+    pDestroyPiecesAnimation->Stop();
+    
+    pDestroyPiecesAnimation->endCallback([endCallback](const Tween&) {
+        if(endCallback) endCallback();
+    });
+    pDestroyPiecesAnimation->Start();
+    
+    pPiecesToDestroy = &piecesToDestroy;
 
 }
 
 void ColumnsBoardView::StartFallingPiecesAnimation(const TilesMovementSet &piecesToMovePtr, std::function<void()> endCallback)
 {
     // Can't start the same animation twice
-    pFallingPiecesAnimation->Restart();
-    pFallingPiecesAnimation->endCallback([endCallback](const Tween&) { if(endCallback) endCallback(); });
+    pFallingPiecesAnimation->Stop();
+    pFallingPiecesAnimation->endCallback([endCallback](const Tween&) {
+        if(endCallback) endCallback();
+    });
+    pFallingPiecesAnimation->Start();
 
     pPiecesToMove = &piecesToMovePtr;
 }

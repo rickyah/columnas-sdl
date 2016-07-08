@@ -11,46 +11,22 @@
 
 void RemovingPiecesState::OnSetArgs(std::shared_ptr<IStateArgs> pArgs)
 {
-    if (pArgs)
+    if (auto args = std::static_pointer_cast<PiecesSetStateArgs>(pArgs))
     {
-        mPiecesToDestroy = std::static_pointer_cast<DestroyPiecesStateArgs>(pArgs)->destroyedPieces;
+        mPiecesToSearch = args->pieces;
     }
 }
 
 
 void RemovingPiecesState::OnEnter()
 {
-    auto tuple = mControllerRef.StartDestroyingPieces(mPiecesToDestroy);
-    
-    mPiecesToDestroy = std::get<ColumnsGameController::destroyedPieces>(tuple);
-    pAnimationState = std::get<ColumnsGameController::animationState>(tuple);
-    
-    
-    if (mPiecesToDestroy.size() <= 0)
-    {
-        mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
-    }
-}
-
-void RemovingPiecesState::OnUpdate(float dt)
-{
-    if (mPiecesToDestroy.size() <= 0)
-    {
-        mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
-        return;
-    }
-    
-    if (!pAnimationState || pAnimationState->hasFinished())
-    {
-        mFSM.ChangeTo(EColumnsGameStatesIds::Falling_Pieces,
-                      std::make_shared<DestroyPiecesStateArgs>(mPiecesToDestroy));
-        
-        pAnimationState = nullptr;
-    }
+    mControllerRef.StartDestroyingPieces(mPiecesToSearch, [this](TilesSet &piecesToDestroy) {
+        mFSM.ChangeTo(EColumnsGameStatesIds::Falling_Pieces, std::make_shared<PiecesSetStateArgs>(piecesToDestroy));
+    });
+ 
 }
 
 void RemovingPiecesState::OnExit()
 {
-    mControllerRef.UpdateBoardDestroyPieces(mPiecesToDestroy);
-    mPiecesToDestroy.clear();
+    mPiecesToSearch.clear();
 }

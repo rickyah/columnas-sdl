@@ -13,13 +13,12 @@
 
 /*
  * States arguments pass from the RemovingPiecesState to the FallingPiecesState
- *
  */
-struct DestroyPiecesStateArgs : IStateArgs
+struct PiecesSetStateArgs : IStateArgs
 {
-    DestroyPiecesStateArgs(TilesSet destroyedPieces_):destroyedPieces(destroyedPieces_){}
+    PiecesSetStateArgs(TilesSet pieces_):pieces(pieces_){}
 
-    TilesSet destroyedPieces;
+    TilesSet pieces;
 };
 
 #endif /* GameStateArgs_h */

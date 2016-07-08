@@ -20,7 +20,8 @@ class InputState;
 
 
 /*
- * The player will able to control the block while this state is active
+ * The player will able to control the block while this state is active.
+ * This GameState uses another FSM to control the different input states
  */
 class MovingPiecesState : public BaseColumnsGameState
 {
@@ -44,7 +45,7 @@ public:
     virtual void OnInit() override;
     virtual void OnEnter() override;
     virtual void OnCleanup() override;
-    virtual void OnUpdate(float     dt) override;
+    virtual void OnUpdate(float dt) override;
     
 private:
     MovingSubstatesFSM mSubFSM;

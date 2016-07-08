@@ -6,48 +6,39 @@
 //
 //
 
-#include "DroppingPiecesState.hpp"
+#include "FallingPiecesState.hpp"
 
 void FallingPiecesState::OnSetArgs(std::shared_ptr<IStateArgs> pArgs)
 {
-    if (pArgs)
+    if (auto args = std::static_pointer_cast<PiecesSetStateArgs>(pArgs))
     {
-        mDestroyedPieces = std::static_pointer_cast<DestroyPiecesStateArgs>(pArgs)->destroyedPieces;
+        mDestroyedPieces = args->pieces;
     }
 }
 
 void FallingPiecesState::OnEnter()
 {
     Logger::log.Info(__PRETTY_FUNCTION__);
-    auto tuple = mControllerRef.StartFallingPieces(mDestroyedPieces);
     
-    pPiecesToMove = std::get<ColumnsGameController::destroyedPieces>(tuple);
-    pAnimationState = std::get<ColumnsGameController::animationState>(tuple);
-    
-    
-    if (mPiecesToMove.size() <= 0)
+    if (mDestroyedPieces.size() <= 0)
     {
-        ExtractPositionOfDroppedPieces(mDestroyedPieces, mPiecesToMove);
-        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces, std::make_shared<DestroyPiecesStateArgs>(mDestroyedPieces));
-    }
-}
-
-void FallingPiecesState::OnUpdate(float dt)
-{
-    if (!pAnimationState || pAnimationState->hasFinished())
-    {
-        ExtractPositionOfDroppedPieces(mDestroyedPieces, mPiecesToMove);
-        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces,std::make_shared<DestroyPiecesStateArgs>(mDestroyedPieces));
+        mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
         return;
     }
+    
+    mControllerRef.StartFallingPieces(mDestroyedPieces, [this](TilesMovementSet &piecesToMove){
+        TilesSet movedPieces;
+        ExtractPositionOfDroppedPieces(movedPieces, piecesToMove);
+        mFSM.ChangeTo(EColumnsGameStatesIds::Removing_Pieces, std::make_shared<PiecesSetStateArgs>(movedPieces));
+    });
 }
+
 
 void FallingPiecesState::OnExit()
 {
     Logger::log.Info(__PRETTY_FUNCTION__);
-    mControllerRef.UpdateBoardMakePiecesFall(mPiecesToMove);
+    
     mDestroyedPieces.clear();
-    mPiecesToMove.clear();
 }
 
 void FallingPiecesState::ExtractPositionOfDroppedPieces(TilesSet &destroyedPieces, const TilesMovementSet &piecesMovedDown)

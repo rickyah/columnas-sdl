@@ -18,18 +18,21 @@
 class RemovingPiecesState : public BaseColumnsGameState
 {
 public:
-    RemovingPiecesState(const ColumnsGameFSM &fsm,
-                        ColumnsGameController &controller)
-    :BaseColumnsGameState(fsm, controller)
+    RemovingPiecesState(const ColumnsGameFSM &fsm, ColumnsGameController &controller)
+        :BaseColumnsGameState(fsm, controller)
     {}
     
+    
+    // Receives a PiecesSetStateArgs with the set of pieces moves in the player's turn
+    // We use those piece coordinate to search there for matches and find pieces to
+    // move
     void OnSetArgs(std::shared_ptr<IStateArgs> pArgs) override;
+    
     virtual void OnEnter() override;
-    virtual void OnUpdate(float dt) override;
     virtual void OnExit() override;
+    
 private:
-    TilesSet mPiecesToDestroy;
-    std::shared_ptr<Tween> pAnimationState;
+    TilesSet mPiecesToSearch;
 };
 
 

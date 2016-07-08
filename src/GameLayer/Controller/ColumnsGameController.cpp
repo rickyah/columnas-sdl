@@ -16,12 +16,12 @@ class RemovingPiecesState;
 void ColumnsGameController::Init()
 {
     
-    mPlayerBlockInitialPosition = PositionF(mColumnsBoard.numFirstRowsForGameOver(), static_cast<int>(mColumnsBoard.columns()/2));
+    mPlayerBlockInitialPosition = PositionF(mColumnsBoardModel.numFirstRowsForGameOver(), static_cast<int>(mColumnsBoardModel.columns()/2));
 
     // 
-    // mColumnsBoard.numEqualPiecesToDestroy(3);
+    // mColumnsBoardModel.numEqualPiecesToDestroy(3);
     
-    mColumnsBoardView.InitFirstRowsToSkipWhenRendering(mColumnsBoard.numFirstRowsForGameOver())
+    mColumnsBoardView.InitFirstRowsToSkipWhenRendering(mColumnsBoardModel.numFirstRowsForGameOver())
         .InitTileSizeInPixels(Size(24,24))
         .InitPieceToTextureMapping({
             
@@ -59,7 +59,7 @@ bool ColumnsGameController::ResetPlayerBlock()
         static_cast<TileType>(pRandomDistribution->next()),
         static_cast<TileType>(pRandomDistribution->next()),
     };
-    return mColumnsBoard.CanMovePlayerBlockTo(TileOffset(), mPlayerBlock);
+    return mColumnsBoardModel.CanMovePlayerBlockTo(TileOffset(), mPlayerBlock);
 }
 
 
@@ -72,24 +72,24 @@ void ColumnsGameController::PermutePlayerBlockPieces()
 
 void ColumnsGameController::EndGame()
 {
-    mColumnsBoard.ResetBoardState();
+    mColumnsBoardModel.ResetBoardState();
     mFSM.ChangeTo(EColumnsGameStatesIds::Moving_Pieces);
     mFSM.Update(0);
 }
 
 bool ColumnsGameController::CanMoveDown() const
 {
-    return mColumnsBoard.CanMovePlayerBlockDown(mPlayerBlock);
+    return mColumnsBoardModel.CanMovePlayerBlockDown(mPlayerBlock);
 }
 
 void ColumnsGameController::ConsolidatePlayerBlock()
 {
-    mColumnsBoard.ConsolidatePlayerBlock(mPlayerBlock);
+    mColumnsBoardModel.ConsolidatePlayerBlock(mPlayerBlock);
 }
 
 bool ColumnsGameController::MoveDown()
 {
-    if (mColumnsBoard.CanMovePlayerBlockDown(mPlayerBlock))
+    if (mColumnsBoardModel.CanMovePlayerBlockDown(mPlayerBlock))
     {
         mPlayerBlock.position().row += 0.5;
         return true;
@@ -100,7 +100,7 @@ bool ColumnsGameController::MoveDown()
 
 void ColumnsGameController::MoveLeft()
 {
-    if (mColumnsBoard.CanMovePlayerBlockLeft(mPlayerBlock))
+    if (mColumnsBoardModel.CanMovePlayerBlockLeft(mPlayerBlock))
     {
         mPlayerBlock.position().col -= 1;
     }
@@ -109,7 +109,7 @@ void ColumnsGameController::MoveLeft()
 
 void ColumnsGameController::MoveRight()
 {
-    if (mColumnsBoard.CanMovePlayerBlockRight(mPlayerBlock))
+    if (mColumnsBoardModel.CanMovePlayerBlockRight(mPlayerBlock))
     {
         mPlayerBlock.position().col += 1;
     }
@@ -122,54 +122,57 @@ void ColumnsGameController::Update(LogicFrameInfo time)
     mColumnsBoardView.UpdateAnimations(time.dt);
 }
 
-void ColumnsGameController::Render(RenderFrameInfo time, Renderer &renderer)
+void ColumnsGameController::Render(RenderFrameInfo time, Renderer &renderer)    
 {
     mColumnsBoardView.Render(time.interpolation, renderer);
     mColumnsBoardView.RenderNextPieces(this->mNextPieces, renderer);
 }
 
-ColumnsGameController::DestroyPiecesInfo ColumnsGameController::StartDestroyingPieces(const TilesSet &piecesToSearch)
+void ColumnsGameController::StartDestroyingPieces(const TilesSet &piecesToSearch,
+                                                  std::function<void(TilesSet &)> endCallback)
 {
-    if (piecesToSearch.size() > 0)
-    {
-        return std::make_tuple(mColumnsBoard.FindPiecesToDestroy(piecesToSearch),
-                               mColumnsBoardView.StartDestroyPiecesAnimation(piecesToSearch));
-    }
-
-    auto piecesToDestroy = mColumnsBoard.FindPiecesToDestroy(mPlayerBlock.occupiedPositions());
+    TilesSet piecesToDestroy = mColumnsBoardModel.FindPiecesToDestroy(piecesToSearch.size() > 0 ? piecesToSearch
+                                                                                            : mPlayerBlock.occupiedPositions());
     if (piecesToDestroy.size() > 0)
     {
-        return std::make_tuple(piecesToDestroy,
-                               mColumnsBoardView.StartDestroyPiecesAnimation(piecesToDestroy));
+        mColumnsBoardView.StartDestroyPiecesAnimation(piecesToDestroy, [this, piecesToDestroy, endCallback]() mutable {
+            UpdateBoardDestroyPieces(piecesToDestroy);
+            if(endCallback) endCallback(piecesToDestroy);
+        });
     }
-   
-    return std::make_tuple(piecesToDestroy, nullptr);
+    else
+    {
+        if(endCallback) endCallback(piecesToDestroy);
+    }
+
 }
 
-ColumnsGameController::FallingPiecesInfo ColumnsGameController::StartFallingPieces(TilesSet piecesDestroyed)
+void ColumnsGameController::StartFallingPieces(TilesSet piecesDestroyed, std::function<void(TilesMovementSet &)> endCallback)
 {
-    auto piecesToMove = mColumnsBoard.FindPiecesToMoveInSubset(piecesDestroyed);
+    TilesMovementSet piecesToMove = mColumnsBoardModel.FindPiecesToMoveInSubset(piecesDestroyed);
     
-    
-    if(piecesToMove.size() >0)
+    if(piecesToMove.size() > 0)
     {
-        return std::make_tuple(piecesToMove,
-                               mColumnsBoardView.StartFallingPiecesAnimation(piecesToMove));
-        
+        mColumnsBoardView.StartFallingPiecesAnimation(piecesToMove, [this, piecesToMove, endCallback]() mutable{
+            UpdateBoardMakePiecesFall(piecesToMove);
+            if(endCallback) endCallback(piecesToMove);
+        });
     }
-    
-    return std::make_tuple(piecesToMove,
-                           nullptr);
+    else
+    {
+        if(endCallback) endCallback(piecesToMove);
+    }
 }
 
 
 void ColumnsGameController::UpdateBoardDestroyPieces(TilesSet piecesToDestroy)
 {
-    mColumnsBoard.RemovePieces(piecesToDestroy);
+    mColumnsBoardModel.RemovePieces(piecesToDestroy);
 
 }
     
 void ColumnsGameController::UpdateBoardMakePiecesFall(TilesMovementSet piecesToMove)
 {
-    mColumnsBoard.MovePieces(piecesToMove);
+    mColumnsBoardModel.MovePieces(piecesToMove);
 }
+

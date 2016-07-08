@@ -22,25 +22,6 @@
 #include "Tween.hpp"
 
 
-/*
- * Structure that allows to check the state of a view animation.
- * This is intended to be used as a ptr, so the View can actually change 
- * the inner values, and the elements that hold a copy of the pointer to
- * query its state
- */
-//struct ViewAnimationState
-//{
-//    friend class ColumnsBoardView;
-//    
-//    float AnimationTimeMs() { return mTotalAnimationTimeMs;}
-//    float ElapsedAnimationTimeMS() { return mElapsedAnimationTimeMs;}
-//    bool IsFinished() { return mElapsedAnimationTimeMs > mTotalAnimationTimeMs; }
-//    
-//private:
-//    float mTotalAnimationTimeMs ;
-//    float mElapsedAnimationTimeMs = 0;
-//};
-
 class ColumnsBoardView
 {
     typedef std::unordered_map<TileType, std::weak_ptr<Texture2dResource>> TileTypeToTextureMapping;
@@ -56,19 +37,22 @@ public:
     ColumnsBoardView& InitFirstRowsToSkipWhenRendering(TileCoordinate value);
     
     void StartAnimatingPlayerBlock();
-    std::shared_ptr<Tween> StartDestroyPiecesAnimation(const TilesSet &piecesToDestroyPtr);
-    std::shared_ptr<Tween> StartFallingPiecesAnimation(const TilesMovementSet &piecesToMovePtr);
+    void StartDestroyPiecesAnimation(const TilesSet &piecesToDestroyPtr, std::function<void()> endCallback = nullptr);
+    void StartFallingPiecesAnimation(const TilesMovementSet &piecesToMovePtr, std::function<void()> endCallback = nullptr);
     
     void UpdateAnimations(double dt);
+    void RenderNextPieces(const std::vector<TileType> & tiles, Renderer& renderer);
     void Render(double framePercent, Renderer &pRenderer);
     
 private:
 
+    Position GetPositionForCoordinates(int row, int col);
     bool isMovingPieces() { return pMovingPiecesAnimation->isRunning(); }
     bool isDestroyingPieces() { return pDestroyPiecesAnimation->isRunning(); }
     bool isMakingPiecesFall() { return pFallingPiecesAnimation->isRunning(); }
     
     void RenderBoard(double dt, Renderer &renderer);
+    void RenderPlayerTilesAtPos(const std::vector<TileType> &pieces, Position pos, Renderer &renderer, size_t from, size_t to);
     void RenderPlayerBlock(double dt, Renderer &renderer);
     void RenderDestroyAnimation(double dt, Renderer &renderer);
     void RenderFallingPiecesAnimation(double dt, Renderer &renderer);
@@ -87,7 +71,7 @@ private:
     const TilesMovementSet *pPiecesToMove;
     
     Size mTileSizePixels;
-    
+    Position mBoardRenderOffset = {20, 60};
     void RenderTileAt(TileType tileType, int row, int col, Renderer &renderer);
     void RenderEmptyTileAt(int row, int col, Renderer &renderer);
     
