@@ -12,7 +12,7 @@
 		1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 1DF5F4DF0D08C38300B7A737 /* UIKit.framework */; };
 		9C2BE3001D0622BC00532AA8 /* ColumnsGameController.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE2FE1D0622BC00532AA8 /* ColumnsGameController.cpp */; };
 		9C2BE30B1D0720CD00532AA8 /* MovingPiecesState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE30A1D0720CD00532AA8 /* MovingPiecesState.cpp */; };
-		9C2BE30F1D0723AB00532AA8 /* DroppingPiecesState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE30D1D0723AB00532AA8 /* DroppingPiecesState.cpp */; };
+		9C2BE30F1D0723AB00532AA8 /* FallingPiecesState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE30D1D0723AB00532AA8 /* FallingPiecesState.cpp */; };
 		9C2BE3121D07241D00532AA8 /* RemovingPiecesState.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C2BE3101D07241D00532AA8 /* RemovingPiecesState.cpp */; };
 		9C4623711D2C00B500773EEE /* App.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C4623191D2C00B500773EEE /* App.cpp */; };
 		9C4623721D2C00B500773EEE /* AudioPlayer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9C46231C1D2C00B500773EEE /* AudioPlayer.cpp */; };
@@ -97,8 +97,8 @@
 		9C2BE3061D071FFE00532AA8 /* ColumnsGameFSMDefinitions.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = ColumnsGameFSMDefinitions.hpp; sourceTree = "<group>"; };
 		9C2BE30A1D0720CD00532AA8 /* MovingPiecesState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MovingPiecesState.cpp; sourceTree = "<group>"; };
 		9C2BE30C1D07227F00532AA8 /* MovingPiecesState.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = MovingPiecesState.hpp; sourceTree = "<group>"; };
-		9C2BE30D1D0723AB00532AA8 /* DroppingPiecesState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DroppingPiecesState.cpp; sourceTree = "<group>"; };
-		9C2BE30E1D0723AB00532AA8 /* DroppingPiecesState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = DroppingPiecesState.hpp; sourceTree = "<group>"; };
+		9C2BE30D1D0723AB00532AA8 /* FallingPiecesState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FallingPiecesState.cpp; sourceTree = "<group>"; };
+		9C2BE30E1D0723AB00532AA8 /* FallingPiecesState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = FallingPiecesState.hpp; sourceTree = "<group>"; };
 		9C2BE3101D07241D00532AA8 /* RemovingPiecesState.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RemovingPiecesState.cpp; sourceTree = "<group>"; };
 		9C2BE3111D07241D00532AA8 /* RemovingPiecesState.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = RemovingPiecesState.hpp; sourceTree = "<group>"; };
 		9C3123ED1D097E1B00DF21CA /* GameStateArgs.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GameStateArgs.hpp; sourceTree = "<group>"; };
@@ -196,7 +196,6 @@
 		9CA73A5A1D1544ED00925445 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Default.png; path = resources/Default.png; sourceTree = "<group>"; };
 		9CA73A5B1D1544ED00925445 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Icon.png; path = resources/Icon.png; sourceTree = "<group>"; };
 		9CA73A5C1D1544ED00925445 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = resources/Info.plist; sourceTree = "<group>"; };
-		9CA73A961D15459D00925445 /* BerlinSansFont.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = BerlinSansFont.hpp; sourceTree = "<group>"; };
 		9CA73A991D154F4300925445 /* Fonts */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Fonts; path = resources/Fonts; sourceTree = "<group>"; };
 		9CA73A9B1D154F4900925445 /* Sprites */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Sprites; path = resources/Sprites; sourceTree = "<group>"; };
 		9CAF9C0C1D0B77230041BDB0 /* PlayerBlockMovement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlayerBlockMovement.cpp; sourceTree = "<group>"; };
@@ -323,8 +322,8 @@
 				9C2BE3061D071FFE00532AA8 /* ColumnsGameFSMDefinitions.hpp */,
 				9C2BE30A1D0720CD00532AA8 /* MovingPiecesState.cpp */,
 				9C2BE30C1D07227F00532AA8 /* MovingPiecesState.hpp */,
-				9C2BE30D1D0723AB00532AA8 /* DroppingPiecesState.cpp */,
-				9C2BE30E1D0723AB00532AA8 /* DroppingPiecesState.hpp */,
+				9C2BE30D1D0723AB00532AA8 /* FallingPiecesState.cpp */,
+				9C2BE30E1D0723AB00532AA8 /* FallingPiecesState.hpp */,
 				9C2BE3101D07241D00532AA8 /* RemovingPiecesState.cpp */,
 				9C2BE3111D07241D00532AA8 /* RemovingPiecesState.hpp */,
 				9C3123ED1D097E1B00DF21CA /* GameStateArgs.hpp */,
@@ -567,7 +566,6 @@
 			children = (
 				9C68FB171CF744680058369A /* ColumnsBoardView.cpp */,
 				9C68FB181CF744680058369A /* ColumnsBoardView.hpp */,
-				9CA73A961D15459D00925445 /* BerlinSansFont.hpp */,
 			);
 			name = View;
 			path = GameLayer/View;
@@ -695,7 +693,7 @@
 				9C8A39951CFC528E00C2E236 /* GenericBoard.cpp in Sources */,
 				9C68FB161CF744150058369A /* ColumnsBoard.cpp in Sources */,
 				9C4623871D2C00B500773EEE /* Quint.cpp in Sources */,
-				9C2BE30F1D0723AB00532AA8 /* DroppingPiecesState.cpp in Sources */,
+				9C2BE30F1D0723AB00532AA8 /* FallingPiecesState.cpp in Sources */,
 				9C4623841D2C00B500773EEE /* Linear.cpp in Sources */,
 				9C4623881D2C00B500773EEE /* Sine.cpp in Sources */,
 				9C46237A1D2C00B500773EEE /* helpers.mm in Sources */,

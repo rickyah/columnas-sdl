@@ -18,10 +18,10 @@ void FallingPiecesState::OnSetArgs(std::shared_ptr<IStateArgs> pArgs)
 
 void FallingPiecesState::OnEnter()
 {
-    SDL_Log(__PRETTY_FUNCTION__);
+    Logger::log.Info(__PRETTY_FUNCTION__);
     auto tuple = mControllerRef.StartFallingPieces(mDestroyedPieces);
     
-    mPiecesToMove = std::get<ColumnsGameController::destroyedPieces>(tuple);
+    pPiecesToMove = std::get<ColumnsGameController::destroyedPieces>(tuple);
     pAnimationState = std::get<ColumnsGameController::animationState>(tuple);
     
     
@@ -44,7 +44,7 @@ void FallingPiecesState::OnUpdate(float dt)
 
 void FallingPiecesState::OnExit()
 {
-    SDL_Log(__PRETTY_FUNCTION__);
+    Logger::log.Info(__PRETTY_FUNCTION__);
     mControllerRef.UpdateBoardMakePiecesFall(mPiecesToMove);
     mDestroyedPieces.clear();
     mPiecesToMove.clear();

@@ -27,9 +27,11 @@ public:
     void OnUpdate(float dt) override;
     void OnExit() override;
 private:
+    
     TilesSet mDestroyedPieces;
-    TilesMovementSet mPiecesToMove;
-    std::shared_ptr<Tween> pAnimationState;
+    TilesMovementSet * pPiecesToMove;
+    std::weak_ptr<Tween> pAnimationState;
+    
     FallingPiecesState(const FallingPiecesState &);
     FallingPiecesState & operator=(const FallingPiecesState &);
     void ExtractPositionOfDroppedPieces(TilesSet &destroyedPieces, const TilesMovementSet &piecesMovedDown);
