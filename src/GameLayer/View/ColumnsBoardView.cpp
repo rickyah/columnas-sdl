@@ -13,8 +13,8 @@ ColumnsBoardView::ColumnsBoardView(const ColumnsBoard * const pColumnsBoardPtr,
 :pColumnsBoard(pColumnsBoardPtr),
 pPlayerBlock(playerBlockPtr),
 pMovingPiecesAnimation(std::make_shared<Tween>(0,1,100, Sine::easeIn)),
-pDestroyPiecesAnimation(std::make_shared<Tween>(0,1,1000, Linear::easeIn)),
-pFallingPiecesAnimation(std::make_shared<Tween>(0,1,1000, Sine::easeIn))
+pDestroyPiecesAnimation(std::make_shared<Tween>(1,0,500, Sine::easeInOut)),
+pFallingPiecesAnimation(std::make_shared<Tween>(0,1,200, Sine::easeIn))
 {}
 
 ColumnsBoardView& ColumnsBoardView::InitPieceToTextureMapping(TileTypeToTextureMapping mappings)
@@ -84,12 +84,18 @@ void ColumnsBoardView::Render(double framePercent, Renderer &rendererRef)
     }
 }
 
-Position ColumnsBoardView::GetPositionForCoordinates(int row, int col)
+Position ColumnsBoardView::GetPositionForCoordinates(int row, int col) const
+{
+    return GetPositionForCoordinates(row, col, mTileSizePixels);
+}
+
+Position ColumnsBoardView::GetPositionForCoordinates(int row, int col, const Size &drawSize) const
 {
     return {
-        mBoardRenderOffset.x + col * mTileSizePixels.w,
-        mBoardRenderOffset.y + (row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.h
+        mBoardRenderOffset.x + (col * mTileSizePixels.w) + ((mTileSizePixels.w - drawSize.w)/2),
+        mBoardRenderOffset.y + ((row - mSkipRenderingRowsWhenRendering) * mTileSizePixels.h) + ((mTileSizePixels.h - drawSize.h)/2)
     };
+
 }
 
 void ColumnsBoardView::RenderTileAt(TileType tileType, int row, int col, Renderer &renderer)
@@ -239,14 +245,35 @@ void ColumnsBoardView::RenderPlayerTilesAtPos(const std::vector<TileType> &piece
 }
 
 
-void ColumnsBoardView::RenderDestroyAnimation(double framePercent, Renderer &rendererRef)
+void ColumnsBoardView::RenderDestroyAnimation(double framePercent, Renderer &renderer)
 {
-//    pDestroyPiecesAnimation->currentValue()
+    float interp = pDestroyPiecesAnimation->currentValue();
+    
+    for(auto piece: mPiecesToDestroy)
+    {
+        
+        TileType tileType = (*pColumnsBoard)[piece.row][piece.col];
+        
+        RenderEmptyTileAt(piece.row, piece.col, renderer);
+        
+        auto textureRes = mTile2TextureMapping[tileType];
+        
+        if (!textureRes.expired())
+        {
+            auto texture = textureRes.lock()->resource().lock().get();
+            Size drawSize = texture->drawSize();
+            drawSize.w *= interp;
+            drawSize.h *= interp;
+            
+            Position pos = GetPositionForCoordinates(piece.row, piece.col, drawSize);
+            renderer.DrawTexture(texture, pos, drawSize);
+        }
+    }
 }
 
-void ColumnsBoardView::RenderFallingPiecesAnimation(double framePercent, Renderer &rendererRef)
+void ColumnsBoardView::RenderFallingPiecesAnimation(double framePercent, Renderer &rendere)
 {
-    
+
 }
 
 
@@ -262,9 +289,10 @@ void ColumnsBoardView::StartDestroyPiecesAnimation(const TilesSet &piecesToDestr
     pDestroyPiecesAnimation->endCallback([endCallback](const Tween&) {
         if(endCallback) endCallback();
     });
+    
     pDestroyPiecesAnimation->Start();
     
-    pPiecesToDestroy = &piecesToDestroy;
+    mPiecesToDestroy = piecesToDestroy;
 
 }
 
@@ -272,11 +300,12 @@ void ColumnsBoardView::StartFallingPiecesAnimation(const TilesMovementSet &piece
 {
     // Can't start the same animation twice
     pFallingPiecesAnimation->Stop();
+    
     pFallingPiecesAnimation->endCallback([endCallback](const Tween&) {
         if(endCallback) endCallback();
     });
     pFallingPiecesAnimation->Start();
 
-    pPiecesToMove = &piecesToMovePtr;
+    mPiecesToMove = piecesToMovePtr;
 }
 

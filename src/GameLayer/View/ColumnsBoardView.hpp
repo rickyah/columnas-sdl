@@ -46,7 +46,8 @@ public:
     
 private:
 
-    Position GetPositionForCoordinates(int row, int col);
+    Position GetPositionForCoordinates(int row, int col) const;
+    Position GetPositionForCoordinates(int row, int col, const Size &drawSize) const;
     bool isMovingPieces() { return pMovingPiecesAnimation->isRunning(); }
     bool isDestroyingPieces() { return pDestroyPiecesAnimation->isRunning(); }
     bool isMakingPiecesFall() { return pFallingPiecesAnimation->isRunning(); }
@@ -67,8 +68,8 @@ private:
     // Pointers to the model for rendering only (const data);
     const ColumnsBoard * const pColumnsBoard;
     const PlayerBlock * const pPlayerBlock;
-    const TilesSet *pPiecesToDestroy;
-    const TilesMovementSet *pPiecesToMove;
+    TilesSet mPiecesToDestroy;
+    TilesMovementSet mPiecesToMove;
     
     Size mTileSizePixels;
     Position mBoardRenderOffset = {20, 60};
