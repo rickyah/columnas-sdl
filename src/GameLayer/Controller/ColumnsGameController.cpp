@@ -145,6 +145,7 @@ void ColumnsGameController::StartDestroyingPieces(const TilesSet &piecesToSearch
         if(endCallback) endCallback(piecesToDestroy);
     }
 
+    mPlayerBlock.ClearPieces();
 }
 
 void ColumnsGameController::StartFallingPieces(TilesSet piecesDestroyed, std::function<void(TilesMovementSet &)> endCallback)

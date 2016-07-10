@@ -37,9 +37,8 @@ class PlayerBlock
 public:
     
     PlayerBlock(){};
-    /*
-     * define a new set of pieces to use
-     */
+    
+    // setup the new pieces to usee
     void pieces(const std::vector<TileType> &newPieces)
     {
         mPieces = newPieces;
@@ -53,7 +52,6 @@ public:
     PositionF position() const { return mPosition;}
     
     TilesSet occupiedPositions() const
-    
     {
         mOccupiedPositionsTmp.clear();
         
@@ -72,6 +70,7 @@ public:
      */
     const TileType& operator[](std::size_t idx) const
     {
+        assert (idx < mPieces.size());
         return mPieces[idx];
     }
     
@@ -86,6 +85,11 @@ public:
     void MovePieces()
     {
         std::rotate(mPieces.begin(), mPieces.begin() + 1, mPieces.end());
+    }
+    
+    void ClearPieces()
+    {
+        mPieces.clear();
     }
     
     size_t size() const { return mPieces.size(); }
