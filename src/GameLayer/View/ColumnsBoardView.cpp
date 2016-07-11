@@ -271,9 +271,32 @@ void ColumnsBoardView::RenderDestroyAnimation(double framePercent, Renderer &ren
     }
 }
 
-void ColumnsBoardView::RenderFallingPiecesAnimation(double framePercent, Renderer &rendere)
+void ColumnsBoardView::RenderFallingPiecesAnimation(double framePercent, Renderer &renderer)
 {
-
+    float interp = pFallingPiecesAnimation->currentValue();
+    
+    for(auto piece: mPiecesToMove)
+    {
+        // Redraw background
+        for(int row = piece.from.row; row < piece.to.row; ++row)
+        {
+            RenderEmptyTileAt(row, piece.from.col, renderer);
+        }
+        
+        TileType tileType = (*pColumnsBoard)[piece.from.row][piece.from.col];
+        Position fromPos = GetPositionForCoordinates(piece.from.row, piece.from.col);
+        Position toPos = GetPositionForCoordinates(piece.to.row, piece.to.col);
+        auto textureRes = mTile2TextureMapping[tileType];
+        
+        if (!textureRes.expired())
+        {
+            auto texture = textureRes.lock()->resource().lock().get();
+            
+            Position drawPos = Position(toPos.x, ((toPos.y - fromPos.y) * interp) + fromPos.y);
+            renderer.DrawTexture(texture, drawPos);
+        }
+            
+    }
 }
 
 
